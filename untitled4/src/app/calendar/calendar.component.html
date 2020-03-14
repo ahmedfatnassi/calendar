@@ -1,0 +1,124 @@
+<script src="app.component.ts"></script>
+<div class="d-flex justify-content-around">
+  <div class="form-group" >
+    <button class="btn btn-dark " (click)="logout()">logout </button>
+    <button class="btn btn-dark " (click)="newEvent(content)">new event </button>
+  </div>
+
+
+  <div class="form-group"  >
+    <label for="patientSelect">patients</label>
+    <select class="form-control" id="patientSelect"   (ngModel)="patients"  [value]="doctors">
+      <option *ngFor="let pow of patients" [value]="pow.id">{{pow.name}}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="agentSelect"> Agents </label>
+    <select class="form-control" id="agentSelect" (ngModel)="agents"  [value]="doctors" >
+      <option *ngFor="let pow of agents" [value]="pow.id">{{pow.name}}</option>
+    </select>
+  </div>
+
+  <div class="form-group"   >
+    <label for="doctorSelect"> Doctors</label>
+    <select class="form-control" id="doctorSelect" name="doctors"
+            (ngModel) ="doctors" (change)="onChange($event.target)"  [value]="doctors" >
+      <option *ngFor="let pow of doctors" name="pow.id" [value]="pow.id">{{pow.name}}</option>
+    </select>
+  </div>
+
+</div>
+<div >
+  <full-calendar
+    *ngIf="options"
+    #fullcalendar
+    [editable]="true"
+    [events]="eventsModel"
+    [resources] = "resources"
+    [header]="options.header"
+    [customButtons]="options.customButtons"
+    (dateClick)="dateClick($event)"
+    (eventDragStop)="eventDragStop($event)"
+    [plugins]="options.plugins"
+    (eventClick)="eventClick($event)"
+  ></full-calendar>
+
+
+
+  <ng-template #content let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Event </h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" >
+      <form #Eventform="ngForm" (ngSubmit)="submitCompany(Eventform);">
+
+
+        <label for="doctorSelect1"> Doctors</label>
+        <select class="form-control" id="doctorSelect1"  name="doctor" ngModel  >
+          <option *ngFor="let pow of doctors" [ngValue]="pow" >{{pow.name}}</option>
+        </select>
+
+
+        <label for="patientSelect1">patients</label>
+        <select class="form-control" id="patientSelect1"name="patient" ngModel  >
+          <option *ngFor="let pow of patients"  [ngValue]="pow"  >{{pow.name}}</option>
+        </select>
+
+
+
+        <div class="form-group">
+          <label for="title1">Title</label>
+          <input type="text" class="form-control" id="title1" required name = "title" ngModel>
+        </div>
+        <div class="form-group">
+
+          <label>
+            Date
+            <input [owlDateTimeTrigger]="dt3" name = "date" [owlDateTime]="dt3" ngModel>
+            <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+          </label>
+
+          <label>
+            Time
+            <input name = time  [owlDateTimeTrigger]="dt4"  [selectMode]="'range'" [owlDateTime]="dt4" ngModel>
+            <owl-date-time [pickerType]="'timer'"  #dt4></owl-date-time>
+          </label>
+
+
+
+        </div>
+
+
+        <div class = "form-group">
+          <label>
+            Color
+            <input [(colorPicker)]="color" name = "color" [style.background]="color" ngModel/>
+          </label>
+
+        </div>
+
+
+
+        <div class="modal-footer d-flex justify-content-between ">
+          <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+            close
+          </button>
+
+          <button class="btn btn-success" >
+            OK
+          </button>
+        </div>
+
+
+      </form>
+    </div>
+
+
+  </ng-template>
+
+
+</div>
