@@ -15,6 +15,7 @@ import {RouterModule, Routes} from '@angular/router';
 import { CalendarComponent } from './calendar/calendar.component';
 import {AuthguardService} from './login/authguard.service';
 import {JwtInterceptor} from './login/jwt-interceptor.service';
+import {ChatService} from './calendar/chat.service';
 
 const appRoutes: Routes = [
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
@@ -42,7 +43,7 @@ const appRoutes: Routes = [
     OwlDateTimeModule, // for time imput
     OwlNativeDateTimeModule, // for date imput
   ],
-  providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }],
+  providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } , ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

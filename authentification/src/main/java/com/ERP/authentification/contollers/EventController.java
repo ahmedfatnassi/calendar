@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,6 @@ public class EventController {
 
 	@GetMapping
 	public ResponseEntity<List<Event>> getAll()  {
-
 		return ResponseEntity.ok().body(eventservice.findAll());
 	}
 

@@ -30,11 +30,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 @Override
 	protected void configure(HttpSecurity http) throws Exception {
 	   http.cors().and().authorizeRequests()
-       .antMatchers("/login/").permitAll()
+	                                                   
+
+	                                                   
+       .antMatchers("/login/","/greeting/**" 	).permitAll()
+        
        .antMatchers("/doctors/**", "/events/**","/agents/**", "/patients/**").hasAuthority("USER")
        .antMatchers("/error").permitAll()
+       .anyRequest().authenticated()
        .and()
        .httpBasic()
+       
        .and().logout().logoutSuccessUrl("/login").permitAll()
        .and().csrf().disable()
        .logout()

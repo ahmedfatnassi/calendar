@@ -28,9 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
     
     @Override
     public UserDetails loadUserByUsername(String username) {
-    	System.out.println(username);
         Medecin medecin = medecinRepository.findByUsername(username).get();
-		System.out.println(medecin.getPassword()+" "+bCryptPasswordEncoder.encode(medecin.getPassword()));
         if (medecin == null) {
             throw new UsernameNotFoundException(username);
         }

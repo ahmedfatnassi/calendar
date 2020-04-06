@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {EventsService} from '../events.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from '@angular/common';
@@ -12,15 +12,30 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import {NgForm} from '@angular/forms';
 import {Router} from '@angular/router';
-
+import {NotificationhandlerService} from './notificationhandler.service';
+import {Subject, Subscription} from 'rxjs';
+import {Stomp} from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
+import {ChatService} from './chat.service';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit {
 
-  constructor( private eventservice: EventsService , private modal: NgbModal, public datepipe: DatePipe , private router: Router) {}
+
+  private messages: Subject<any>;
+  private messageLog: any;
+  private connected: Subscription;
+
+  constructor( private eventservice: EventsService ,
+               private modal: NgbModal,
+               public datepipe: DatePipe ,
+               private router: Router ,
+               private  notification: NotificationhandlerService ,
+               private chat : ChatService
+  ) {}
   get yearMonth(): string {
     const dateObj = new Date();
     return dateObj.getUTCFullYear() + '-' + (dateObj.getUTCMonth() + 1);
@@ -47,9 +62,13 @@ export class CalendarComponent implements OnInit {
   myDate = new Date;
   resources  = [] ;
   eventcreationStartDate: string  ;
+  client: any ;
   eventCreationEndDate: string ;
   // tslint:disable-next-line:variable-name
   color: any;
+  connectmsg: any ;
+  private stompClient: any;
+
   ngOnInit() {
     this.resources =  [
       {id : '1' ,
@@ -85,7 +104,6 @@ export class CalendarComponent implements OnInit {
       this.agents = Object.keys(data).map(i => data[i]);
       console.log(this.agents) ;
     }) ;
-
     this.eventservice.getEvents().subscribe(
       (data ) => {
         console.log('here is events ') ;
@@ -100,15 +118,75 @@ export class CalendarComponent implements OnInit {
         console.log(this.eventsModel) ;
 
       });
+    //this.notification.connect1()
+    // notification
+    // 1
 
+    //2
+    // tslint:disable-next-line:no-shadowed-variable
+
+   /* this.messages
+      .subscribe(
+      (data) => {
+        console.log('received   ' + data ); // or just use it directly
+      }, error => {
+        console.error(error); // handle errors
+      }) ;*/
+
+  //  this.messages.next(JSON.stringify(msg)) ;
+  //  const url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
+    // 'localhost:8080/greeting/websocket' ;
+    //this.client = Stomp.client(url);
+    // tslint:disable-next-line:only-arrow-functions
+  /*  this.client.connect( {name : this.eventservice.currentUserValue.username} , function(frame) {
+      // tslint:disable-next-line:only-arrow-functions
+      console.log(' connected ' ) ;
+      // tslint:disable-next-line:no-unused-expression
+      // tslint:disable-next-line:only-arrow-functions
+    }, function(error) {
+      console.log('STOMP error ' + error);
+    });*/
+    /*const url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
+      'localhost:8080/greeting/websocket' ;
+    const socket = new WebSocket(url);
+    const stompClient = Stomp.over(socket);
+    this.stompClient = stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
+      console.log('Connected: ' + frame);
+      stompClient.subscribe('/user/queue/reply', function(message) {
+        console.log('Error websocket' + message);
+
+      });
+
+    }) ;*/
+      this.stompClient = this.notification.connect1();
+    this.chat.messages.subscribe(msg => {
+      console.log('slem iam here '+msg);
+    })
+   }
+
+  ngAfterContentInit(): void {
+    console.log('Method not implemented.');
   }
   eventClick(model) {
     console.log(model);
+  //  this.chat.messages.next(this.message);
+    this.stompClient.send('/user/ahmedfatnassi/queue/reply', {}, JSON.stringify({'username' : 'ahmedfatnassi', 'body' : 'hello'}));
+    //this.sendMsg() ;
+  }
+   message = {
+    author: 'tutorialedge',
+    message: 'this is a test message'
+  };
+//https://stackoverflow.com/questions/54763261/how-to-send-custom-message-to-custom-user-with-spring-websocket
+  sendMsg() {
+    console.log('new message from client to websocket: ', this.message);
   }
   newEvent(content) {
     const modalRef = this.modal.open(content);
+    console.log('this.connectmsg ' +this.connectmsg)
+    // tslint:disable-next-line:only-arrow-functions
 
-  }
+    }
   eventDragStop(model) {
     console.log(model);
   }
@@ -228,5 +306,8 @@ export class CalendarComponent implements OnInit {
     console.log('logout') ;
     this.eventservice.logout() ;
     this.router.navigate(['/home']);
+  }
+  ngOnDestroy(): void {
+
   }
 }
