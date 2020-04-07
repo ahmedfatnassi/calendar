@@ -7,6 +7,9 @@
 @import "~bootstrap/dist/css/bootstrap.css" ;
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
+@import '~ngx-toastr/toastr';
+
+
 
 .cdk-overlay-container {
 

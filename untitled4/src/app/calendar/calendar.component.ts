@@ -17,6 +17,7 @@ import {Subject, Subscription} from 'rxjs';
 import {Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {ChatService} from './chat.service';
+import {ToastrModule, ToastrService} from 'ngx-toastr';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -34,7 +35,8 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
                public datepipe: DatePipe ,
                private router: Router ,
                private  notification: NotificationhandlerService ,
-               private chat : ChatService
+               private chat : ChatService ,
+               private toast: ToastrService
   ) {}
   get yearMonth(): string {
     const dateObj = new Date();
@@ -158,11 +160,10 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       });
 
     }) ;*/
-      this.stompClient = this.notification.connect1();
-    this.chat.messages.subscribe(msg => {
-      console.log('slem iam here '+msg);
-    })
-   }
+
+    this.stompClient = this.connect1();
+
+      }
 
   ngAfterContentInit(): void {
     console.log('Method not implemented.');
@@ -170,7 +171,6 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   eventClick(model) {
     console.log(model);
   //  this.chat.messages.next(this.message);
-    this.stompClient.send('/user/ahmedfatnassi/queue/reply', {}, JSON.stringify({'username' : 'ahmedfatnassi', 'body' : 'hello'}));
     //this.sendMsg() ;
   }
    message = {
@@ -246,6 +246,9 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       color : this.color
     };
     this.eventservice.PostEvents(this.newevent);
+    console.log('recieved person '+ form.value.doctor.username)
+    this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify({'username' : 'ahmedfatnassi', 'body' : 'hello'}));
+
     this.eventsModel1 = this.eventsModel  ;
     this.addEvent(this.newevent.title ,
       this.newevent.startEvent ,
@@ -253,6 +256,26 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       this.newevent.idReceiver ,
       this.newevent.color) ;
     this.eventsModel = this.eventsModel1 ;
+
+  }
+  connect1():any{
+    const url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
+      'localhost:8080/greeting/websocket' ;
+    const socket = new WebSocket(url);
+    const stompClient = Stomp.over(socket);
+    const toast = this.toast;
+    stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
+      console.log('Connected: ' + frame);
+      stompClient.subscribe('/user/queue/reply', function(message) {
+        console.log('working  websocket' + message);
+        toast.info('everything is broken', 'Major Error', {
+          timeOut: 5000,
+        });
+        return stompClient ;
+      });
+      return stompClient ;
+    }) ;
+    return stompClient;
   }
   onChange(newValue) {
     console.log(newValue);

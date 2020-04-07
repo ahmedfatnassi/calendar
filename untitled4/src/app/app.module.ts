@@ -5,7 +5,7 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
-import { NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from '@angular/common';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -16,6 +16,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import {AuthguardService} from './login/authguard.service';
 import {JwtInterceptor} from './login/jwt-interceptor.service';
 import {ChatService} from './calendar/chat.service';
+import {ToastrModule} from 'ngx-toastr';
 
 const appRoutes: Routes = [
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
@@ -35,10 +36,17 @@ const appRoutes: Routes = [
     FullCalendarModule,
     HttpClientModule,
     FormsModule ,
+    NgbModule ,
     NgbModalModule  ,
     RouterModule.forRoot(
       appRoutes) ,
     BrowserAnimationsModule ,
+    ToastrModule.forRoot({
+      progressAnimation: 'increasing',
+      progressBar : true ,
+      positionClass : 'toast-bottom-left'
+
+    }),
     ColorPickerModule ,
     OwlDateTimeModule, // for time imput
     OwlNativeDateTimeModule, // for date imput
