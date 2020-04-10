@@ -247,7 +247,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     };
     this.eventservice.PostEvents(this.newevent);
     console.log('recieved person '+ form.value.doctor.username)
-    this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify({'username' : 'ahmedfatnassi', 'body' : 'hello'}));
+    this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
 
     this.eventsModel1 = this.eventsModel  ;
     this.addEvent(this.newevent.title ,
@@ -264,17 +264,43 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     const socket = new WebSocket(url);
     const stompClient = Stomp.over(socket);
     const toast = this.toast;
+    let eventsModel =  this.eventsModel ;
+    let eventsModel1 =  this.eventsModel ;
+    let that = this;
     stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
       console.log('Connected: ' + frame);
       stompClient.subscribe('/user/queue/reply', function(message) {
-        console.log('working  websocket' + message);
-        toast.info('everything is broken', 'Major Error', {
+        console.log('working  websocket  message = ' + JSON.parse(message.body).title);
+        toast.info('new event has been created ', 'creation of new event ', {
           timeOut: 5000,
         });
+        const newevent = JSON.parse(message.body)
+        that.eventsModel1 = that.eventsModel  ;
+        that.addEvent(newevent.title ,
+          newevent.startEvent ,
+          newevent.endEvent ,
+          newevent.idReceiver ,
+          newevent.color) ;
+        that.eventsModel = that.eventsModel1 ;
+
+        // that.messages.push(JSON.parse(.body).content);
+        /*that.eventsModel1 =that.eventsModel;
+
+        that.eventsModel1 = that.eventsModel1.concat({
+          title: newEvent.title,
+          resourceId: newEvent.resourceId,
+          start:  newEvent.start,
+          end:  newEvent.end ,
+          editable: false   , // :stop drag and drop
+          color : newEvent.color
+        }) ;
+        that.eventsModel =that.eventsModel1;*/
+        console.log(eventsModel);
         return stompClient ;
       });
       return stompClient ;
     }) ;
+    console.log("heeeeeeeeere you are ")
     return stompClient;
   }
   onChange(newValue) {

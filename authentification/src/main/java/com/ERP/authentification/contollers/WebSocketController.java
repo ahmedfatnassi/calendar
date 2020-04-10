@@ -37,10 +37,10 @@ public class WebSocketController {
   
     @MessageMapping("/message")
     @SendToUser("/queue/reply")
-    public String processMessageFromClient(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
+    public Map<String,String> processMessageFromClient(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
     	
-     
-    	return "Received " + map1.toString();
+     System.out.println("map1 "+map1);
+    	return  map1;
     }
     
     

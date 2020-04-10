@@ -17,6 +17,7 @@ import {AuthguardService} from './login/authguard.service';
 import {JwtInterceptor} from './login/jwt-interceptor.service';
 import {ChatService} from './calendar/chat.service';
 import {ToastrModule} from 'ngx-toastr';
+import {Stomp} from '@stomp/stompjs';
 
 const appRoutes: Routes = [
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
