@@ -33,7 +33,6 @@ public class WebSocketController {
     private SimpMessageSendingOperations messagingTemplate;
     @Autowired
     private SecurityServiceImp securityService;
-    private Gson gson = new Gson();
   
     @MessageMapping("/message")
     @SendToUser("/queue/reply")
@@ -44,6 +43,13 @@ public class WebSocketController {
     }
     
     
+    @MessageMapping("/broadcast")
+    @SendTo("/queue/broadcast")
+    public Map<String,String> breadcast(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
+    	
+     System.out.println("map1 "+map1);
+    	return  map1;
+    }
     
     private MessageHeaders createHeaders(String sessionId) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
@@ -57,4 +63,5 @@ public class WebSocketController {
     public String handleException(Throwable exception) {
         return exception.getMessage();
     }
+  
 }

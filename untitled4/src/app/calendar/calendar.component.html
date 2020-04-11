@@ -45,7 +45,7 @@
 
 
 
-  <ng-template #content let-close="close">
+  <ng-template  #content let-close="close">
     <div class="modal-header">
       <h5 class="modal-title">Add Event </h5>
       <button type="button" class="close" (click)="close()">
@@ -73,32 +73,28 @@
           <label for="title1">Title</label>
           <input type="text" class="form-control" id="title1" required name = "title" ngModel>
         </div>
-        <div class="form-group">
+
 
           <label>
-            Date
-            <input [owlDateTimeTrigger]="dt3" name = "date" [owlDateTime]="dt3" ngModel>
+            Date <br>
+            <input  [owlDateTimeTrigger]="dt3" name = "date" [owlDateTime]="dt3" ngModel>
             <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
-          </label>
-
+          </label> <br>
           <label>
-            Time
+            Time <br>
             <input name = time  [owlDateTimeTrigger]="dt4"  [selectMode]="'range'" [owlDateTime]="dt4" ngModel>
             <owl-date-time [pickerType]="'timer'"  #dt4></owl-date-time>
           </label>
 
 
 
-        </div>
+            <br>
 
-
-        <div class = "form-group">
           <label>
-            Color
+            Color <br>
             <input [(colorPicker)]="color" name = "color" [style.background]="color" ngModel/>
           </label>
 
-        </div>
 
 
 

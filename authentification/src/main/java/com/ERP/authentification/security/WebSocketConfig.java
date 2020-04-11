@@ -56,7 +56,7 @@ public class WebSocketConfig
                   MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
               if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                System.out.println("message= "+ accessor.getLogin() +" baaa3 "+accessor.getDestination()  +" channel= " + channel.toString() );
+               // System.out.println("message= "+ accessor.getLogin() +" destination  "+accessor.getDestination()  +" channel= " + channel.toString() );
                 	 //ArrayList<GrantedAuthority> ga= new ArrayList<>() ;
                 	// ga.add( new SimpleGrantedAuthority("USER")) ;
             	    Principal user = new Principal() {

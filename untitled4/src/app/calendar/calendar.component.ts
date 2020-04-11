@@ -182,7 +182,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     console.log('new message from client to websocket: ', this.message);
   }
   newEvent(content) {
-    const modalRef = this.modal.open(content);
+    const modalRef = this.modal.open(content, );
     console.log('this.connectmsg ' +this.connectmsg)
     // tslint:disable-next-line:only-arrow-functions
 
@@ -248,14 +248,8 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     this.eventservice.PostEvents(this.newevent);
     console.log('recieved person '+ form.value.doctor.username)
     this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
-
-    this.eventsModel1 = this.eventsModel  ;
-    this.addEvent(this.newevent.title ,
-      this.newevent.startEvent ,
-      this.newevent.endEvent ,
-      this.newevent.idReceiver ,
-      this.newevent.color) ;
-    this.eventsModel = this.eventsModel1 ;
+    this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
+    
 
   }
   connect1():any{
@@ -274,14 +268,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         toast.info('new event has been created ', 'creation of new event ', {
           timeOut: 5000,
         });
-        const newevent = JSON.parse(message.body)
-        that.eventsModel1 = that.eventsModel  ;
-        that.addEvent(newevent.title ,
-          newevent.startEvent ,
-          newevent.endEvent ,
-          newevent.idReceiver ,
-          newevent.color) ;
-        that.eventsModel = that.eventsModel1 ;
+
 
         // that.messages.push(JSON.parse(.body).content);
         /*that.eventsModel1 =that.eventsModel;
@@ -297,6 +284,17 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         that.eventsModel =that.eventsModel1;*/
         console.log(eventsModel);
         return stompClient ;
+      });
+      stompClient.subscribe('/queue/broadcast', function(message) {
+        console.log("broadcast "+message) ;
+        const newevent = JSON.parse(message.body)
+        that.eventsModel1 = that.eventsModel  ;
+        that.addEvent(newevent.title ,
+          newevent.startEvent ,
+          newevent.endEvent ,
+          newevent.idReceiver ,
+          newevent.color) ;
+        that.eventsModel = that.eventsModel1 ;
       });
       return stompClient ;
     }) ;
