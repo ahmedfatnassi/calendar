@@ -1,0 +1,40 @@
+<p>boardlist works!</p>
+
+
+
+  <div class="m-3" (ngModel)="boards"  >
+    <button class=" btn btn-dark mr-2" (click)="goToBoard(pow.id)" *ngFor="let pow of boards" [value]="pow.id">{{pow.name}}</button>
+  </div>
+
+
+<button (click)="openForm(form)" class=" btn bg-info">add board</button>
+
+<ng-template  #form let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Add Event </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form #Eventform="ngForm" (ngSubmit)="createNewBoard(Eventform);">
+
+    <div class="form-group">
+      <label for="title1">Board Name </label>
+      <input type="text" class="form-control" id="title1" required name = "name" ngModel>
+    </div>
+      <div class="modal-footer d-flex justify-content-between ">
+        <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+          close
+        </button>
+
+        <button class="btn bg-info"    >
+          OK
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+
+</ng-template>

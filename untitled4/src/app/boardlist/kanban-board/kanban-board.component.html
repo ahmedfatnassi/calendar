@@ -1,0 +1,96 @@
+<div class="d-flex flex-row mh-100 mt-3">
+  <div  *ngFor="let pow of columns"  class="card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
+    <div class="card-header">
+      <h5 class="card-title">{{pow.name }}</h5>
+    </div>
+    <div class="card-body mh-100">
+
+
+      <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+        <div class="card-header">Header</div>
+        <div class="card-body">
+          <h5 class="card-title">Secondary card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+    <button type="button" (click)="OpenModalTask(taskform,pow.id)" class="btn btn-light">add task</button>
+
+  </div>
+  <button (click)="OpenModalColumn(form)" class="align-self-start btn btn-success ml-2 ">add column</button>
+
+</div>
+
+<ng-template  #form let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Add Column </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form #Eventform="ngForm" (ngSubmit)="create(Eventform);">
+
+      <div class="form-group">
+        <label for="title1">Column Name </label>
+        <input type="text" class="form-control" id="title1" required name = "name" ngModel>
+      </div>
+      <div class="modal-footer d-flex justify-content-between ">
+        <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+          close
+        </button>
+
+        <button class="btn bg-success"    >
+          OK
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+
+</ng-template>
+
+
+
+<ng-template  #taskform let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Add Event </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form #Eventform="ngForm" (ngSubmit)="create(Eventform);">
+
+      <div class="form-group">
+        <label for="title1">Title  </label>
+        <input type="text" class="form-control" id="title1" required name = "name" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="description">description</label>
+        <textarea class="form-control" id="description" rows="3"></textarea>
+      </div>
+      <label>
+        Color <br>
+        <input [(colorPicker)]="color" name = "color" [style.background]="color" ngModel/>
+      </label>
+      <div class="form-group">
+        <label for="user">Column Name </label>
+        <input type="text" class="form-control" id="user" required name = "name" ngModel>
+      </div>
+      <div class="modal-footer d-flex justify-content-between ">
+        <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+          close
+        </button>
+
+        <button class="btn bg-success"    >
+          OK
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+
+</ng-template>

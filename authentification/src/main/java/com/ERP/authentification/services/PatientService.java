@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PatientService {
 	@Autowired
 	private PatientRepository patientRepository ;
+
 	public List<Patient> findAll(){
 		return this.patientRepository.findAll();
 				

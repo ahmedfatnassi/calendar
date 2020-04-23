@@ -18,8 +18,12 @@ import {JwtInterceptor} from './login/jwt-interceptor.service';
 import {ChatService} from './calendar/chat.service';
 import {ToastrModule} from 'ngx-toastr';
 import {Stomp} from '@stomp/stompjs';
+import { KanbanBoardComponent } from './boardlist/kanban-board/kanban-board.component';
+import { BoardlistComponent } from './boardlist/boardlist.component';
 
 const appRoutes: Routes = [
+  { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
+  { path: 'boards',      component: BoardlistComponent , canActivate: [AuthguardService] },
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
   { path: 'login' , component:  LoginComponent } ,
 { path: '**',
@@ -30,7 +34,9 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    CalendarComponent
+    CalendarComponent,
+    KanbanBoardComponent,
+    BoardlistComponent
   ],
   imports: [
     BrowserModule,
