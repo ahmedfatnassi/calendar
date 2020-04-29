@@ -26,7 +26,8 @@ export class EventsService {
 
 
   public get currentUserValue(): User {
-    console.log('current user ' + this.currentUserSubject.value )
+    console.log('current user ')
+    console.log( this.currentUserSubject.value )
     return this.currentUserSubject.value;
   }
   httpOptions = {

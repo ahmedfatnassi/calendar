@@ -12,14 +12,18 @@ export class KanbanService {
 
     })
   };
+  getTasks(id: any) {
+    return this.http.get<any[]>('http://localhost:8080/tasks/' + id, this.httpOptions);
+  }
   getColumns(id: any) {
     return this.http.get<any[]>('http://localhost:8080/columns/' + id, this.httpOptions);
   }
+
   createColumn(value: any ){
     return this.http.post('http://localhost:8080/columns' , value , this.httpOptions) ;
   }
 
-  createtask( columnid : any ){
-    return this.http.post('http://localhost:8080/columns' , columnid     , this.httpOptions) ;
+  createtask(task: any ){
+    return this.http.post('http://localhost:8080/tasks', task    , this.httpOptions) ;
   }
 }

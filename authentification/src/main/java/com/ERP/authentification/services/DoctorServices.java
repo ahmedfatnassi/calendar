@@ -31,6 +31,10 @@ public Medecin findbyId(Long id ){
 	return this.medecinRepository.findById(id).get() ;
 			
 }
+public Medecin findbyUsername(String name ){
+		return this.medecinRepository.findByUsername(name).get() ;
+
+}
 public void deleteAllAll(){
 	 this.medecinRepository.deleteAll();
 			

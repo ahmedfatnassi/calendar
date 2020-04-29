@@ -29,6 +29,8 @@ boards: any[] ;
   createNewBoard(form: NgForm){
     this.boardlistService.create({name : form.value.name}).subscribe(data => {
       console.log('boards = '+data) ;
+      this.boards.push(data);
+      this.modal.dismissAll()
     }) ;
   }
   goToBoard(id){

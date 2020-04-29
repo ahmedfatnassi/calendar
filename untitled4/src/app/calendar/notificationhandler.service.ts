@@ -14,23 +14,26 @@ import * as Rx from 'rxjs';
 })
 export class NotificationhandlerService {
   stompClient: any ;
+  url : any ;
+  socket: any ;
+
   constructor(private eventservice: EventsService ) {
   }
 
-  connect1():any{
-    const url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
+  connect1() :any{
+
+     this.url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
       'localhost:8080/greeting/websocket' ;
-    const socket = new WebSocket(url);
-    const stompClient = Stomp.over(socket);
-     stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
+     this.socket = new WebSocket(url);
+     this.stompClient = Stomp.over(this.socket);
+     this.stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
       console.log('Connected: ' + frame);
-      stompClient.subscribe('/user/queue/reply', function(message) {
+      const that = this ;
+      return that.stompClient ;
+      /*that.stompClient.subscribe('/user/queue/reply', function(message) {
         console.log('Error websocket' + message);
-        return stompClient ;
-      });
-    return stompClient ;
+      });*/
     }) ;
-     return stompClient;
   }
 
 }

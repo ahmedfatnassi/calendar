@@ -16,7 +16,6 @@ import {NotificationhandlerService} from './notificationhandler.service';
 import {Subject, Subscription} from 'rxjs';
 import {Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
-import {ChatService} from './chat.service';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
 @Component({
   selector: 'app-calendar',
@@ -35,7 +34,6 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
                public datepipe: DatePipe ,
                private router: Router ,
                private  notification: NotificationhandlerService ,
-               private chat : ChatService ,
                private toast: ToastrService
   ) {}
   get yearMonth(): string {
@@ -249,7 +247,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     console.log('recieved person '+ form.value.doctor.username)
     this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
     this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
-    
+
 
   }
   connect1():any{

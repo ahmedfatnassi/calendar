@@ -4,7 +4,7 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from '@angular/common';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
@@ -15,14 +15,17 @@ import {RouterModule, Routes} from '@angular/router';
 import { CalendarComponent } from './calendar/calendar.component';
 import {AuthguardService} from './login/authguard.service';
 import {JwtInterceptor} from './login/jwt-interceptor.service';
-import {ChatService} from './calendar/chat.service';
 import {ToastrModule} from 'ngx-toastr';
 import {Stomp} from '@stomp/stompjs';
 import { KanbanBoardComponent } from './boardlist/kanban-board/kanban-board.component';
 import { BoardlistComponent } from './boardlist/boardlist.component';
+import {NgDragDropModule} from 'ng-drag-drop';
+import { ChatComponent } from './chat/chat.component';
+import {Ng2SearchPipeModule} from 'ng2-search-filter';
 
 const appRoutes: Routes = [
   { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
+  { path: 'chats',      component: ChatComponent , canActivate: [AuthguardService] },
   { path: 'boards',      component: BoardlistComponent , canActivate: [AuthguardService] },
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
   { path: 'login' , component:  LoginComponent } ,
@@ -36,15 +39,20 @@ const appRoutes: Routes = [
     LoginComponent,
     CalendarComponent,
     KanbanBoardComponent,
-    BoardlistComponent
+    BoardlistComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
     FullCalendarModule,
     HttpClientModule,
     FormsModule ,
+    NgDragDropModule.forRoot() ,
+    Ng2SearchPipeModule ,
     NgbModule ,
+    ReactiveFormsModule ,
     NgbModalModule  ,
+
     RouterModule.forRoot(
       appRoutes) ,
     BrowserAnimationsModule ,
@@ -58,7 +66,7 @@ const appRoutes: Routes = [
     OwlDateTimeModule, // for time imput
     OwlNativeDateTimeModule, // for date imput
   ],
-  providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } , ChatService],
+  providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } , ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

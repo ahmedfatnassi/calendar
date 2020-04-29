@@ -1,18 +1,21 @@
 <div class="d-flex flex-row mh-100 mt-3">
-  <div  *ngFor="let pow of columns"  class="card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
-    <div class="card-header">
+  <div  droppable *ngFor="let pow of columns"  class="card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
+    <div   class="card-header">
       <h5 class="card-title">{{pow.name }}</h5>
     </div>
-    <div class="card-body mh-100">
+    <div  droppable  class="card-body mh-100">
 
 
-      <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
+      <div  *ngFor="let task of tasks"    >
+       <div class="card text-white  mb-3"  *ngIf="task.columnID === pow.id "  draggable  [ngStyle] ="{'background-color': task.color }" >
+        <div class="card-header">{{task.title}}</div>
         <div class="card-body">
-          <h5 class="card-title">Secondary card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <h5 class="card-title">{{task.assignedUser}}</h5>
+          <p class="card-text">{{task.description}}</p>
         </div>
       </div>
+      </div>
+
     </div>
     <button type="button" (click)="OpenModalTask(taskform,pow.id)" class="btn btn-light">add task</button>
 
@@ -29,7 +32,7 @@
     </button>
   </div>
   <div class="modal-body" >
-    <form #Eventform="ngForm" (ngSubmit)="create(Eventform);">
+    <form #Eventform="ngForm" (ngSubmit)="createColumn(Eventform);">
 
       <div class="form-group">
         <label for="title1">Column Name </label>
@@ -61,24 +64,25 @@
     </button>
   </div>
   <div class="modal-body" >
-    <form #Eventform="ngForm" (ngSubmit)="create(Eventform);">
+    <form #Eventform="ngForm" (ngSubmit)="createTask(Eventform);">
 
       <div class="form-group">
-        <label for="title1">Title  </label>
-        <input type="text" class="form-control" id="title1" required name = "name" ngModel>
+        <label for="title2">Title  </label>
+        <input type="text" class="form-control" id="title2" required name = "title" ngModel>
       </div>
+      <label for="doctorSelect1"> Users</label>
+      <select class="form-control" id="doctorSelect1"  name="assignedUser" ngModel  >
+        <option *ngFor="let pow of doctors" [ngValue]="pow" >{{pow.name}}</option>
+      </select>
       <div class="form-group">
         <label for="description">description</label>
-        <textarea class="form-control" id="description" rows="3"></textarea>
+        <textarea class="form-control" id="description" name = "description" rows="3" ngModel></textarea>
       </div>
       <label>
         Color <br>
         <input [(colorPicker)]="color" name = "color" [style.background]="color" ngModel/>
       </label>
-      <div class="form-group">
-        <label for="user">Column Name </label>
-        <input type="text" class="form-control" id="user" required name = "name" ngModel>
-      </div>
+
       <div class="modal-footer d-flex justify-content-between ">
         <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
           close

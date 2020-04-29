@@ -26,9 +26,19 @@ public class Task {
     @Column(name ="color")
     private String color  ;
     @Column(name ="assignedUser")
-    private String assignedUser ;
+    private Long assignedUser ;
     @Column(name ="columnID")
-    private String columnID ;
+    private Long  columnID ;
+    @Column(name ="boardID")
+    private Long  boardID ;
+
+    public Long getBoardID() {
+        return boardID;
+    }
+
+    public void setBoardID(Long boardID) {
+        this.boardID = boardID;
+    }
 
     public String getTitle() {
         return title;
@@ -54,19 +64,19 @@ public class Task {
         this.color = color;
     }
 
-    public String getAssignedUser() {
+    public Long getAssignedUser() {
         return assignedUser;
     }
 
-    public void setAssignedUser(String assignedUser) {
+    public void setAssignedUser(Long assignedUser) {
         this.assignedUser = assignedUser;
     }
 
-    public String getColumnID() {
+    public Long getColumnID() {
         return columnID;
     }
 
-    public void setColumnID(String columnID) {
+    public void setColumnID(Long columnID) {
         this.columnID = columnID;
     }
 }

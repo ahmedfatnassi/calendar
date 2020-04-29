@@ -25,6 +25,10 @@ public class TaskService {
         return this.taskRepository.findAll();
 
     }
+    public List<Task> findAllByBoardID(Long id){
+        return this.taskRepository.getAllByBoardID(id);
+
+    }
     public Task  create(Task task ) {
         return this.taskRepository.save(task) ;
 

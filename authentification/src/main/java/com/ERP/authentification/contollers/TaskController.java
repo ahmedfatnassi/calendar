@@ -18,13 +18,14 @@ public class TaskController {
 
 
 
-    @PostMapping("/columnid")
-    public ResponseEntity<Task> create(@RequestBody Task task,@PathVariable Long columnid) {
+    @PostMapping
+    public ResponseEntity<Task> create(@RequestBody Task task) {
         return ResponseEntity.status(201).body(taskService.create(task));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Task>> getAll()  {
-        return ResponseEntity.ok().body(taskService.findAll());
+    @GetMapping("/{id}")
+    public ResponseEntity<List<Task>> getAll(@PathVariable Long id)
+    {
+        return ResponseEntity.ok().body(taskService.findAllByBoardID(id));
     }
 }
