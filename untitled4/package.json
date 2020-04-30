@@ -36,7 +36,7 @@
     "bootstrap": "^4.4.1",
     "bootstrapp": "0.0.0",
     "fullcalendar": "^3.10.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "ng-bootstrap": "^1.6.3",
     "ng-drag-drop": "^5.0.0",
