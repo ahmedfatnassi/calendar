@@ -34,7 +34,7 @@ public class WebSocketController {
     @Autowired
     private SecurityServiceImp securityService;
   
-    @MessageMapping("/message")
+    @MessageMapping("/notification")
     @SendToUser("/queue/reply")
     public Map<String,String> processMessageFromClient(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
     	
@@ -50,13 +50,14 @@ public class WebSocketController {
      System.out.println("map1 "+map1);
     	return  map1;
     }
-    
-    private MessageHeaders createHeaders(String sessionId) {
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        headerAccessor.setSessionId(sessionId);
-        headerAccessor.setLeaveMutable(true);
-        return headerAccessor.getMessageHeaders();
-       }
+
+    @MessageMapping("/message")
+    @SendToUser("/queue/message")
+    public Map<String,String> sendPrivateMsgToUser(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
+
+        System.out.println("map1 "+map1);
+        return  map1;
+    }
      
     @MessageExceptionHandler
     @SendToUser("/queue/errors")

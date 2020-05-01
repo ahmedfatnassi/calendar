@@ -246,7 +246,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     this.eventservice.PostEvents(this.newevent);
     console.log('recieved person '+ form.value.doctor.username)
     this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
-    this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
+   // this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
 
 
   }
@@ -268,18 +268,18 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         });
 
 
-        // that.messages.push(JSON.parse(.body).content);
-        /*that.eventsModel1 =that.eventsModel;
+       //  that.messages.push(JSON.parse(.body).content);
+        that.eventsModel1 =that.eventsModel;
 
         that.eventsModel1 = that.eventsModel1.concat({
-          title: newEvent.title,
-          resourceId: newEvent.resourceId,
-          start:  newEvent.start,
-          end:  newEvent.end ,
+          title: JSON.parse(message.body).title,
+          resourceId: JSON.parse(message.body).resourceId,
+          start:  JSON.parse(message.body).start,
+          end:  JSON.parse(message.body).end ,
           editable: false   , // :stop drag and drop
-          color : newEvent.color
+          color : JSON.parse(message.body).color
         }) ;
-        that.eventsModel =that.eventsModel1;*/
+        that.eventsModel = that.eventsModel1;
         console.log(eventsModel);
         return stompClient ;
       });

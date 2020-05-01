@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {EventsService} from '../events.service';
+import {Stomp} from '@stomp/stompjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient ,private eventservice: EventsService) { }
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
 
     })
   };
+
   getMessagesBysenderID(id : any) {
     return   this.http.get<any[]>('http://localhost:8080/messages/'+id, this.httpOptions) ;
 

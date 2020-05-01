@@ -20,11 +20,11 @@ export class NotificationhandlerService {
   constructor(private eventservice: EventsService ) {
   }
 
-  connect1() :any{
+  connect1(): any{
 
      this.url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
       'localhost:8080/greeting/websocket' ;
-     this.socket = new WebSocket(url);
+     this.socket = new WebSocket(this.url);
      this.stompClient = Stomp.over(this.socket);
      this.stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
       console.log('Connected: ' + frame);
@@ -34,6 +34,7 @@ export class NotificationhandlerService {
         console.log('Error websocket' + message);
       });*/
     }) ;
+     return this.stompClient ;
   }
 
 }
