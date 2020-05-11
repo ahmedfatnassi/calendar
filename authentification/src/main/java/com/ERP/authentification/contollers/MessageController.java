@@ -35,10 +35,16 @@ public class MessageController {
     }
     @GetMapping("{id}")
     public ResponseEntity<List<Message>> getAllbySenderID(@PathVariable Long id){
+      //  this.messageService.findTopMessagebysenderId(id);
+
         return ResponseEntity.ok().body(messageService.findAllbysenderId(id)) ;
     }
     @GetMapping()
     public ResponseEntity<List<Message>> getAll(){
+        System.out.println("salem ");
+        Long id = new Long(114) ;
+     //   System.out.println(this.messageService.findTopMessagebysenderId(id).get(0).toString());
+
         return ResponseEntity.ok().body(messageService.findAll()) ;
     }
 }

@@ -22,11 +22,16 @@ import { BoardlistComponent } from './boardlist/boardlist.component';
 import {NgDragDropModule} from 'ng-drag-drop';
 import { ChatComponent } from './chat/chat.component';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
+import { ChatlistComponent } from './chatlist/chatlist.component';
+import { SettingsComponent } from './settings/settings.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
 
 const appRoutes: Routes = [
   { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
   { path: 'chats',      component: ChatComponent , canActivate: [AuthguardService] },
   { path: 'boards',      component: BoardlistComponent , canActivate: [AuthguardService] },
+  { path: 'settings',      component: SettingsComponent , canActivate: [AuthguardService] },
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
   { path: 'login' , component:  LoginComponent } ,
 { path: '**',
@@ -40,10 +45,14 @@ const appRoutes: Routes = [
     CalendarComponent,
     KanbanBoardComponent,
     BoardlistComponent,
-    ChatComponent
+    ChatComponent,
+    ChatlistComponent,
+    SettingsComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
+
     FullCalendarModule,
     HttpClientModule,
     FormsModule ,
@@ -52,7 +61,6 @@ const appRoutes: Routes = [
     NgbModule ,
     ReactiveFormsModule ,
     NgbModalModule  ,
-
     RouterModule.forRoot(
       appRoutes) ,
     BrowserAnimationsModule ,

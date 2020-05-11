@@ -1,0 +1,43 @@
+<div class="w-100" name = "employees" ngDefaultControl>
+
+<div  class="m-2" >
+  <form #Eventform="ngForm" (ngSubmit)="submitEmployee(Eventform);">
+    <button  type = "submit" class="btn btn-info">add employee</button>
+  <table class="table w-100 " >
+    <thead>
+    <tr>
+      <th>matricule</th>
+      <th>name</th>
+      <th>firstname</th>
+      <th>username</th>
+      <th>cin</th>
+      <th>address</th>
+      <th>passwrod</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr  >
+      <td><input name="matricule" placeholder="matricule" type="text" ngModel></td>
+      <td><input name="name" placeholder="name" type="text" ngModel></td>
+      <td><input name="familyname" placeholder="firstname" type="text" ngModel></td>
+      <td><input name="username" placeholder="username" type="text" ngModel></td>
+      <td><input name="cin" placeholder="cin" type="text" ngModel></td>
+      <td><input name="address" placeholder="address" type="text" ngModel></td>
+      <td><input name="password" placeholder="password" type="text" ngModel></td>
+
+    </tr>
+    <tr class="table-hover" *ngFor="let item of employees">
+      <td>{{item.matricule}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.familyname}}</td>
+      <td>{{item.username}}</td>
+      <td>{{item.cin}}</td>
+      <td>{{item.address}}</td>
+      <td>{{item.password}}</td>
+      <td><button class="btn btn-warning" (click)="deleteEmployee(item.id)">delete</button></td>
+    </tr>
+    </tbody>
+  </table>
+  </form>
+</div>
+</div>

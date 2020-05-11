@@ -1,8 +1,8 @@
 package com.ERP.authentification.services;
 
-import com.ERP.authentification.Models.PersonBoard;
+import com.ERP.authentification.Models.Subscription;
 import com.ERP.authentification.Models.Task;
-import com.ERP.authentification.repositories.PersonBoardRepository;
+import com.ERP.authentification.repositories.SubscriptionRepository;
 import com.ERP.authentification.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,22 +16,18 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
-public class TaskService {
+public class SubscriptionService {
     @Autowired
-    public TaskRepository taskRepository ;
+    public SubscriptionRepository subscriptionRepository ;
 
 
-    public List<Task> findAll(){
-        return this.taskRepository.findAll();
-
-    }
-
-    public Task  create(Task task ) {
-        return this.taskRepository.save(task) ;
+    public List<Subscription> findAll(){
+        return this.subscriptionRepository.findAll();
 
     }
-    public List<Task> findAllByBoardID(Long id){
-        return this.taskRepository.getAllByBoardID(id);
+
+    public Subscription  create(Subscription subscription ) {
+        return this.subscriptionRepository.save(subscription) ;
 
     }
 }

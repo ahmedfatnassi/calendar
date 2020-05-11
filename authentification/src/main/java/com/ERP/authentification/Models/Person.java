@@ -23,6 +23,7 @@ public class Person extends AbstractEntity{
 	private String password ;
 	@Column(name= "username")
 	private String username ;
+
 	
 	
 	public String getUsername() {

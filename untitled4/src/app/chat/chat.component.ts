@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {ChatService} from './chat.service';
+import {Component, Inject, OnInit} from '@angular/core';
+import {ChatService} from '../chatlist/chat.service';
 import {EventsService} from '../events.service';
 import {NgForm} from '@angular/forms';
 import {Stomp} from '@stomp/stompjs';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
   selector: 'app-chat',
@@ -13,7 +14,8 @@ export class ChatComponent implements OnInit {
 messages: any ;
   private message: any;
   constructor(private chatService: ChatService,
-              private  eventservice: EventsService) { }
+              private  eventservice: EventsService ,
+              @Inject(DOCUMENT) private document: Document) { }
   receivers : any ;
   search :any ;
   indivChats: any ;
@@ -24,14 +26,15 @@ messages: any ;
   stompClient: any ;
   url : any ;
   socket: any ;
-
+  messagescontainer : any ;
   ngOnInit() {
     //console.log(this.currentuser) ;
+    this.messagescontainer =  document.getElementById("messagescontainer");
     this.stomp = this.connect1();
     this.chatService.getuserbyusername(    this.eventservice.currentUserValue.username).subscribe(data =>{
       console.log(data);
       this.currentuser =data;
-    })
+    }) ;
       this.chatService.getIndivHistoric().subscribe(data => {
         console.log('indiv ')
         console.log(data)
@@ -40,6 +43,8 @@ messages: any ;
       this.eventservice.getDoctors().subscribe(data => {
         this.receivers = Object.keys(data).map(i => data[i]);
       });
+    this.scrolldown()
+
   }
 
   sentMsg(form: NgForm ) {
@@ -82,25 +87,32 @@ messages: any ;
 
       that.stompClient.subscribe('/user/queue/message', function(message) {
         console.log('message has been received ' + message);
+
         that.addMessage(message.body);
+
       });
     }) ;
   }
   addMessage(message :any){
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     this.message = message
-
     this.messages.push( JSON.parse(this.message)) ;
+    this.scrolldown() ;
   }
   openByPersonChat(person: any) {
     this.receiver = person ;
     console.log(this.receiver) ;
-  this.chatService.getAllMessages().subscribe(data => {
+    this.chatService.getAllMessages().subscribe(data => {
      console.log('here ')
       console.log(data);
 
     this.messages = Object.keys(data).map(i => data[i]);
+
+    this.scrolldown() ;
     }) ;
 
+  }
+  scrolldown(){
+    this.messagescontainer.scrollTop =  this.messagescontainer.scrollHeight;
   }
 }

@@ -32,4 +32,9 @@ public class MessageService {
         return this.messageRepository.save( message) ;
 
     }
+    public List<Object> findTopMessagebysenderId(Long id){
+
+        return  this.messageRepository.ouui();
+
+    }
 }
