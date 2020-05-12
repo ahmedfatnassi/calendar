@@ -29,7 +29,6 @@ private  DoctorServices usersService;
 
 	@PostMapping
 	public ResponseEntity<Medecin> create( @RequestBody  Medecin medecin ) {
-		System.out.println("here is medecin  "+ medecin);
 		return ResponseEntity.status(201).body(this.usersService.createMedecin(medecin));
 	}
 	@GetMapping 

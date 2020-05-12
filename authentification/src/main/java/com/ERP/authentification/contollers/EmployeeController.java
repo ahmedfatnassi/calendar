@@ -34,24 +34,16 @@ public class EmployeeController {
     @DeleteMapping("delete/{id}")
      void deleteByID(@PathVariable Long id)
     {
-        System.out.println("delete "+id);
-       // System.out.println(personRepository.findById(id));
         employeeService.deletebyid(id);
     }
-    /*@PutMapping("/employees/{id}")
-    Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+    @PutMapping("/employees/{id}")
+    ResponseEntity<Employee> replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
-        return repository.findById(id)
-                .map(employee -> {
-                    employee.setName(newEmployee.getName());
-                    employee.setRole(newEmployee.getRole());
-                    return repository.save(employee);
-                })
-                .orElseGet(() -> {
-                    newEmployee.setId(id);
-                    return repository.save(newEmployee);
-                });
-    }*/
+         Employee em = employeeService.findbyid(id) ;
+         employeeService.create(em);
+         return ResponseEntity.ok().body(em);
+
+    }
 
 
 }

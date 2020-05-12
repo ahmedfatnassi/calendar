@@ -18,12 +18,17 @@ export class SettingsService {
   getallEmployee() {
     return   this.http.get<any[]>('http://localhost:8080/employees', this.httpOptions) ;
   }
-  create(value: any ) {
+  createemplyee(value: any ) {
     return this.http.post('http://localhost:8080/employees' , value , this.httpOptions) ;
   }
   deletebyid(id: any ) {
     return this.http.delete('http://localhost:8080/employees/delete/' + id  , this.httpOptions) ;
   }
 
-
+  createTeam(value: any ) {
+    return this.http.post('http://localhost:8080/teams' , value , this.httpOptions) ;
+  }
+  getAllTeams() {
+    return   this.http.get<any[]>('http://localhost:8080/teams', this.httpOptions) ;
+  }
 }

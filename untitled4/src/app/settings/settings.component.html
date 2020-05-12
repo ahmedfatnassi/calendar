@@ -33,7 +33,7 @@
     </thead>
     <tbody>
 
-    <tr  name = "employees" ngDefaultControl class="table-hover" *ngFor="let item of employees">
+    <tr  [(ngModel)]="employees" ngDefaultControl class="table-hover" *ngFor="let item of employees">
       <td>{{item.matricule}}</td>
       <td>{{item.name}}</td>
       <td>{{item.familyname}}</td>
@@ -41,10 +41,18 @@
       <td>{{item.cin}}</td>
       <td>{{item.address}}</td>
       <td>{{item.password}}</td>
-      <td><button class="btn btn-warning" (click)="deleteEmployee(item.id)">delete</button></td>
+      <td><button class="btn btn-info mr-1" (click)="update(item)">update</button><button class="btn btn-warning" (click)="deleteEmployee(item)">delete</button></td>
     </tr>
     </tbody>
   </table>
 
 </div>
-</div>
+  <form #Eventform="ngForm" (ngSubmit)="submitTeam(Eventform);">
+
+      <input  class= "form-control col-3"   placeholder="title" type="text" name="title" ngModel>
+      <button  type = "submit"class="btn btn-info "  >submit Team</button>
+  </form>
+  <ul class="list-group"  [(ngModel)]="teams">
+    <li *ngFor="let item of teams" class="list-group-item">{{item.title}}</li>
+
+  </ul>

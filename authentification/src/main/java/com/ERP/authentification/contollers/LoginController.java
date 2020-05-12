@@ -31,9 +31,7 @@ public class LoginController {
 	@PostMapping
 	public  ResponseEntity<?>  login( @RequestBody  UserLoginForm medecin ) {
 		
-		System.out.println("iam heere login "+ medecin.getUsername());
 		securityService.autoLogin(medecin.getUsername(), medecin.getPassword());
-       System.out.println("salem "+securityService.findLoggedInUsername());
        System.out.println((RequestContextHolder.currentRequestAttributes().getSessionId()));
        medecin.setToken((RequestContextHolder.currentRequestAttributes().getSessionId()));
 		return ResponseEntity.status(200).body(medecin);
