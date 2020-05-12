@@ -1,6 +1,7 @@
 package com.ERP.authentification.contollers;
 
 import com.ERP.authentification.Models.Employee;
+import com.ERP.authentification.repositories.PersonRepository;
 import com.ERP.authentification.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<List<Employee>> getAll()
     {
+     //   System.out.println(personRepository.findAll());
         return ResponseEntity.ok().body(employeeService.findAll());
     }
 
@@ -33,6 +35,7 @@ public class EmployeeController {
      void deleteByID(@PathVariable Long id)
     {
         System.out.println("delete "+id);
+       // System.out.println(personRepository.findById(id));
         employeeService.deletebyid(id);
     }
     /*@PutMapping("/employees/{id}")

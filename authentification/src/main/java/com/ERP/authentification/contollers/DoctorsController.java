@@ -17,7 +17,7 @@ import com.ERP.authentification.services.SecurityServiceImp;
 
 import jdk.jfr.BooleanFlag;
 import lombok.RequiredArgsConstructor;
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "**")
 
 @RequiredArgsConstructor
 @RestController

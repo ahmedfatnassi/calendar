@@ -9,16 +9,24 @@ import {log} from 'util';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-
+  visibileAddEmployee : boolean ;
   constructor(private settingsService: SettingsService) { }
   employees: any  ;
   ngOnInit() {
-    this.employees=[]
+    this.visibileAddEmployee = false ;
+    this.employees = [] ;
     this.settingsService.getallEmployee().subscribe(data => {
       this.employees = Object.keys(data).map(i => data[i]);
       console.log(data);
     });
 
+  }
+  employerformVisible(){
+    if(this.visibileAddEmployee===true){
+      this.visibileAddEmployee =false
+    }else{
+      this.visibileAddEmployee= true;
+    }
   }
   submitEmployee(form: NgForm ) {
   console.log(form.value);

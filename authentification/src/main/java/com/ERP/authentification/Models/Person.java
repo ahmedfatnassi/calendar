@@ -1,8 +1,6 @@
 package com.ERP.authentification.Models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false )
-@Entity
-@Table 
-public class Person extends AbstractEntity{
+@Embeddable
+@MappedSuperclass
+public abstract class Person extends AbstractEntity{
 	@Column(name="name")
 	private String name ; 
 	@Column(name= "familyname")

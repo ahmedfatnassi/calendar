@@ -1,9 +1,25 @@
-<div class="w-100" name = "employees" ngDefaultControl>
+<div class="w-100">
 
 <div  class="m-2" >
+  <button class="ml-2" type = "submit" (click)="employerformVisible()" class="btn btn-info">add employee</button>
+<div [style.visibility]="visibileAddEmployee ? 'visible' : 'hidden'">
+
   <form #Eventform="ngForm" (ngSubmit)="submitEmployee(Eventform);">
-    <button  type = "submit" class="btn btn-info">add employee</button>
+    <div class="d-flex justify-content-between">
+
+    <input  class= "form-control"  name="matricule" placeholder="matricule" type="text" ngModel>
+    <input class= "form-control"  name="name" placeholder="name" type="text" ngModel>
+    <input class= "form-control"  name="familyname" placeholder="firstname" type="text" ngModel>
+    <input class= "form-control"  name="username" placeholder="username" type="text" ngModel>
+    <input class= "form-control"  name="cin" placeholder="cin" type="text" ngModel>
+    <input class= "form-control"  name="address" placeholder="address" type="text" ngModel>
+    <input class= "form-control"  name="password" placeholder="password" type="text" ngModel>
+      <button  type = "submit" class="btn btn-info">submit employee</button>
+    </div>
+  </form>
+</div>
   <table class="table w-100 " >
+
     <thead>
     <tr>
       <th>matricule</th>
@@ -16,17 +32,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr  >
-      <td><input name="matricule" placeholder="matricule" type="text" ngModel></td>
-      <td><input name="name" placeholder="name" type="text" ngModel></td>
-      <td><input name="familyname" placeholder="firstname" type="text" ngModel></td>
-      <td><input name="username" placeholder="username" type="text" ngModel></td>
-      <td><input name="cin" placeholder="cin" type="text" ngModel></td>
-      <td><input name="address" placeholder="address" type="text" ngModel></td>
-      <td><input name="password" placeholder="password" type="text" ngModel></td>
 
-    </tr>
-    <tr class="table-hover" *ngFor="let item of employees">
+    <tr  name = "employees" ngDefaultControl class="table-hover" *ngFor="let item of employees">
       <td>{{item.matricule}}</td>
       <td>{{item.name}}</td>
       <td>{{item.familyname}}</td>
@@ -38,6 +45,6 @@
     </tr>
     </tbody>
   </table>
-  </form>
+
 </div>
 </div>

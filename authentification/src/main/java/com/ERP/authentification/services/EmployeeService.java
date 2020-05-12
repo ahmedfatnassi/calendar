@@ -18,8 +18,7 @@ import java.util.List;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private PersonRepository  personRepository;
+
     public List<Employee> findAll(){
         return this.employeeRepository.findAll();
 
@@ -30,8 +29,8 @@ public class EmployeeService {
     }
     public void deletebyid(Long id) {
         System.out.println("here y "+id);
-         //this.employeeRepository.deleteById(id); ;
-         this.personRepository.deleteById(id);
+         this.employeeRepository.removeById(id); ;
+         //this.personRepository.deleteById(id);
 
     }
 }
