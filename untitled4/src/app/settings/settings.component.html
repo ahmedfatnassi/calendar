@@ -1,21 +1,21 @@
 <div class="w-100">
 
 <div  class="m-2" >
-  <button class="ml-2" type = "submit" (click)="employerformVisible()" class="btn btn-info">add employee</button>
+  <button class="ml-2" type = "submit" (click)="employerformVisible()" class="btn btn-info mb-2">add employee</button>
 <div [style.visibility]="visibileAddEmployee ? 'visible' : 'hidden'">
 
-  <form #Eventform="ngForm" (ngSubmit)="submitEmployee(Eventform);">
-    <div class="d-flex justify-content-between">
+  <form  class="d-flex justify-content-between" #employeeform="ngForm" (ngSubmit)="submitEmployee(employeeform);">
 
-    <input  class= "form-control"  name="matricule" placeholder="matricule" type="text" ngModel>
-    <input class= "form-control"  name="name" placeholder="name" type="text" ngModel>
-    <input class= "form-control"  name="familyname" placeholder="firstname" type="text" ngModel>
-    <input class= "form-control"  name="username" placeholder="username" type="text" ngModel>
-    <input class= "form-control"  name="cin" placeholder="cin" type="text" ngModel>
-    <input class= "form-control"  name="address" placeholder="address" type="text" ngModel>
-    <input class= "form-control"  name="password" placeholder="password" type="text" ngModel>
-      <button  type = "submit" class="btn btn-info">submit employee</button>
-    </div>
+
+    <input  class= "form-control ml-1"  name="matricule" placeholder="matricule" type="text" ngModel>
+    <input class= "form-control ml-1"  name="name" placeholder="name" type="text" ngModel>
+    <input class= "form-control ml-1"  name="familyname" placeholder="firstname" type="text" ngModel>
+    <input class= "form-control ml-1"  name="username" placeholder="username" type="text" ngModel>
+    <input class= "form-control ml-1"  name="cin" placeholder="cin" type="text" ngModel>
+    <input class= "form-control ml-1"  name="address" placeholder="address" type="text" ngModel>
+    <input class= "form-control ml-1"  name="password" placeholder="password" type="text" ngModel>
+      <button  type = "submit" class="btn btn-info">+</button>
+
   </form>
 </div>
   <table class="table w-100 " >
@@ -33,7 +33,7 @@
     </thead>
     <tbody>
 
-    <tr  [(ngModel)]="employees" ngDefaultControl class="table-hover" *ngFor="let item of employees">
+    <tr  name = "employees" ngDefaultControl class="table-hover" *ngFor="let item of employees">
       <td>{{item.matricule}}</td>
       <td>{{item.name}}</td>
       <td>{{item.familyname}}</td>
@@ -47,12 +47,25 @@
   </table>
 
 </div>
-  <form #Eventform="ngForm" (ngSubmit)="submitTeam(Eventform);">
+  <form #teamform="ngForm" (ngSubmit)="submitTeam(teamform);">
+    <input class= "form-control col-3"  name="title" placeholder="title" type="text"  ngDefaultControl>
 
-      <input  class= "form-control col-3"   placeholder="title" type="text" name="title" ngModel>
-      <button  type = "submit"class="btn btn-info "  >submit Team</button>
+      <button  type = "submit"class="btn btn-info mt-2"  >submit Team</button>
   </form>
-  <ul class="list-group"  [(ngModel)]="teams">
-    <li *ngFor="let item of teams" class="list-group-item">{{item.title}}</li>
 
-  </ul>
+
+  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" class="card" style="width: 18rem;"*ngFor="let team of teams" >
+    <div class="card-body">
+      <div class=" d-flex justify-content-between mb-3 ">
+      <h6 class="card-title" >{{team.title}}</h6>
+        <button type="button" (click)="showsubscriptionList(team)" class="btn btn-outline-info">update</button>
+      </div>
+      <ul class="list-group" [hidden]="  !( openteamlist === team.title)">
+        <li class="list-group-item d-flex justify-content-between " *ngFor="let employee of ListEmplyeeByTeam"> {{employee.username}}
+          <button type="button" (click) ="subscribeEmployertoteam(team.id,employee.id)" class="btn btn-outline-secondary">+</button></li>
+
+      </ul>
+  </div>
+
+</div>
+</div>

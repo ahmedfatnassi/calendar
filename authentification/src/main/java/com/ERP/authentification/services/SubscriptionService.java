@@ -1,5 +1,6 @@
 package com.ERP.authentification.services;
 
+import com.ERP.authentification.Models.Employee;
 import com.ERP.authentification.Models.Subscription;
 import com.ERP.authentification.Models.Task;
 import com.ERP.authentification.repositories.SubscriptionRepository;
@@ -18,11 +19,15 @@ import java.util.List;
 @Transactional
 public class SubscriptionService {
     @Autowired
-    public SubscriptionRepository subscriptionRepository ;
+    private SubscriptionRepository subscriptionRepository ;
 
 
     public List<Subscription> findAll(){
         return this.subscriptionRepository.findAll();
+
+    }
+    public List<Employee> findAllEmployeeByteamID(Long id ){
+        return this.subscriptionRepository.getusersByTeam(id);
 
     }
 

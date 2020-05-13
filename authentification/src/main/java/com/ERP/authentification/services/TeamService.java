@@ -18,7 +18,7 @@ import java.util.List;
 @Transactional
 public class TeamService {
     @Autowired
-    public TeamRepository teamRepository ;
+    private TeamRepository teamRepository ;
 
 
     public List<Team> findAll(){

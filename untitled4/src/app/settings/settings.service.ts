@@ -31,4 +31,10 @@ export class SettingsService {
   getAllTeams() {
     return   this.http.get<any[]>('http://localhost:8080/teams', this.httpOptions) ;
   }
+  createSubcription(value: any ) {
+    return this.http.post('http://localhost:8080/subscriptions' , value , this.httpOptions) ;
+  }
+  getAllSubscprition(id:any) {
+    return   this.http.get<any[]>('http://localhost:8080/subscriptions/'+id, this.httpOptions) ;
+  }
 }

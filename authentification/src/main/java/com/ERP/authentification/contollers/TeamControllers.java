@@ -1,5 +1,6 @@
 package com.ERP.authentification.contollers;
 
+import com.ERP.authentification.Models.Employee;
 import com.ERP.authentification.Models.Subscription;
 import com.ERP.authentification.Models.Team;
 import com.ERP.authentification.services.SubscriptionService;
@@ -18,6 +19,8 @@ public class TeamControllers {
     @Autowired
     private TeamService teamService;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
 
 
     @PostMapping
@@ -28,7 +31,10 @@ public class TeamControllers {
     @GetMapping
     public ResponseEntity<List<Team>> getAll()
     {
+
         return ResponseEntity.ok().body(teamService.findAll());
     }
+
+
 
 }

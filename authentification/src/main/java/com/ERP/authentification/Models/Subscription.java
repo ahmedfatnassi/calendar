@@ -21,7 +21,7 @@ public class Subscription {
 
     @Column(name ="idTeam")
     private Long idTeam ;
-    @Column(name ="iduser")
+    @Column(name ="idUser")
     private Long idUser ;
     @Column(name ="date")
     private Instant  date = Instant.now() ;

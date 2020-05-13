@@ -1,5 +1,6 @@
 package com.ERP.authentification.contollers;
 
+import com.ERP.authentification.Models.Employee;
 import com.ERP.authentification.Models.Subscription;
 import com.ERP.authentification.Models.Task;
 import com.ERP.authentification.services.SubscriptionService;
@@ -29,6 +30,12 @@ public class SubscriptionController {
     public ResponseEntity<List<Subscription>> getAll()
     {
         return ResponseEntity.ok().body(subscriptionService.findAll());
+    }
+    @GetMapping("{id}")
+    public ResponseEntity<List<Employee>> getallEmployeesByteamID(@PathVariable Long id)
+    {
+
+        return ResponseEntity.ok().body(subscriptionService.findAllEmployeeByteamID(id));
     }
 
 }
