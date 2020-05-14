@@ -22,17 +22,18 @@ export class ChatlistComponent implements OnInit {
 
       this.chatService.getAllMessages().subscribe(data => {
         this.messages = Object.keys(data).map(i => data[i]);
-      for (let i = 0; i <this.receivers.length; i++) {
+      /*for (let i = 0; i <this.receivers.length; i++) {
         for (let j = 0; j <  this.messages.length; j++) {
           if (this.messages.idsender === this.receivers.id ||this.messages.idreceiver === this.receivers.id){
-             this.addconversation(this.receivers[j].name ,
+             this.addconversation(
+               this.receivers[j].name ,
              this.receivers[j].familyname ,
              this.receivers[j].send_date ,
              this.receivers[j].body) ;
               continue ;
           }
         }
-      }
+      }*/
       console.log(this.conversations) ;
       });
     });

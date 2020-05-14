@@ -43,7 +43,7 @@ export class ChatService {
 
   }
   getuserbyusername(username: any) {
-    return   this.http.get<any[]>('http://localhost:8080/doctors/' + username, this.httpOptions) ;
+    return   this.http.get<any[]>('http://localhost:8080/persons/' + username, this.httpOptions) ;
 
   }
 }

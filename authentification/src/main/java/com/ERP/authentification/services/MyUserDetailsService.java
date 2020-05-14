@@ -2,6 +2,7 @@ package com.ERP.authentification.services;
 
 import java.util.ArrayList;
 
+import com.ERP.authentification.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.configurers.userdetails.UserDetailsAwareConfigurer;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,12 +25,14 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private MedecinRepository medecinRepository;
     @Autowired
+    private PersonRepository personRepository;
+    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Medecin medecin = medecinRepository.findByUsername(username).get();
-        if (medecin == null) {
+        Person person = personRepository.findByUsername(username).get();
+        if (person == null) {
             throw new UsernameNotFoundException(username);
         }
        
@@ -40,8 +43,8 @@ public class MyUserDetailsService implements UserDetailsService {
         ArrayList<GrantedAuthority> ga= new ArrayList<>() ;
         ga.add( new SimpleGrantedAuthority("USER")) ;
         return new User(
-        		medecin.getUsername(),
-        		bCryptPasswordEncoder.encode(medecin.getPassword()),
+        		person.getUsername(),
+        		bCryptPasswordEncoder.encode(person.getPassword()),
         		enabled ,
                 accountNonExpired,
                 credentialsNonExpired,

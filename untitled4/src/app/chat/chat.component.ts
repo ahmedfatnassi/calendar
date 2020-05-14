@@ -33,14 +33,16 @@ messages: any ;
     this.stomp = this.connect1();
     this.chatService.getuserbyusername(    this.eventservice.currentUserValue.username).subscribe(data =>{
       console.log(data);
-      this.currentuser =data;
+      this.currentuser =  data;
     }) ;
       this.chatService.getIndivHistoric().subscribe(data => {
         console.log('indiv ')
         console.log(data)
         this.indivChats = Object.keys(data).map(i => data[i]);
       }) ;
-      this.eventservice.getDoctors().subscribe(data => {
+      this.eventservice.getAllusers().subscribe(data => {
+        console.log('doctors ') ;
+        console.log(data);
         this.receivers = Object.keys(data).map(i => data[i]);
       });
     this.scrolldown()

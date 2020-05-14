@@ -29,11 +29,11 @@ public class LoginController {
 	 @Autowired
 	    BCryptPasswordEncoder bCryptPasswordEncoder;
 	@PostMapping
-	public  ResponseEntity<?>  login( @RequestBody  UserLoginForm medecin ) {
+	public  ResponseEntity<?>  login( @RequestBody  UserLoginForm user ) {
 		
-		securityService.autoLogin(medecin.getUsername(), medecin.getPassword());
+		securityService.autoLogin(user.getUsername(), user.getPassword());
        System.out.println((RequestContextHolder.currentRequestAttributes().getSessionId()));
-       medecin.setToken((RequestContextHolder.currentRequestAttributes().getSessionId()));
-		return ResponseEntity.status(200).body(medecin);
+       user.setToken((RequestContextHolder.currentRequestAttributes().getSessionId()));
+		return ResponseEntity.status(200).body(user);
 	}
 }

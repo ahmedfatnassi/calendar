@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false )
 @Embeddable
-@MappedSuperclass
+@Entity
 public abstract class Person extends AbstractEntity{
 	@Column(name="name")
 	private String name ; 

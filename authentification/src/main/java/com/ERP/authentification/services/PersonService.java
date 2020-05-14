@@ -3,6 +3,7 @@ package com.ERP.authentification.services;
 import com.ERP.authentification.Models.Employee;
 import com.ERP.authentification.Models.Person;
 import com.ERP.authentification.repositories.EmployeeRepository;
+import com.ERP.authentification.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +16,21 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
-public class EmployeeService {
+public class PersonService {
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private com.ERP.authentification.repositories.PersonRepository PersonRepository;
 
-    public List<Employee> findAll(){
-        return this.employeeRepository.findAll();
-
-    }
-    public Employee create(Employee employee) {
-        return this.employeeRepository.save(employee) ;
+    public List<Person> findAll(){
+        return this.PersonRepository.findAll();
 
     }
-    public Employee findbyid(Long id ) {
-        return this.employeeRepository.findById(id).get() ;
+    public Person create(Person person) {
+        return this.PersonRepository.save(person) ;
 
     }
-    public void deletebyid(Long id) {
-                 this.employeeRepository.removeById(id); ;
-         //this.personRepository.deleteById(id);
+
+    public Person findbyUsername(String username) {
+        return this.PersonRepository.findByUsername(username).get() ;
 
     }
 }
