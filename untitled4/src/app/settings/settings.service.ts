@@ -37,4 +37,7 @@ export class SettingsService {
   getAllSubscprition(id:any) {
     return   this.http.get<any[]>('http://localhost:8080/subscriptions/'+id, this.httpOptions) ;
   }
+  deletesubscirptionbyidTeamAndidUser(idteam: any , iduser: any  ) {
+    return this.http.delete('http://localhost:8080/subscriptions/' + idteam + '/delete/' + iduser  , this.httpOptions) ;
+  }
 }

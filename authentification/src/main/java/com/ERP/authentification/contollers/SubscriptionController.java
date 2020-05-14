@@ -37,5 +37,11 @@ public class SubscriptionController {
 
         return ResponseEntity.ok().body(subscriptionService.findAllEmployeeByteamID(id));
     }
+    @DeleteMapping("/{idteam}/delete/{iduser}")
+    public void getallEmployeesByteamID(@PathVariable Long idteam,@PathVariable Long iduser)
+    {
+        System.out.println(idteam + " "+iduser);
+         subscriptionService.deletebyteamIdAndUserID(idteam  ,iduser);
+    }
 
 }

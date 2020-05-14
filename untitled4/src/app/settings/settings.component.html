@@ -54,16 +54,17 @@
   </form>
 
 
-  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" class="card" style="width: 18rem;"*ngFor="let team of teams" >
+  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card" style="width: 18rem;"*ngFor="let team of teams" >
     <div class="card-body">
       <div class=" d-flex justify-content-between mb-3 ">
       <h6 class="card-title" >{{team.title}}</h6>
         <button type="button" (click)="showsubscriptionList(team)" class="btn btn-outline-info">update</button>
       </div>
       <ul class="list-group" [hidden]="  !( openteamlist === team.title)">
-        <li class="list-group-item d-flex justify-content-between " *ngFor="let employee of ListEmplyeeByTeam"> {{employee.username}}
-          <button type="button" (click) ="subscribeEmployertoteam(team.id,employee.id)" class="btn btn-outline-secondary">+</button></li>
-
+        <li class="list-group-item d-flex justify-content-between " *ngFor="let employee1 of ListEmplyeeByTeam"> {{employee1.username}}
+          <button type="button" (click)="unsubscribe(team.id ,employee1.id )" class="btn btn-outline-secondary"> unsubscribe</button></li>
+        <li class="list-group-item d-flex justify-content-between " *ngFor="let employee2 of ListEmployeenotInTeam"> {{employee2.username}}
+          <button type="button" (click) ="subscribeEmployertoteam(team.id,employee2.id)" class="btn btn-outline-secondary">  subscribe</button></li>
       </ul>
   </div>
 
