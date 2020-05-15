@@ -1,13 +1,16 @@
-<div class="d-flex flex-row mh-100 mt-3">
-  <div  droppable *ngFor="let pow of columns"  class="card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
+<div class="d-flex flex-row mh-100 mt-3" cdkDropListGroup>
+  <div  *ngFor="let pow of columns"   class=" card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
     <div   class="card-header">
       <h5 class="card-title">{{pow.name }}</h5>
     </div>
-    <div  droppable  class="card-body mh-100">
+    <div   cdkDropList
+          [cdkDropListData]="tasks"
+            (cdkDropListDropped)="drop($event)"
+            class="card-body h-auto">
 
 
-      <div  *ngFor="let task of tasks"    >
-       <div class="card text-white  mb-3"  *ngIf="task.columnID === pow.id "  draggable  [ngStyle] ="{'background-color': task.color }" >
+      <div  *ngFor="let task of tasks"   cdkDrag>
+       <div class="card text-white  mb-3"  *ngIf="task.columnID === pow.id "    [ngStyle] ="{'background-color': task.color }" >
         <div class="card-header">{{task.title}}</div>
         <div class="card-body">
           <h5 class="card-title">{{task.assignedUser}}</h5>

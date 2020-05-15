@@ -25,6 +25,7 @@ import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import { ChatlistComponent } from './chatlist/chatlist.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 const appRoutes: Routes = [
@@ -55,24 +56,26 @@ const appRoutes: Routes = [
 
     FullCalendarModule,
     HttpClientModule,
-    FormsModule ,
-    NgDragDropModule.forRoot() ,
-    Ng2SearchPipeModule ,
-    NgbModule ,
-    ReactiveFormsModule ,
-    NgbModalModule  ,
+    FormsModule,
+    NgDragDropModule.forRoot(),
+    Ng2SearchPipeModule,
+    NgbModule,
+    ReactiveFormsModule,
+    NgbModalModule,
     RouterModule.forRoot(
-      appRoutes) ,
-    BrowserAnimationsModule ,
+      appRoutes),
+    BrowserAnimationsModule,
     ToastrModule.forRoot({
       progressAnimation: 'increasing',
-      progressBar : true ,
-      positionClass : 'toast-bottom-left'
+      progressBar: true,
+      positionClass: 'toast-bottom-left'
 
     }),
-    ColorPickerModule ,
+    ColorPickerModule,
     OwlDateTimeModule, // for time imput
-    OwlNativeDateTimeModule, // for date imput
+    OwlNativeDateTimeModule,
+    DragDropModule,
+    // for date imput
   ],
   providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } , ],
   bootstrap: [AppComponent]

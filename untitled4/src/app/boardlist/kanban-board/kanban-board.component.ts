@@ -4,6 +4,7 @@ import {KanbanService} from './kanban.service';
 import {NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventsService} from '../../events.service';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-kanban-board',
@@ -63,7 +64,21 @@ export class KanbanBoardComponent implements OnInit {
 
     });
   }
+  //https://stackblitz.com/angular/dqglperyxxp?file=src%2Fapp%2Fcdk-drag-drop-disabled-sorting-example.html
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    if (event.previousContainer === event.container) {
+      console.log('hello')
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else { // problem because we have same data array
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
 
+  }
   createColumn(form: NgForm) {
     this.kanbanBoard.createColumn({
       name: form.value.name,
