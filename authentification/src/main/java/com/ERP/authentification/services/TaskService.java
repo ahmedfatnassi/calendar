@@ -34,4 +34,9 @@ public class TaskService {
         return this.taskRepository.getAllByBoardID(id);
 
     }
+    public List<Object> All(){
+        Long id = new Long(169);
+        return this.taskRepository.getall(id);
+
+    }
 }

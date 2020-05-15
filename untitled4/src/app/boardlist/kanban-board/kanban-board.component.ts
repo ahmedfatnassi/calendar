@@ -18,17 +18,21 @@ export class KanbanBoardComponent implements OnInit {
               private modal: NgbModal,
               private eventserviceService: EventsService) {
   }
+
+
   boardid: any ;
   id: any;
   columns: any;
   idOpenedTask: any;
   doctors
   color: any ;
-  tasks : any ;
-  fullcolumn : any ;
-  fullBoard : any ;
+  tasks: any[] ;
+  fullcolumn: any ;
+  fullBoard: any ;
   task : any ;
+
   ngOnInit() {
+    this.fullBoard=[];
     this.route.params.subscribe(params => {
       this.boardid = params['id'];
       this.kanbanBoard.getColumns(this.boardid).subscribe(data => {
@@ -41,17 +45,22 @@ export class KanbanBoardComponent implements OnInit {
           console.log(taskdata)
           this.tasks = Object.keys(taskdata).map(i => taskdata[i]);
 
-          /*for (let i = 0; i < this.columns.length ; i++) {
-           for (let j = 0; j < this.tasks.length ; j++) {
+          for (let i = 0; i < this.columns.length ; i++) {
+            this.fullBoard.push({
+              name: this.columns[i].name ,
+              boardId: this.columns[i].boardId ,
+              tasks: []
+            });
+            for (let j = 0; j < this.tasks.length ; j++) {
           if (this.tasks[j].columnID === this.columns[i].id) {
-              this.fullBoard[this.columns[i].id]=this.tasks[j];
+              this.fullBoard[i].tasks.push(this.tasks[j])  ;
+              continue;
           }
           }
-        }*/
+        }
 
 
-        console.log(taskdata);
-         //console.log(this.fullBoard)
+        console.log(this.fullBoard) ;
         });
       } )
 

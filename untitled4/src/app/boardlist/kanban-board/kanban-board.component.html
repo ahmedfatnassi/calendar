@@ -1,16 +1,16 @@
 <div class="d-flex flex-row mh-100 mt-3" cdkDropListGroup>
-  <div  *ngFor="let pow of columns"   class=" card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
+  <div  *ngFor="let column of fullBoard"   class=" card mh-100 ml-2 flex-nowrap" style="width: 18rem;">
     <div   class="card-header">
-      <h5 class="card-title">{{pow.name }}</h5>
+      <h5 class="card-title">{{column.name }}</h5>
     </div>
     <div   cdkDropList
-          [cdkDropListData]="tasks"
+          [cdkDropListData]="column.tasks"
             (cdkDropListDropped)="drop($event)"
             class="card-body h-auto">
 
 
-      <div  *ngFor="let task of tasks"   cdkDrag>
-       <div class="card text-white  mb-3"  *ngIf="task.columnID === pow.id "    [ngStyle] ="{'background-color': task.color }" >
+      <div  *ngFor="let task of column.tasks"   cdkDrag>
+       <div class="card text-white  mb-3"     [ngStyle] ="{'background-color': task.color }" >
         <div class="card-header">{{task.title}}</div>
         <div class="card-body">
           <h5 class="card-title">{{task.assignedUser}}</h5>
@@ -20,7 +20,7 @@
       </div>
 
     </div>
-    <button type="button" (click)="OpenModalTask(taskform,pow.id)" class="btn btn-light">add task</button>
+    <button type="button" (click)="OpenModalTask(taskform,column.id)" class="btn btn-light">add task</button>
 
   </div>
   <button (click)="OpenModalColumn(form)" class="align-self-start btn btn-success ml-2 ">add column</button>

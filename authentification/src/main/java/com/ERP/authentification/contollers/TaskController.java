@@ -26,6 +26,7 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<List<Task>> getAll(@PathVariable Long id)
     {
+        //System.out.println(this.taskService.All());
         return ResponseEntity.ok().body(taskService.findAllByBoardID(id));
     }
 }
