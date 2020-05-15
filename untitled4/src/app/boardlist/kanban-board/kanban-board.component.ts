@@ -47,6 +47,7 @@ export class KanbanBoardComponent implements OnInit {
 
           for (let i = 0; i < this.columns.length ; i++) {
             this.fullBoard.push({
+              id: this.columns[i].id ,
               name: this.columns[i].name ,
               boardId: this.columns[i].boardId ,
               tasks: []
@@ -89,22 +90,20 @@ export class KanbanBoardComponent implements OnInit {
 
   }
   createColumn(form: NgForm) {
+    const name = form.value.name ;
     this.kanbanBoard.createColumn({
       name: form.value.name,
       boardId: this.boardid
-    }).subscribe(data => {
-      console.log('columns : ' );
+    }).subscribe((data:any) => {
       console.log(data)
-      console.log(this.boardid)
-      this.columns.concat({
-        name: form.value.name,
-        boardId: this.boardid
+      this.fullBoard.push({
+        id : data.id ,
+        name: name,
+        boardId: this.boardid ,
+        tasks : []
       });
     });
-    this.columns.push({
-      name: form.value.name,
-      boardId: this.boardid
-    })
+
     this.modal.dismissAll();
   }
 
@@ -130,7 +129,12 @@ export class KanbanBoardComponent implements OnInit {
     this.kanbanBoard.createtask(this.task).subscribe(data => {
       console.log( data);
       this.modal.dismissAll();
+      for (let i = 0; i < this.fullBoard.length ; i++) {
+          if(this.fullBoard[i].id === this.idOpenedTask) {
+            this.fullBoard[i].tasks.push(data);
+          }
+      }
     });
-  this.tasks.push(this.task);
+
   }
 }
