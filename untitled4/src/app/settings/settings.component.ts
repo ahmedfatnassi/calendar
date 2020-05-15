@@ -152,4 +152,15 @@ unsubscribe(idteam: any , iduser: any ) {
       }
     }) ;
 }
+deleteTeam(team: any ) {
+    this.settingsService.deleteTeamsbyidTeam(team.id).subscribe(() => {
+      console.log('yes')
+      for (let i = 0; i <this.teams.length ; i++) {
+        if(this.teams[i] === team ){
+          this.teams.splice(i,1);
+        }
+      }
+
+    });
+}
 }

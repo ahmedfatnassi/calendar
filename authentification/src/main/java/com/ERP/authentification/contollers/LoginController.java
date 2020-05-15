@@ -1,5 +1,6 @@
 package com.ERP.authentification.contollers;
 
+import com.ERP.authentification.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,12 +29,16 @@ public class LoginController {
     private SecurityServiceImp securityService;
 	 @Autowired
 	    BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	PersonService personService ;
 	@PostMapping
 	public  ResponseEntity<?>  login( @RequestBody  UserLoginForm user ) {
 		
 		securityService.autoLogin(user.getUsername(), user.getPassword());
        System.out.println((RequestContextHolder.currentRequestAttributes().getSessionId()));
        user.setToken((RequestContextHolder.currentRequestAttributes().getSessionId()));
+       Person p = personService.findbyUsername(user.getUsername());
+       user.setType(p.getClass().getSimpleName());
 		return ResponseEntity.status(200).body(user);
 	}
 }

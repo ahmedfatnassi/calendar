@@ -15,4 +15,6 @@ public interface SubscriptionRepository  extends JpaRepository<Subscription, Lon
     @Query("select e from Employee e where e.id in ( select s.idUser from Subscription s where s.idTeam =  ?1 ) ")
     public List<Employee> getusersByTeam(@Param("id") Long id ) ;
     public void deleteByIdTeamAndIdUser(Long teamid , Long userid) ;
+
+    void deleteAllByIdTeam(Long teamid);
 }

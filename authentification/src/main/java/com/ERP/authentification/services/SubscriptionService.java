@@ -35,7 +35,11 @@ public class SubscriptionService {
         this.subscriptionRepository.deleteByIdTeamAndIdUser(teamid,userid);
 
     }
+    public void deleteAllbyteamId(Long teamid  ){
 
+        this.subscriptionRepository.deleteAllByIdTeam(teamid);
+
+    }
     public Subscription  create(Subscription subscription ) {
         return this.subscriptionRepository.save(subscription) ;
 

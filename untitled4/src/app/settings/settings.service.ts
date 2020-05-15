@@ -40,4 +40,7 @@ export class SettingsService {
   deletesubscirptionbyidTeamAndidUser(idteam: any , iduser: any  ) {
     return this.http.delete('http://localhost:8080/subscriptions/' + idteam + '/delete/' + iduser  , this.httpOptions) ;
   }
+  deleteTeamsbyidTeam(idteam: any ) {
+    return this.http.delete('http://localhost:8080/teams/delete/' + idteam  , this.httpOptions) ;
+  }
 }

@@ -34,6 +34,13 @@ public class TeamControllers {
 
         return ResponseEntity.ok().body(teamService.findAll());
     }
+    @DeleteMapping("/delete/{id}")
+    public void deleteTeam(@PathVariable Long id)
+    {
+        this.subscriptionService.deleteAllbyteamId(id) ;
+        this.teamService.deleteTeam(id);
+
+    }
 
 
 

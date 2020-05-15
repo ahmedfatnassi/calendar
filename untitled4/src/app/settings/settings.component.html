@@ -48,9 +48,9 @@
 
 </div>
   <form #teamform="ngForm" (ngSubmit)="submitTeam(teamform);">
-    <input class= "form-control col-3"  name="title" placeholder="title" type="text"  ngDefaultControl>
+    <input class= "form-control col-3"  name="title" placeholder="title" type="text"  ngModel>
 
-      <button  type = "submit"class="btn btn-info mt-2"  >submit Team</button>
+      <button  type = "submit" class="btn btn-info mt-2"  >submit Team</button>
   </form>
 
 
@@ -58,7 +58,10 @@
     <div class="card-body">
       <div class=" d-flex justify-content-between mb-3 ">
       <h6 class="card-title" >{{team.title}}</h6>
-        <button type="button" (click)="showsubscriptionList(team)" class="btn btn-outline-info">update</button>
+        <div>
+        <button type="button" (click)="showsubscriptionList(team)" class="btn btn-outline-info mr-1">update</button>
+        <button type="button" (click)="deleteTeam(team)" class="btn btn-outline-warning">delete</button>
+        </div>
       </div>
       <ul class="list-group" [hidden]="  !( openteamlist === team.title)">
         <li class="list-group-item d-flex justify-content-between " *ngFor="let employee1 of ListEmplyeeByTeam"> {{employee1.username}}
