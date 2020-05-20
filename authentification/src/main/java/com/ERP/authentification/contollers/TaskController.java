@@ -29,4 +29,11 @@ public class TaskController {
         //System.out.println(this.taskService.All());
         return ResponseEntity.ok().body(taskService.findAllByBoardID(id));
     }
+    @PostMapping("/updatecolumn")
+    public ResponseEntity<List<Task>> update(@RequestBody List<Task> tasks)
+    {
+
+        return  ResponseEntity.ok().body( this.taskService.updateColumn(tasks));
+    }
+
 }

@@ -26,4 +26,7 @@ export class KanbanService {
   createtask(task: any ){
     return this.http.post('http://localhost:8080/tasks', task    , this.httpOptions) ;
   }
+  updateColumnAfterDeplacement(tasks:any) {
+    return this.http.post<any[]>('http://localhost:8080/tasks/updatecolumn/', tasks,this.httpOptions);
+  }
 }

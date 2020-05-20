@@ -25,6 +25,9 @@ public class TaskService {
         return this.taskRepository.findAll();
 
     }
+    public void deleteAll(){
+        this.taskRepository.deleteAll();
+    }
 
     public Task  create(Task task ) {
         return this.taskRepository.save(task) ;
@@ -34,6 +37,27 @@ public class TaskService {
         return this.taskRepository.getAllByBoardID(id);
 
     }
+    public List<Task> updateColumn(List<Task> tasks){
+
+      /*  // il me monque sorting
+        List<Task> tasks =  this.taskRepository
+                .findAllByColumnIDAndPositionBetween(idcolumn ,
+                        Long.min( positioninit ,positionfinal) ,
+                        Long.max( positioninit ,positionfinal) );
+
+        for (int i = (int ) Long.min( positioninit ,positionfinal)+1; i <(int ) Long.max( positioninit ,positionfinal) ; i++) {
+                if(positionfinal > positioninit){
+                    tasks.get(i).setPosition(tasks.get(i).getPosition() - 1);
+                }else{
+                    tasks.get(i).setPosition(tasks.get(i).getPosition() + 1);
+                }
+
+
+        }*/
+
+        return this.taskRepository.saveAll(tasks);
+    }
+
     public List<Object> All(){
         Long id = new Long(169);
         return this.taskRepository.getall(id);

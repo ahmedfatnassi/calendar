@@ -31,6 +31,16 @@ public class Task {
     private Long  columnID ;
     @Column(name ="boardID")
     private Long  boardID ;
+    @Column(name ="position")
+    private Long  position ;
+
+    public Long getPosition() {
+        return position;
+    }
+
+    public void setPosition(Long position) {
+        this.position = position;
+    }
 
     public Long getBoardID() {
         return boardID;
