@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SettingsService} from './settings.service';
 import {NgForm} from '@angular/forms';
 import {log} from 'util';
+import {BoardlistService} from '../boardlist/boardlist.service';
 
 @Component({
   selector: 'app-settings',
@@ -18,7 +19,11 @@ export class SettingsComponent implements OnInit {
   ListEmplyeeByTeam :any ;
   ListEmployeenotInTeam: any ;
   updateOrClose :any ;
-  constructor(private settingsService: SettingsService) { }
+  Listboard : any ;
+  listBoardinworkspace: any ;
+  listBoardNotinWorkspace :any ;
+  openworkspaceList :any ;
+  constructor(private settingsService: SettingsService , private  boardlistService: BoardlistService ) { }
 
   ngOnInit() {
     this.updateOrClose = 'update';
@@ -28,10 +33,26 @@ export class SettingsComponent implements OnInit {
       this.employees = Object.keys(data).map(i => data[i]);
       console.log(data) ;
     });
+    this.boardlistService.getBoards().subscribe((data:any) => {
+      this.Listboard = Object.keys(data).map(i => data[i]);
+      this.listBoardNotinWorkspace = JSON.parse(JSON.stringify(this.Listboard)) ;
+
+    }) ;
     this.settingsService.getAllTeams().subscribe(data => {
       console.log(data)
       this.teams = Object.keys(data).map(i => data[i]);
     });
+
+  }
+  addToWorkSpace(team: any , board: any ) {
+    this.settingsService.createworkspace({idteam : team.id  , idboard : board.id}).subscribe((data) =>  {
+      for (let i = 0; i < this.listBoardNotinWorkspace.length; i++) {
+        if (this.listBoardNotinWorkspace[i].id === board.id){
+          this.listBoardinworkspace.push(this.listBoardNotinWorkspace[i]) ;
+          this.listBoardNotinWorkspace.splice(i,1);
+          break ;
+        }
+      }    }) ;
   }
   employerformVisible(){
     if (this.visibileAddEmployee === true) {
@@ -83,6 +104,7 @@ export class SettingsComponent implements OnInit {
       console.log(data);
       if ( !(this.openteamlist === item.title) ) {
       this.openteamlist = item.title ;
+      this.openworkspaceList = "";
       } else {
         this.openteamlist = "";
       }
@@ -114,6 +136,55 @@ export class SettingsComponent implements OnInit {
       //console.log(this.ListEmployeenotInTeam);
     }) ;
   }
+  showWorkspace(team: any) {
+    console.log(team.id) ;
+    this.settingsService.getAllworkspaces(team.id).subscribe((data:any )=>{
+      this.listBoardinworkspace = Object.keys(data).map(i => data[i]);
+      this.listBoardNotinWorkspace= [] ;
+      this.listBoardNotinWorkspace = JSON.parse(JSON.stringify(this.Listboard)) ;
+
+      let findit = false ;
+      for (let i = 0; i < this.listBoardNotinWorkspace.length; i++) {
+        if(findit){
+          i=i-1 ;
+          findit= false ;
+        }
+        for (let j = 0; j < this.listBoardinworkspace.length; j++) {
+
+          if (this.listBoardNotinWorkspace[i].id === this.listBoardinworkspace[j].id) {
+            this.listBoardNotinWorkspace.splice(i,1) ;
+            findit = true ;
+            continue;
+          }
+        }
+      }
+      console.log(this.listBoardinworkspace) ;
+      console.log(this.listBoardNotinWorkspace);
+
+    }) ;
+    if ( !(this.openworkspaceList === team.title) ) {
+      this.openworkspaceList = team.title ;
+      this.openteamlist = "";
+    } else {
+      this.openworkspaceList = "";
+    }
+
+  }
+  deleteBoardFromWorkspace( team: any , board :any ){
+    this.settingsService.deleteBoardFromTeamWorkpaceid(team.id , board.id).subscribe((data :any )=>{
+      console.log(data) ;
+      for (let i = 0; i < this.listBoardinworkspace.length; i++) {
+        if (this.listBoardinworkspace[i].id === board.id){
+            this.listBoardNotinWorkspace.push(this.listBoardinworkspace[i]) ;
+            this.listBoardinworkspace.splice(i,1);
+            break ;
+        }
+      }
+
+    }) ;
+  }
+
+
 subscribeEmployertoteam(idteam: any , iduser: any) {
     console.log(idteam + ' slqksfo ' + iduser)
     this.settingsService.createSubcription({

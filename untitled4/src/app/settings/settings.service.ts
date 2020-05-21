@@ -43,4 +43,13 @@ export class SettingsService {
   deleteTeamsbyidTeam(idteam: any ) {
     return this.http.delete('http://localhost:8080/teams/delete/' + idteam  , this.httpOptions) ;
   }
+  createworkspace(value: any ) {
+    return this.http.post('http://localhost:8080/workspaces' , value , this.httpOptions) ;
+  }
+  getAllworkspaces(id : number) {
+    return   this.http.get<any[]>('http://localhost:8080/workspaces/'+id, this.httpOptions) ;
+  }
+  deleteBoardFromTeamWorkpaceid(idteam: any , idboard: any  ) {
+    return this.http.delete('http://localhost:8080/workspaces/delete/' + idteam + '/' + idboard  , this.httpOptions) ;
+  }
 }

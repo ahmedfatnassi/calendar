@@ -54,13 +54,14 @@
   </form>
 
 
-  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card" style="width: 18rem;"*ngFor="let team of teams" >
+  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card" style="width: 40rem;"*ngFor="let team of teams" >
     <div class="card-body">
       <div class=" d-flex justify-content-between mb-3 ">
       <h6 class="card-title" >{{team.title}}</h6>
         <div>
-        <button type="button" (click)="showsubscriptionList(team)" class="btn btn-outline-info mr-1">update</button>
-        <button type="button" (click)="deleteTeam(team)" class="btn btn-outline-warning">delete</button>
+          <button type="button" (click)="showWorkspace(team)" class="btn btn-outline-info mr-1">update workspace</button>
+          <button type="button" (click)="showsubscriptionList(team)" class="btn btn-outline-info mr-1">update employee</button>
+          <button type="button" (click)="deleteTeam(team)" class="btn btn-outline-warning">delete</button>
         </div>
       </div>
       <ul class="list-group" [hidden]="  !( openteamlist === team.title)">
@@ -68,6 +69,14 @@
           <button type="button" (click)="unsubscribe(team.id ,employee1.id )" class="btn btn-outline-secondary"> unsubscribe</button></li>
         <li class="list-group-item d-flex justify-content-between " *ngFor="let employee2 of ListEmployeenotInTeam"> {{employee2.username}}
           <button type="button" (click) ="subscribeEmployertoteam(team.id,employee2.id)" class="btn btn-outline-secondary">  subscribe</button></li>
+      </ul>
+      <ul class="list-group" [hidden]="  !( openworkspaceList === team.title)">
+        <li class="list-group-item d-flex justify-content-between " *ngFor="let board of listBoardinworkspace"> {{board.name}}
+          <button type="button" (click)="deleteBoardFromWorkspace(team , board)" class="btn btn-outline-secondary"> remove</button></li>
+
+        <li class="list-group-item d-flex justify-content-between " *ngFor="let board of listBoardNotinWorkspace"> {{board.name}}
+          <button type="button" (click)="addToWorkSpace(team , board)" class="btn btn-outline-secondary"> add</button></li>
+
       </ul>
   </div>
 
