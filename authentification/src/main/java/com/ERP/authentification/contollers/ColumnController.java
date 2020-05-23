@@ -27,5 +27,9 @@ public class ColumnController {
     public ResponseEntity<List<BoardColumn>> getAllByBoardId(@PathVariable Long id)  {
         return ResponseEntity.ok().body(columnService.findAllByBoardId(id));
     }
+    @DeleteMapping(value = "/delete/{id}")
+    public void deletebyId(@PathVariable Long id)  {
+        columnService.delete(id);
+    }
 
 }

@@ -22,6 +22,16 @@ public class BoardColumn {
     private String  name ;
     @javax.persistence.Column(name="boardId")
     private  Long boardId ;
+    @javax.persistence.Column(name="position")
+    private  Long position ;
+
+    public Long getPosition() {
+        return position;
+    }
+
+    public void setPosition(Long position) {
+        this.position = position;
+    }
 
     public String getName() {
         return name;

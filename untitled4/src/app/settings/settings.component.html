@@ -1,4 +1,8 @@
 <div class="w-100">
+  <div class="card mt-2" style="width: 100%;">
+    <div class="card-header"> Employees</div>
+    <div class="card-body">
+
 
 <div  class="m-2" >
   <button class="ml-2" type = "submit" (click)="employerformVisible()" class="btn btn-info mb-2">add employee</button>
@@ -41,20 +45,28 @@
       <td>{{item.cin}}</td>
       <td>{{item.address}}</td>
       <td>{{item.password}}</td>
-      <td><button class="btn btn-info mr-1" (click)="update(item)">update</button><button class="btn btn-warning" (click)="deleteEmployee(item)">delete</button></td>
+      <td><button class="btn btn-info mr-1" (click)=" update(item)">update</button><button class="btn btn-warning" (click)="deleteEmployee(item)">delete</button></td>
     </tr>
     </tbody>
   </table>
 
 </div>
-  <form #teamform="ngForm" (ngSubmit)="submitTeam(teamform);">
-    <input class= "form-control col-3"  name="title" placeholder="title" type="text"  ngModel>
+  </div>
+  </div>
+  <div class="d-flex justify-content-between ">
+
+
+
+  <div class="card mr-2 mt-2" style="width: 50%;">
+    <div class="card-header"> Teams</div>
+  <form #teamform="ngForm" class="d-flex justify-content-between m-2" (ngSubmit)="submitTeam(teamform);">
+    <input class= "form-control col-6"  name="title" placeholder="title" type="text"  ngModel>
 
       <button  type = "submit" class="btn btn-info mt-2"  >submit Team</button>
   </form>
 
 
-  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card" style="width: 40rem;"*ngFor="let team of teams" >
+  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card" *ngFor="let team of teams" >
     <div class="card-body">
       <div class=" d-flex justify-content-between mb-3 ">
       <h6 class="card-title" >{{team.title}}</h6>
@@ -64,13 +76,13 @@
           <button type="button" (click)="deleteTeam(team)" class="btn btn-outline-warning">delete</button>
         </div>
       </div>
-      <ul class="list-group" [hidden]="  !( openteamlist === team.title)">
+      <ul class="list-group" [hidden]="  !( openteamlist === team.id)">
         <li class="list-group-item d-flex justify-content-between " *ngFor="let employee1 of ListEmplyeeByTeam"> {{employee1.username}}
           <button type="button" (click)="unsubscribe(team.id ,employee1.id )" class="btn btn-outline-secondary"> unsubscribe</button></li>
         <li class="list-group-item d-flex justify-content-between " *ngFor="let employee2 of ListEmployeenotInTeam"> {{employee2.username}}
           <button type="button" (click) ="subscribeEmployertoteam(team.id,employee2.id)" class="btn btn-outline-secondary">  subscribe</button></li>
       </ul>
-      <ul class="list-group" [hidden]="  !( openworkspaceList === team.title)">
+      <ul class="list-group" [hidden]="  !( openworkspaceList === team.id)">
         <li class="list-group-item d-flex justify-content-between " *ngFor="let board of listBoardinworkspace"> {{board.name}}
           <button type="button" (click)="deleteBoardFromWorkspace(team , board)" class="btn btn-outline-secondary"> remove</button></li>
 
@@ -82,3 +94,40 @@
 
 </div>
 </div>
+
+
+
+    <div class="card mt-2" style="width: 50%;" [(ngModel)]="ListColumns">
+      <div class="card-header"> Boards</div>
+      <div class="card-body"*ngFor="let board of Listboard" >
+
+
+        <div class=" d-flex justify-content-between mb-3 "   >
+          <h6 class="card-title" >{{board.name}} </h6>
+          <div>
+            <button type="button" (click)="showBoard(board)"  class="btn btn-outline-info mr-1">update board </button>
+            <button type="button"  class="btn btn-outline-warning">delete</button>
+          </div>
+        </div>
+          <ul class="list-group" [hidden]="  !( openColumnList === board.id)">
+            <li class="list-group-item d-flex justify-content-between " *ngFor="let column of ListColumns"> {{column.name}}
+             <div>
+              <button type="button"  class="btn btn-outline-secondary"> update</button>
+              <button type="button" (click)="deleteColumnmByid(column)" class="btn btn-outline-secondary">  delete</button>
+             </div> </li>
+
+          </ul>
+
+
+
+      </div>
+    </div>
+      </div>
+
+    </div>
+
+
+
+
+
+

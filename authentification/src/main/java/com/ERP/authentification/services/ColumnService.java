@@ -31,4 +31,8 @@ public class ColumnService {
         return this.columnRepository.save(boardColumn) ;
 
     }
+    public void delete(Long id ) {
+         this.columnRepository.deleteById(id); ;
+
+    }
 }

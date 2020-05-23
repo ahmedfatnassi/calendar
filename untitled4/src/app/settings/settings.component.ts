@@ -23,6 +23,8 @@ export class SettingsComponent implements OnInit {
   listBoardinworkspace: any ;
   listBoardNotinWorkspace :any ;
   openworkspaceList :any ;
+  openColumnList: any ;
+  ListColumns :any ;
   constructor(private settingsService: SettingsService , private  boardlistService: BoardlistService ) { }
 
   ngOnInit() {
@@ -102,8 +104,8 @@ export class SettingsComponent implements OnInit {
     this.settingsService.getAllSubscprition(item.id).subscribe(data => {
       this.ListEmplyeeByTeam = Object.keys(data).map(i => data[i]);
       console.log(data);
-      if ( !(this.openteamlist === item.title) ) {
-      this.openteamlist = item.title ;
+      if ( !(this.openteamlist === item.id) ) {
+      this.openteamlist = item.id ;
       this.openworkspaceList = "";
       } else {
         this.openteamlist = "";
@@ -162,8 +164,8 @@ export class SettingsComponent implements OnInit {
       console.log(this.listBoardNotinWorkspace);
 
     }) ;
-    if ( !(this.openworkspaceList === team.title) ) {
-      this.openworkspaceList = team.title ;
+    if ( !(this.openworkspaceList === team.id) ) {
+      this.openworkspaceList = team.id ;
       this.openteamlist = "";
     } else {
       this.openworkspaceList = "";
@@ -233,5 +235,27 @@ deleteTeam(team: any ) {
       }
 
     });
+}
+showBoard(board: any ) {
+
+this.settingsService.getAllcolumnsByBoardId(board.id).subscribe((data: any ) => {
+
+  this.ListColumns = Object.keys(data).map(i => data[i]);
+  if (! (this.openColumnList === board.id)){
+    this.openColumnList = board.id ;
+  }else {
+    this.openColumnList = null;
+  }
+}) ;
+}
+deleteColumnmByid(column :any ){
+    this.settingsService.deleteColumnByid(column.id).subscribe(() => {
+          console.log('was deleted') ;
+    }) ;
+}
+updateColumn(column :any ){
+    this.settingsService.updateColumn(column).subscribe((data :any ) => {
+      console.log(column);
+    })
 }
 }

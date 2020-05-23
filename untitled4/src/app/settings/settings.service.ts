@@ -47,9 +47,19 @@ export class SettingsService {
     return this.http.post('http://localhost:8080/workspaces' , value , this.httpOptions) ;
   }
   getAllworkspaces(id : number) {
-    return   this.http.get<any[]>('http://localhost:8080/workspaces/'+id, this.httpOptions) ;
+    return   this.http.get<any[]>('http://localhost:8080/workspaces/' + id, this.httpOptions) ;
   }
   deleteBoardFromTeamWorkpaceid(idteam: any , idboard: any  ) {
     return this.http.delete('http://localhost:8080/workspaces/delete/' + idteam + '/' + idboard  , this.httpOptions) ;
   }
+  getAllcolumnsByBoardId(id: any ) {
+    return   this.http.get<any[]>('http://localhost:8080/columns/' + id, this.httpOptions) ;
+  }
+  deleteColumnByid(idteam: any ) {
+    return this.http.delete('http://localhost:8080/columns/delete/' + idteam  , this.httpOptions) ;
+  }
+  updateColumn(value: any ) {
+    return this.http.post('http://localhost:8080/columns' , value , this.httpOptions) ;
+  }
+
 }
