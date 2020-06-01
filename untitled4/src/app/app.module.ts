@@ -26,6 +26,8 @@ import { ChatlistComponent } from './chatlist/chatlist.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ReceivedRequestComponent } from './boardlist/received-request/received-request.component';
+import { CompletedRequestComponent } from './boardlist/completed-request/completed-request.component';
 
 
 const appRoutes: Routes = [
@@ -49,7 +51,9 @@ const appRoutes: Routes = [
     ChatComponent,
     ChatlistComponent,
     SettingsComponent,
-    NavbarComponent
+    NavbarComponent,
+    ReceivedRequestComponent,
+    CompletedRequestComponent
   ],
   imports: [
     BrowserModule,
