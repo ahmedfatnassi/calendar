@@ -28,11 +28,16 @@ import { NavbarComponent } from './navbar/navbar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ReceivedRequestComponent } from './boardlist/received-request/received-request.component';
 import { CompletedRequestComponent } from './boardlist/completed-request/completed-request.component';
+import { RequestFormComponent } from './request-form/request-form.component';
+import {QRCodeModule} from 'angularx-qrcode';
+import {BrowserQRCodeReader} from '@zxing/library';
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
 
 
 const appRoutes: Routes = [
   { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
   { path: 'chats',      component: ChatComponent , canActivate: [AuthguardService] },
+  { path: 'request_form',      component : RequestFormComponent , canActivate: [AuthguardService] },
   { path: 'boards',      component: BoardlistComponent , canActivate: [AuthguardService] },
   { path: 'settings',      component: SettingsComponent , canActivate: [AuthguardService] },
   { path: 'home',      component: CalendarComponent , canActivate: [AuthguardService] },
@@ -53,11 +58,14 @@ const appRoutes: Routes = [
     SettingsComponent,
     NavbarComponent,
     ReceivedRequestComponent,
-    CompletedRequestComponent
+    CompletedRequestComponent,
+    RequestFormComponent
   ],
   imports: [
     BrowserModule,
-
+    QRCodeModule,
+    BrowserModule,
+    ZXingScannerModule ,
     FullCalendarModule,
     HttpClientModule,
     FormsModule,

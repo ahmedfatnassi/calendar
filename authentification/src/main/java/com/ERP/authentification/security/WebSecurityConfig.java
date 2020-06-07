@@ -33,9 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	                                                   
 
 	                                                   
-       .antMatchers("/login/","/greeting/**" ,"/**" ,"/downloadFile/**"	).permitAll()
+       .antMatchers("/insureds/**","/login/","/greeting/**" ,"/**" ,"/downloadFile/**"	).permitAll()
         
-       .antMatchers( "/patients/**").hasAuthority("USER")
+       .antMatchers( "/boards","/teams","/patients/**").hasAuthority("USER")
        .antMatchers("/error").permitAll()
        .anyRequest().authenticated()
        .and()

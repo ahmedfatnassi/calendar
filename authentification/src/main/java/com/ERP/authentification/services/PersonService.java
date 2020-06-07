@@ -1,9 +1,6 @@
 package com.ERP.authentification.services;
 
-import com.ERP.authentification.Models.Employee;
 import com.ERP.authentification.Models.Person;
-import com.ERP.authentification.repositories.EmployeeRepository;
-import com.ERP.authentification.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

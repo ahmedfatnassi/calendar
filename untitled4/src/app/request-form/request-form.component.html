@@ -1,0 +1,88 @@
+
+<div class="  m-2">
+
+<h3 class="ml-2 mt-2"> Request Form</h3>
+  <zxing-scanner *ngIf="!authentifiedInsured" class="h-50 w-50" (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+ <!-- <qrcode [qrdata]="'omarfatnassi:0000'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->
+
+  <section class="results" *ngIf="qrResultString">
+    <div>
+      <small>Result</small>
+      <strong>{{ qrResultString }}</strong>
+    </div>
+    <!-- <button mat-icon-button (click)="clearResult()">&times;</button>-->
+  </section>
+<form class="m1" *ngIf="authentifiedInsured">
+
+
+
+
+    <div class="form-row col-6">
+      <div class="form-group col-md-6">
+        <label for="inputEmail4">social status </label>
+        <input type="text" class="form-control" id="inputEmail4" placeholder="Social status">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputPassword4">Firstname</label>
+        <input type="text" class="form-control" id="inputPassword4" placeholder="Firstname">
+      </div>
+    </div>
+  <label class = "col-7">
+    Birth date <br>
+    <input class = "col-4" [owlDateTimeTrigger]="dt1" name = "date" [owlDateTime]="dt1" ngModel>
+    <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+  </label>
+
+  <div class="d-flex d-inline-block m-2">
+    <h4>Add Act</h4>
+    <button (click)="addAct()" class="btn btn-outline-info ml-2">+</button>
+  </div>
+
+  <div   class="border ml-2 mt-2"   *ngFor='let  item of actNumber ; let i = index' [(ngModel)] = actNumber>
+
+<div class="form-row">
+    <div class="form-group col-3 ml-2">
+      <label for="inputState">Add type</label>
+      <select id="inputState" class="form-control">
+        <option selected>dental act </option>
+        <option>dental prosthesis</option>
+        <option> consultation & visits</option>
+        <option> paramedical&medical acts</option>
+        <option> biology</option>
+        <option> childbirth</option>
+        <option>pharmacy </option>
+      </select>
+    </div>
+    <div class="form-group col-4">
+      <label for="Honorary">Honorary</label>
+      <input type="text" class="form-control" id="Honorary" placeholder="Honorary">
+    </div>
+    <div class="form-group col-4">
+      <label for="Quotation">Quotation</label>
+      <input type="text" class="form-control" id="Quotation" placeholder="Quotation">
+    </div>
+  <button (click)="deleteAct(i)" class="btn btn-outline-info ">x</button>
+
+</div>
+    <div class="form-row ml-2">
+
+
+          <div class="form-group col-3">
+            <label for="conventionalCode">Conventional Code</label>
+            <input type="text" class="form-control" id="conventionalCode" placeholder="Apartment, studio, or floor">
+          </div>
+
+        <div class="form-group col-2">
+          <label for="exampleFormControlFile1"> add attachment </label>
+          <input type="file" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+      <div class="form-group col-7">
+        <label for="exampleFormControlFile1"> add attachment </label><br>
+          <input class = "col-4"  placeholder="date" [owlDateTimeTrigger]="dt2" name = "date" [owlDateTime]="dt2" ngModel>
+          <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+

@@ -29,7 +29,7 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAll()
     {
      //   System.out.println(personRepository.findAll());
-        System.out.println( this.personService.findAll()) ;
+        //System.out.println( this.personService.findAll()) ;
         return ResponseEntity.ok().body(employeeService.findAll());
     }
 

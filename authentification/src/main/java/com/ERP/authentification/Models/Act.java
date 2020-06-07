@@ -20,6 +20,8 @@ public class Act {
     private Long id ;
     @Column(name ="type")
     private RequestFieldType type ;
+    @Column(name ="requestId")
+    private Long   requestId;
     @Column(name ="send_date")
     private Instant data = Instant.now() ;
     /*@Column(name ="quotation")
@@ -30,6 +32,8 @@ public class Act {
     private String  conventional_code ;
     @Column(name ="TAX__ID")
     private String  TAX_ID ;
+    @Column(name ="archived")
+    private Boolean archived  = Boolean.TRUE ;
     ///
 
 

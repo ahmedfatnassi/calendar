@@ -1,10 +1,9 @@
 package com.ERP.authentification.services;
 
+import com.ERP.authentification.Models.Act;
 import com.ERP.authentification.Models.Board;
-import com.ERP.authentification.Models.Patient;
+import com.ERP.authentification.repositories.ActRepository;
 import com.ERP.authentification.repositories.BoardRepository;
-import com.ERP.authentification.repositories.MedecinRepository;
-import com.ERP.authentification.repositories.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 @Transactional
-public class BoardService {
+public class ActService {
     @Autowired
-    public BoardRepository boardRepository ;
+    public ActRepository actRepository ;
 
 
-    public List<Board> findAll(){
-        return this.boardRepository.findAll();
+    public List<Act> findAll(){
+        return this.actRepository.findAll();
 
     }
-    public Board  create(Board board ) {
-        return this.boardRepository.save(board) ;
+    public Act  create(Act act ) {
+        return this.actRepository.save(act) ;
 
     }
 }

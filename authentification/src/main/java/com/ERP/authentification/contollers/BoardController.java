@@ -1,17 +1,15 @@
 package com.ERP.authentification.contollers;
 
+
 import com.ERP.authentification.Models.Board;
-import com.ERP.authentification.Models.Event;
 import com.ERP.authentification.services.BoardService;
-import com.ERP.authentification.services.EventServices;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/boards")
 public class BoardController {
