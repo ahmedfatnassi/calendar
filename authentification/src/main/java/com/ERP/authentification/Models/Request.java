@@ -28,8 +28,18 @@ public class Request {
     private String  patientSocialStatus ;
     @Column(name ="patientFirstname")
     private String  patientFirstname ;
+    @Column(name ="patientLastname")
+    private String  patientLastname ;
     @Column(name ="dateOfBirth")
     private Date dateOfBirth  ;
+
+    public String getPatientLastname() {
+        return patientLastname;
+    }
+
+    public void setPatientLastname(String patientLastname) {
+        this.patientLastname = patientLastname;
+    }
 
     public Long getInsuredID() {
         return insuredID;
