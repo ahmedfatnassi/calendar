@@ -21,6 +21,8 @@ public class DBFile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long actId ;
+
     private String fileName;
 
     private String fileType;
@@ -33,6 +35,14 @@ public class DBFile {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
+    }
+
+    public Long getActId() {
+        return actId;
+    }
+
+    public void setActId(Long actId) {
+        this.actId = actId;
     }
 
     public String getFileName() {

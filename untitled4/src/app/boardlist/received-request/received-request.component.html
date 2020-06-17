@@ -1,0 +1,42 @@
+
+<div class="d-flex justify-content-center ">
+<div class="list-group w-75">
+  <div class="card border list-group-item m-2" *ngFor="let request of requests">
+    <div class="card-header"> <span class="badge badge-secondary">New</span>
+      {{request.insured.username}}
+    </div>
+    <div class="card-body">
+      <table class="table ">
+        <thead>
+        <tr>
+          <th scope="col">code postal </th>
+          <th scope="col">patient status </th>
+          <th scope="col">firstname</th>
+          <th scope="col">lastname </th>
+          <th scope="col">phoneNumber</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th >{{request.insured.codePostale}}</th>
+          <th >{{request.patientSocialStatus}}</th>
+          <th >{{request.patientFirstname}}</th>
+          <th >{{request.patientLastname}}</th>
+          <th >{{request.insured.phoneNumber}}</th>
+
+
+        </tr>
+
+        </tbody>
+      </table>
+      <blockquote class="blockquote mb-0">
+
+        <footer class="blockquote-footer" *ngFor="let act of request.acts" >{{act.type}}
+
+        </footer>
+      </blockquote>
+      <a href="#" class="  btn btn-primary float-right">execute</a>
+    </div>
+  </div>
+</div>
+</div>

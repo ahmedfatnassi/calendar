@@ -32,4 +32,11 @@ public class InsuredController {
     public ResponseEntity<List<Insured>> getAll(){
         return ResponseEntity.ok().body(insuredService.findAll()) ;
     }
+
+    @GetMapping(value = "/requestIds")
+    public ResponseEntity<List<Insured>> getAllByRequestIds(@RequestParam("requestIds") List<Long> requestIds){
+        System.out.println("salem get all insured  ");
+        System.out.println(requestIds);
+        return ResponseEntity.ok().body(insuredService.findAllInsuredByIds(requestIds)) ;
+    }
 }

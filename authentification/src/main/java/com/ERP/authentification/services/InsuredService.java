@@ -29,8 +29,11 @@ public class InsuredService {
         return this.insuredRepository.save(insured) ;
 
     }
+    public List<Insured> findAllInsuredByIds(List<Long> insuredIds ) {
+        return this.insuredRepository.findAllByIdIn(insuredIds) ;
+
+    }
     public Insured findByUsername(String username  ) {
         return this.insuredRepository.findByUsername(username) ;
-
     }
 }

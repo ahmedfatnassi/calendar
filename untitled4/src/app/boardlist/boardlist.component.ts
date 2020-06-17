@@ -36,4 +36,7 @@ boards: any[] ;
   goToBoard(id){
     this.router.navigate(['/board/'+id]);
   }
+  goToRequestList(){
+      this.router.navigate(['/received_request']);
+  }
 }

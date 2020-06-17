@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/Requests")
+@RequestMapping("/requests")
 public class RequestController {
     @Autowired
     private RequestService requestService ;
@@ -25,7 +25,9 @@ public class RequestController {
     }
     @GetMapping
     public ResponseEntity<List<Request>> getAll(){
+        System.out.println("salem get all request ");
         return ResponseEntity.ok().body(requestService.findAll()) ;
     }
+
 }
 

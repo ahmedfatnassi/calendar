@@ -22,12 +22,12 @@ public class Act {
     private RequestFieldType type ;
     @Column(name ="requestId")
     private Long   requestId;
-    @Column(name ="send_date")
-    private Instant data = Instant.now() ;
-    /*@Column(name ="quotation")
-    private Double  quotation ;
+    @Column(name ="actDate")
+    private Instant actDate ;
+    @Column(name ="quotation")
+    private String  quotation ;
     @Column(name ="honorary")
-    private Double honorary ;*/
+    private String honorary ;
     @Column(name ="conventional_code")
     private String  conventional_code ;
     @Column(name ="TAX__ID")
@@ -37,6 +37,67 @@ public class Act {
     ///
 
 
+    public RequestFieldType getType() {
+        return type;
+    }
 
+    public void setType(RequestFieldType type) {
+        this.type = type;
+    }
 
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
+
+    public Instant getActDate() {
+        return actDate;
+    }
+
+    public void setActDate(Instant actDate) {
+        this.actDate = actDate;
+    }
+
+    public String getQuotation() {
+        return quotation;
+    }
+
+    public void setQuotation(String quotation) {
+        this.quotation = quotation;
+    }
+
+    public String getHonorary() {
+        return honorary;
+    }
+
+    public void setHonorary(String honorary) {
+        this.honorary = honorary;
+    }
+
+    public String getConventional_code() {
+        return conventional_code;
+    }
+
+    public void setConventional_code(String conventional_code) {
+        this.conventional_code = conventional_code;
+    }
+
+    public String getTAX_ID() {
+        return TAX_ID;
+    }
+
+    public void setTAX_ID(String TAX_ID) {
+        this.TAX_ID = TAX_ID;
+    }
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Boolean archived) {
+        this.archived = archived;
+    }
 }

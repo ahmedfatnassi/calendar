@@ -24,7 +24,7 @@ public class FileUploadController {
     @Autowired
     private DBFileStorageService dbFileStorageService;
 
-    @PostMapping(value = "/uploadFile" , produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/uploadFile" )
     public ResponseEntity<Resource> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         DBFile dbFile = dbFileStorageService.storeFile(file);
         System.out.println("file 1");
@@ -44,18 +44,9 @@ public class FileUploadController {
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<ResponseEntity<Resource>> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> {
-                    try {
-                        return uploadFile(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
+    public void uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        System.out.println("here is me ");
+        System.out.println(files );
     }
 
     @GetMapping("/downloadFile/{fileId}")

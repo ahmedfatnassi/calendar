@@ -1,9 +1,9 @@
 
 <div class="  m-2">
 
-  <!--<h3 class="ml-2 mt-2"> Request Form</h3>
+  <h3 class="ml-2 mt-2"> Request Form</h3>
    <zxing-scanner *ngIf="!authentifiedInsured" class="h-50 w-50" (scanSuccess)="onCodeResult($event)"></zxing-scanner>
-  <qrcode [qrdata]="'omarfatnassi:0000'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+ <!-- <qrcode [qrdata]="'omarfatnassi:0000'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>-->
 
   <section class="results" *ngIf="qrResultString">
     <div>
@@ -11,8 +11,8 @@
       <strong>{{ qrResultString }}</strong>
     </div>
      <button mat-icon-button (click)="clearResult()">&times;</button>
-  </section>  *ngIf="authentifiedInsured" -->
-<form class="m1"  #Eventform="ngForm" (ngSubmit)="submitrequest(Eventform)"  >
+  </section>
+<form class="m1"  *ngIf="authentifiedInsured" #Eventform="ngForm"  enctype="multipart/form-data"  (ngSubmit)="retrieveRequest(Eventform)"  >
 
 
 
@@ -49,17 +49,16 @@
     <div class="form-group col-3 ml-2">
       <label for="inputState">Add type</label>
       <select id="inputState" name="type-{{i}}" ngModel class="form-control">
-        <option selected>dental act </option>
-        <option>dental prosthesis</option>
-        <option> consultation & visits</option>
-        <option> paramedical&medical acts</option>
-        <option> biology</option>
-        <option> childbirth</option>
-        <option>pharmacy </option>
+        <option value="DENTAL" selected>dental act </option>
+        <option value="DENTAL_PROSTHESIS">dental prosthesis</option>
+        <option value="CONSULTATION"> consultation & visits</option>
+        <option value="PARAMEDICAL_MEDICAL"> paramedical&medical acts</option>
+        <option value="BIOLOGY"> biology</option>
+        <option value="CHILDBIRTH"> childbirth</option>
+        <option value="PHARMACY">pharmacy </option>
       </select>
     </div>
     <div class="form-group mt-2 mr-2">
-      <label for="szz"></label>
       <button (click)="deleteAct(i)" class="btn btn-outline-info float-right ">x</button>
     </div>
 </div>
@@ -72,9 +71,11 @@
       <label for="Quotation">Quotation</label>
       <input type="text" class="form-control" id="Quotation" name = "quotation-{{i}}" ngModel placeholder="Quotation">
     </div>
-
-
-</div>
+      <div class="form-group col-4">
+        <label for="tax_id">Tax code </label>
+        <input type="text" class="form-control" id="tax_id" name = "tax_ID-{{i}}" ngModel placeholder="Tax code ">
+      </div>
+    </div>
 
 
 
@@ -83,12 +84,12 @@
 
           <div class="form-group col-3">
             <label for="conventionalCode">Conventional Code</label>
-            <input type="text" class="form-control" name = "conventionalCode-{{i}}" ngModel id="conventionalCode" placeholder="Apartment, studio, or floor">
+            <input type="text" class="form-control" name = "conventional_code-{{i}}" ngModel id="conventionalCode" placeholder="Apartment, studio, or floor">
           </div>
 
         <div class="form-group col-2">
           <label for="exampleFormControlFile1"> add attachment </label>
-          <input type="file" class="form-control-file" name = "file-{{i}}" ngModel  id="exampleFormControlFile1">
+          <input type="file" (change)="handleFileInput($event.target.files , i )" enctype="multipart/form-data" accept=".**" class="form-control-file" name = "file-{{i}}" ngModel  id="exampleFormControlFile1">
         </div>
       <div class="form-group col-7">
         <label for="exampleFormControlFile1"> add attachment </label><br>
@@ -99,8 +100,23 @@
   </div>
 
 
-  <button type="submit" class="btn btn-primary float-right mt-2">Submit</button>
+  <button type="submit" (click)="openForm(form)" class="btn btn-primary float-right m-2">Submit</button>
 
 </form>
 </div>
+<ng-template  #form let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Confirmation </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
 
+        <button (click) = "sendRequest()" class="btn bg-info float-right"    >
+          Send request
+        </button>
+      </div>
+
+
+</ng-template>

@@ -25,8 +25,16 @@ public class ActService {
         return this.actRepository.findAll();
 
     }
+    public List<Act> findAllByRequestList(List<Long> requestIds){
+        return this.actRepository.findAllByRequestIdIn(requestIds);
+
+    }
     public Act  create(Act act ) {
         return this.actRepository.save(act) ;
+
+    }
+    public List<Act>  createAll(List<Act> acts ) {
+        return this.actRepository.saveAll(acts) ;
 
     }
 }
