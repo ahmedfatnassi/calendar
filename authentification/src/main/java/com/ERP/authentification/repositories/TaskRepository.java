@@ -1,6 +1,5 @@
 package com.ERP.authentification.repositories;
 
-import com.ERP.authentification.Models.Event;
 import com.ERP.authentification.Models.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

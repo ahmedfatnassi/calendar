@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -27,6 +30,13 @@ public class AuthentificationApplication {
 	        }
 	    };
 	}
-
-
+	@Primary
+	@Bean
+	public TaskExecutor primaryTaskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		// add necessary properties to the executor
+		return executor;
+	}
+	//https://stackoverflow.com/questions/38959545/spring-boot-with-activiti-and-websockets
+	//https://stackoverflow.com/questions/38977415/spring-boot-abstract-auto-configuration-problems
 }

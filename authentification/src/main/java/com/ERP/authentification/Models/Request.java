@@ -30,8 +30,18 @@ public class Request {
     private String  patientFirstname ;
     @Column(name ="patientLastname")
     private String  patientLastname ;
+    @Column(name ="boardId")
+    private String  boardId ;
     @Column(name ="dateOfBirth")
     private Date dateOfBirth  ;
+
+    public String getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(String boardId) {
+        this.boardId = boardId;
+    }
 
     public String getPatientLastname() {
         return patientLastname;

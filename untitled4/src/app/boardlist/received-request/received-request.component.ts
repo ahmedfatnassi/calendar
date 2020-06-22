@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ReceivedRequestService} from './received-request.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgForm} from '@angular/forms';
+import {EventsService} from '../../events.service';
+import {BoardlistService} from '../boardlist.service';
 
 @Component({
   selector: 'app-received-request',
@@ -9,14 +13,22 @@ import {ReceivedRequestService} from './received-request.service';
 export class ReceivedRequestComponent implements OnInit {
   requests: any[] ;
   listRequestIds: any[];
-listInsuredId : any[] ;
-  constructor(private receivedRequestService: ReceivedRequestService) { }
+listInsuredId: any[] ;
+boardList: any[];
+  radioSelected: any ;
+  constructor(private receivedRequestService: ReceivedRequestService,
+              private modal: NgbModal,
+              private boardService: BoardlistService) { }
 
   ngOnInit() {
-    this.listRequestIds=[];
-    this.listInsuredId=[];
+    this.listRequestIds = [];
+    this.listInsuredId = [];
     this.requests = [];
-
+    this.boardList = [];
+    this.boardService.getBoards().subscribe((boards: any[]) =>{
+      console.log(boards) ;
+      this.boardList = boards ;
+    });
     this.receivedRequestService.getAllRequest().subscribe((requests: any ) => {
       console.log(requests);
       this.requests = requests ;
@@ -61,4 +73,14 @@ listInsuredId : any[] ;
       }) ;
     }) ;
   }
+  OpenModalColumn(form: NgForm,  requestId: any ) {
+    console.log(requestId) ;
+    this.modal.open(form);
+  }
+  execute(form: NgForm ) {
+    console.log(form.value);
+    this.modal.dismissAll() ;
+
+  }
+
 }

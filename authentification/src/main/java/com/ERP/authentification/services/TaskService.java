@@ -1,8 +1,6 @@
 package com.ERP.authentification.services;
 
-import com.ERP.authentification.Models.PersonBoard;
 import com.ERP.authentification.Models.Task;
-import com.ERP.authentification.repositories.PersonBoardRepository;
 import com.ERP.authentification.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,7 @@ public class TaskService {
         this.taskRepository.deleteAll();
     }
 
-    public Task  create(Task task ) {
+    public Task create(Task task) {
         return this.taskRepository.save(task) ;
 
     }
