@@ -4,21 +4,26 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from '@angular/forms';
 import {EventsService} from '../../events.service';
 import {BoardlistService} from '../boardlist.service';
+import {KanbanService} from '../kanban-board/kanban.service';
 
 @Component({
   selector: 'app-received-request',
   templateUrl: './received-request.component.html',
   styleUrls: ['./received-request.component.css']
 })
+
 export class ReceivedRequestComponent implements OnInit {
   requests: any[] ;
   listRequestIds: any[];
-listInsuredId: any[] ;
-boardList: any[];
+  listInsuredId: any[] ;
+  boardList: any[];
   radioSelected: any ;
+  boardIsSelectedid: any ;
+  columnsList: any ;
   constructor(private receivedRequestService: ReceivedRequestService,
               private modal: NgbModal,
-              private boardService: BoardlistService) { }
+              private boardService: BoardlistService,
+              private kanbanBoard: KanbanService,) { }
 
   ngOnInit() {
     this.listRequestIds = [];
@@ -82,5 +87,13 @@ boardList: any[];
     this.modal.dismissAll() ;
 
   }
+  checkedBoard(boardid: any){
 
+this.kanbanBoard.getColumns(boardid).subscribe((data: any[] )=>{
+  this.columnsList= data;
+  console.log(this.columnsList);
+});
+    this.boardIsSelectedid = boardid;
+
+  }
 }

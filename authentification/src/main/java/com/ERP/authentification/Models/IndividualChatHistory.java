@@ -37,6 +37,22 @@ public class IndividualChatHistory {
     this.idreceiver = idreceiver;
         }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getIdreceiver() {
+        return idreceiver;
+    }
+
+    public void setIdreceiver(Long idreceiver) {
+        this.idreceiver = idreceiver;
+    }
+
     public Long getId_Sender() {
         return id_Sender;
     }

@@ -24,7 +24,7 @@
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="rejected" name="approved" sourceRef="exclusivegateway3" targetRef="rejectionMail">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eligibily == false}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eligibility  == false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="rejectionMail" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="mailtask1" name="response" activiti:type="mail">
@@ -149,7 +149,7 @@
       </sequenceFlow>
     </subProcess>
     <sequenceFlow id="approved" sourceRef="exclusivegateway3" targetRef="subprocess97">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eligibily == true}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eligibility  == true}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask1" name="autoCheck" activiti:expression="${checkValidity.isValide()}"></serviceTask>
     <sequenceFlow id="flow77" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>

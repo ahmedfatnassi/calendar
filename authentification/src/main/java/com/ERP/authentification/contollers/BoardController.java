@@ -25,6 +25,7 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<List<Board>> getAll()  {
+        System.out.println(boardService.findAll().get(0).toString());
         return ResponseEntity.ok().body(boardService.findAll());
     }
 }

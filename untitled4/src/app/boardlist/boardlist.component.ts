@@ -17,8 +17,10 @@ export class BoardlistComponent implements OnInit {
   ) { }
 boards: any[] ;
   ngOnInit() {
-    this.boardlistService.getBoards().subscribe(data => {
-      this.boards = Object.keys(data).map(i => data[i]);
+    this.boards = [] ;
+    this.boardlistService.getBoards().subscribe((data: any ) => {
+      console.log(data)
+      this.boards =  data ;
       console.log(this.boards) ;
     }) ;
   }
@@ -34,6 +36,7 @@ boards: any[] ;
     }) ;
   }
   goToBoard(id){
+  //  console.log('id of board ' +id)
     this.router.navigate(['/board/'+id]);
   }
   goToRequestList(){

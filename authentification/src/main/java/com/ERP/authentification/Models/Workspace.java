@@ -29,6 +29,13 @@ public class Workspace {
     @Column(name ="creation_date")
     private Instant creation_date = Instant.now() ;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getIdteam() {
         return idteam;

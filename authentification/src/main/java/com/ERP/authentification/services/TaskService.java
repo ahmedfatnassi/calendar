@@ -1,6 +1,6 @@
 package com.ERP.authentification.services;
 
-import com.ERP.authentification.Models.Task;
+import com.ERP.authentification.Models.BoardTask;
 import com.ERP.authentification.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class TaskService {
     public TaskRepository taskRepository ;
 
 
-    public List<Task> findAll(){
+    public List<BoardTask> findAll(){
         return this.taskRepository.findAll();
 
     }
@@ -27,33 +27,33 @@ public class TaskService {
         this.taskRepository.deleteAll();
     }
 
-    public Task create(Task task) {
-        return this.taskRepository.save(task) ;
+    public BoardTask create(BoardTask boardTask) {
+        return this.taskRepository.save(boardTask) ;
 
     }
-    public List<Task> findAllByBoardID(Long id){
+    public List<BoardTask> findAllByBoardID(Long id){
         return this.taskRepository.getAllByBoardID(id);
 
     }
-    public List<Task> updateColumn(List<Task> tasks){
+    public List<BoardTask> updateColumn(List<BoardTask> boardTasks){
 
       /*  // il me monque sorting
-        List<Task> tasks =  this.taskRepository
+        List<BoardTask> boardTasks =  this.taskRepository
                 .findAllByColumnIDAndPositionBetween(idcolumn ,
                         Long.min( positioninit ,positionfinal) ,
                         Long.max( positioninit ,positionfinal) );
 
         for (int i = (int ) Long.min( positioninit ,positionfinal)+1; i <(int ) Long.max( positioninit ,positionfinal) ; i++) {
                 if(positionfinal > positioninit){
-                    tasks.get(i).setPosition(tasks.get(i).getPosition() - 1);
+                    boardTasks.get(i).setPosition(boardTasks.get(i).getPosition() - 1);
                 }else{
-                    tasks.get(i).setPosition(tasks.get(i).getPosition() + 1);
+                    boardTasks.get(i).setPosition(boardTasks.get(i).getPosition() + 1);
                 }
 
 
         }*/
 
-        return this.taskRepository.saveAll(tasks);
+        return this.taskRepository.saveAll(boardTasks);
     }
 
     public List<Object> All(){

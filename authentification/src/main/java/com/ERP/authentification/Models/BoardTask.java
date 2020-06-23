@@ -14,7 +14,7 @@ import javax.persistence.Column;
 @EqualsAndHashCode(callSuper = false )
 @Entity
 @Table
-public class Task {
+public class BoardTask {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;

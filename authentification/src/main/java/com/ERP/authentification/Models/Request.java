@@ -39,6 +39,14 @@ public class Request {
         return boardId;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setBoardId(String boardId) {
         this.boardId = boardId;
     }

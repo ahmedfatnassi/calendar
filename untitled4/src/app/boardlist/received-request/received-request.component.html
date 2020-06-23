@@ -1,7 +1,7 @@
 
 <div class="d-flex justify-content-center ">
-<div class="list-group w-75">
-  <div class="card border list-group-item m-2" *ngFor="let request of requests">
+<div class="list-group w-75" name="requests" ngDefaultControl>
+  <div class="card border list-group-item m-2"  *ngFor="let request of requests">
     <div class="card-header"> <span class="badge badge-secondary">New</span>
       {{request.insured.username}}
     </div>
@@ -62,11 +62,21 @@
 
       </div>-->
         <div class="form-check"  *ngFor="let board of boardList">
-          <input class="form-check-input" type="radio" id="exampleRadios1-{{board.id}}" [value]='board.id' required name = "board"   [(ngModel)]="radioSelected">
+          <input class="form-check-input"  (change)="checkedBoard(board.id)" type="radio" id="exampleRadios1-{{board.id}}" value='{{board.id}}' required name = "board"  ngModel>
           <label class="form-check-label" for="exampleRadios1-{{board.id}}">
-            {{board.name}}
+            <h6>
+            {{board.name}}</h6>
           </label>
+          <div class="ml-3" *ngIf="boardIsSelectedid == board.id " >
+            <div *ngFor="let column of columnsList" name = 'columnsList' ngDefaultControl>
+            <input class="form-check-input" name = "column" value='{{column.id}}' id="exampleRadios1-{{column.id}}"  type="radio" ngModel required ngModel>
+            <label class="form-check-label" for="exampleRadios1-{{column.id}}">
+              {{column.name}}
+            </label>
+            </div>
+          </div>
         </div>
+
       </div>
       <div class="modal-footer d-flex justify-content-between ">
 
