@@ -20,6 +20,7 @@ export class ReceivedRequestComponent implements OnInit {
   radioSelected: any ;
   boardIsSelectedid: any ;
   columnsList: any ;
+  selectedRequest: any ;
   constructor(private receivedRequestService: ReceivedRequestService,
               private modal: NgbModal,
               private boardService: BoardlistService,
@@ -80,19 +81,23 @@ export class ReceivedRequestComponent implements OnInit {
   }
   OpenModalColumn(form: NgForm,  requestId: any ) {
     console.log(requestId) ;
+    this.boardIsSelectedid = null;
+    this.selectedRequest = requestId ;
     this.modal.open(form);
   }
   execute(form: NgForm ) {
     console.log(form.value);
     this.modal.dismissAll() ;
-
+    this.receivedRequestService.execute(this.selectedRequest, form.value.column).subscribe((data: any[]) => {
+      console.log(data) ;
+    }) ;
   }
   checkedBoard(boardid: any){
 
-this.kanbanBoard.getColumns(boardid).subscribe((data: any[] )=>{
-  this.columnsList= data;
-  console.log(this.columnsList);
-});
+    this.kanbanBoard.getColumns(boardid).subscribe((data: any[] )=>{
+      this.columnsList = data;
+      console.log(this.columnsList);
+    });
     this.boardIsSelectedid = boardid;
 
   }

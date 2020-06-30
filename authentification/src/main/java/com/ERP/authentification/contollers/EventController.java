@@ -3,6 +3,8 @@ package com.ERP.authentification.contollers;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.ERP.authentification.Models.Person;
+import com.ERP.authentification.services.PersonService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class EventController {
 	@Autowired
 	private EventServices eventservice;
-    
+	@Autowired
+	private PersonService personServices;
     
 
 	@PostMapping
@@ -36,7 +39,11 @@ public class EventController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Event>> getAll()  {
+	public ResponseEntity<List<Event>> getAll() {
+		List<Person> list = personServices.findAll();
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getClass().getSimpleName());
+		}
 		return ResponseEntity.ok().body(eventservice.findAll());
 	}
 

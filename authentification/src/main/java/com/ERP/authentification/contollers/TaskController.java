@@ -35,5 +35,11 @@ public class TaskController {
 
         return  ResponseEntity.ok().body( this.taskService.updateColumn(boardTasks));
     }
+    @GetMapping("/get_task_by_columnsIds")
+    public ResponseEntity<List<BoardTask>> getAll(@RequestParam("columnIds") List<Long> columnIds)
+    {
+        System.out.println("here salem "+columnIds);
+        return ResponseEntity.ok().body(taskService.findAllByColumnIdIn(columnIds));
+    }
 
 }

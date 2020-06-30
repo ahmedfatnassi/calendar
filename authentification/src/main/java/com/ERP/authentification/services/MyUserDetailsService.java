@@ -24,13 +24,14 @@ public class MyUserDetailsService implements UserDetailsService {
  
     @Autowired
     private MedecinRepository medecinRepository;
-
+    @Autowired
+    private PersonRepository personRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Medecin person = medecinRepository.findByUsername(username).get();
+        Person person = personRepository.findByUsername(username).get();
         if (person == null) {
             throw new UsernameNotFoundException(username);
         }

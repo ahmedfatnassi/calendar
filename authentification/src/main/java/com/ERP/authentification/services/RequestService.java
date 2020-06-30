@@ -25,8 +25,17 @@ public class RequestService {
         return this.requestRepository.findAll();
 
     }
+    public List<Request> findAllNonExecuted(){
+        return this.requestRepository.findAllByIsArchivedIsTrue();
+
+    }
+
     public Request create(Request request ) {
         return this.requestRepository.save(request) ;
+
+    }
+    public Request getById(Long id ) {
+        return this.requestRepository.findById(id).get() ;
 
     }
 }

@@ -35,6 +35,14 @@ public class TaskService {
         return this.taskRepository.getAllByBoardID(id);
 
     }
+    public List<BoardTask> findAllByActivitiTaskIdIn (List<String> activiTaskIds){
+        return this.taskRepository.findAllByActivitiTaskIdIn(activiTaskIds);
+
+    }
+    public List<BoardTask> findAllByColumnIdIn (List<Long> columnsId){
+        return this.taskRepository.findAllByColumnIDIn(columnsId);
+
+    }
     public List<BoardTask> updateColumn(List<BoardTask> boardTasks){
 
       /*  // il me monque sorting
@@ -59,6 +67,15 @@ public class TaskService {
     public List<Object> All(){
         Long id = new Long(169);
         return this.taskRepository.getall(id);
+
+    }
+    public List<BoardTask> createAll( List<BoardTask> list){
+        return this.taskRepository.saveAll(list);
+    }
+
+    public void deleteAll( List<BoardTask> list){
+
+         this.taskRepository.deleteAll(list);
 
     }
 }

@@ -239,13 +239,13 @@ deleteTeam(team: any ) {
 showBoard(board: any ) {
 
 this.settingsService.getAllcolumnsByBoardId(board.id).subscribe((data: any ) => {
-
-  this.ListColumns = Object.keys(data).map(i => data[i]);
-  if (! (this.openColumnList === board.id)){
+  console.log(board.id)
+  if (! (this.openColumnList === board.id)) {
     this.openColumnList = board.id ;
-  }else {
+  } else {
     this.openColumnList = null;
   }
+  this.ListColumns = data ;
 }) ;
 }
 deleteColumnmByid(column :any ){

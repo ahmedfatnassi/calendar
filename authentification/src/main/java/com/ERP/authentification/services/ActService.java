@@ -33,6 +33,10 @@ public class ActService {
         return this.actRepository.save(act) ;
 
     }
+    public List<Act>  findAllByRequestId(Long id ) {
+        return this.actRepository.findAllByRequestId(id) ;
+
+    }
     public List<Act>  createAll(List<Act> acts ) {
         return this.actRepository.saveAll(acts) ;
 

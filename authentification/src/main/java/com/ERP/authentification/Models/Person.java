@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false )
 @Embeddable
 @Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Person extends AbstractEntity{
 	@Column(name="name")
 	private String name ; 

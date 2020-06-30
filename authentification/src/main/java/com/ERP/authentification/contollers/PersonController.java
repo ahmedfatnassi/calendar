@@ -32,4 +32,11 @@ public class PersonController {
     public ResponseEntity<Person> getDoctorByUsername(@PathVariable String username){
         return ResponseEntity.ok().body(personService.findbyUsername(username)) ;
     }
+    @DeleteMapping("delete/{id}")
+    void deleteByID(@PathVariable Long id)
+    {
+        System.out.println("id delete");
+        System.out.println(id);
+        personService.deletebyid(id);
+    }
 }

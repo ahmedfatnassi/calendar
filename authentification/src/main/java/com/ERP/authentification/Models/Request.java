@@ -24,6 +24,8 @@ public class Request {
 
     @Column(name ="insuredID")
     private Long insuredID ;
+    @Column(name ="defaultColumn")
+    private Long defaultColumn ;
     @Column(name ="patientSocialStatus")
     private String  patientSocialStatus ;
     @Column(name ="patientFirstname")
@@ -34,6 +36,36 @@ public class Request {
     private String  boardId ;
     @Column(name ="dateOfBirth")
     private Date dateOfBirth  ;
+
+    @Column(name ="isArchived")
+    private Boolean isArchived  ;
+    @Column(name ="activitiProcessId")
+    private String activitiProcessId  ;
+
+    public String getActivitiProcessId() {
+        return activitiProcessId;
+    }
+
+    public void setActivitiProcessId(String activitiProcessId) {
+        this.activitiProcessId = activitiProcessId;
+    }
+
+
+    public Long getDefaultColumn() {
+        return defaultColumn;
+    }
+
+    public void setDefaultColumn(Long defaultColumn) {
+        this.defaultColumn = defaultColumn;
+    }
+
+    public Boolean getArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(Boolean archived) {
+        isArchived = archived;
+    }
 
     public String getBoardId() {
         return boardId;

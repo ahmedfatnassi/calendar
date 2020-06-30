@@ -66,8 +66,8 @@
   </form>
 
 
-  <div   name = "teams" ngDefaultControl  [(ngModel)]="teams" [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card" *ngFor="let team of teams" >
-    <div class="card-body">
+  <div   name = "teams"   [(ngModel)]="teams" [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card"  >
+    <div class="card-body" name = "teams" *ngFor="let team of teams" >
       <div class=" d-flex justify-content-between mb-3 ">
       <h6 class="card-title" >{{team.title}}</h6>
         <div>
@@ -110,7 +110,7 @@
           </div>
         </div>
           <ul class="list-group" [hidden]="  !( openColumnList === board.id)">
-            <li class="list-group-item d-flex justify-content-between " *ngFor="let column of ListColumns"> {{column.name}}
+            <li class="list-group-item d-flex justify-content-between " name = "ListColumns" ngDefaultControl *ngFor="let column of ListColumns"> {{column.name}}
              <div>
               <button type="button"  class="btn btn-outline-secondary"> update</button>
               <button type="button" (click)="deleteColumnmByid(column)" class="btn btn-outline-secondary">  delete</button>

@@ -2,9 +2,11 @@ package com.ERP.authentification.contollers;
 
 import com.ERP.authentification.Models.Act;
 import com.ERP.authentification.Models.Agent;
+import com.ERP.authentification.Models.Request;
 import com.ERP.authentification.services.ActService;
 import com.ERP.authentification.services.ActivitiService;
 import com.ERP.authentification.services.AgentService;
+import com.ERP.authentification.services.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.activiti.engine.*;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -19,7 +21,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/activity")
+@RequestMapping("/activiti")
 public class ActivityTestController {
     @Autowired
     private ActivitiService activitiService ;
@@ -33,7 +35,8 @@ public class ActivityTestController {
 
     @Autowired
     private HistoryService historyService;
-
+    @Autowired
+    private RequestService requestService ;
     @GetMapping("/new")
     public String  newProcess() {
 
@@ -87,4 +90,13 @@ public class ActivityTestController {
 
     }
 
+    @GetMapping("/execute/{requestId}/{columnId}")
+    public ResponseEntity<Request>  execute(@PathVariable Long requestId,@PathVariable Long columnId) {
+        Request request  = requestService.getById(requestId);
+        request.setDefaultColumn(columnId);
+        activitiService.startProcess(requestId) ;
+        request.setArchived(true);
+        requestService.create(request);
+        return ResponseEntity.ok().body(request) ;
+    }
 }

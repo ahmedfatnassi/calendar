@@ -9,14 +9,16 @@
             class="card-body h-auto">
 
 
-      <div  *ngFor="let task of column.tasks"   cdkDrag>
-       <div class="card text-white  mb-3"     [ngStyle] ="{'background-color': task.color }" >
-        <div class="card-header">{{task.title}}</div>
+      <div (click)="openTask(i , j , opentask)" *ngFor="let task of column.tasks; let j = index " cdkDrag>
+
+        <div class="card text-dark  mb-3"     [ngStyle] ="{'background-color': task.color }" >
+        <div class="card-header font-weight-bold ">{{task.title}}</div>
         <div class="card-body">
           <h5 class="card-title">{{task.assignedUser}}</h5>
           <p class="card-text">{{task.description}}</p>
         </div>
       </div>
+
       </div>
 
     </div>
@@ -97,6 +99,41 @@
       </div>
     </form>
 
+  </div>
+
+
+</ng-template>
+
+
+<ng-template  #opentask let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Task details </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body" >
+    <div class="d-flex flex-row">
+    <p class="font-weight-normal"> Title :  </p> <p class="font-weight-bold text-capitalize">   {{openedTask.title}}</p>
+    </div>
+
+      <div *ngIf="openedtaskAssignedUser" class="d-flex flex-row">
+        <p class="font-weight-normal"> employee :  </p> <p class="font-weight-bold text-capitalize">   {{openedTask.title}}</p>
+      </div>
+
+    <div class=" d-flex justify-content-around">
+    <label for="employeeSelect"> set employee :</label>
+    <select class="form-control col-7 ml-2" id="employeeSelect" (change)="assignUser($event.target)" name="employee" ngModel  >
+      <option [value]="employee.id" *ngFor="let employee of employees" [ngValue]="employee" >{{employee.username}}</option>
+    </select>
+    <button class="btn bg-success ml-2"    >
+      OK
+    </button>
+    </div>
+    <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+      close
+    </button>
   </div>
 
 

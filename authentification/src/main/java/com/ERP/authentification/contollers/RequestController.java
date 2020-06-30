@@ -24,9 +24,9 @@ public class RequestController {
         return ResponseEntity.status(201).body(this.requestService.create(request));
     }
     @GetMapping
-    public ResponseEntity<List<Request>> getAll(){
+    public ResponseEntity<List<Request>> getNonExecutedResquetAll(){
         System.out.println("salem get all request ");
-        return ResponseEntity.ok().body(requestService.findAll()) ;
+        return ResponseEntity.ok().body(requestService.findAllNonExecuted() ) ;
     }
 
 }

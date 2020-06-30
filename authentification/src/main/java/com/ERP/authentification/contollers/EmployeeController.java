@@ -39,7 +39,7 @@ public class EmployeeController {
         employeeService.deletebyid(id);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<Employee> replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
          Employee em = employeeService.findbyid(id) ;
@@ -48,5 +48,12 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/getById/{id}")
+    ResponseEntity<Employee> get(@PathVariable Long id) {
+
+
+        return ResponseEntity.ok().body(employeeService.findbyid(id));
+
+    }
 
 }

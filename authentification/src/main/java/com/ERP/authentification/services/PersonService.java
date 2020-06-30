@@ -15,19 +15,26 @@ import java.util.List;
 @Transactional
 public class PersonService {
     @Autowired
-    private com.ERP.authentification.repositories.PersonRepository PersonRepository;
+    private com.ERP.authentification.repositories.PersonRepository personRepository;
 
     public List<Person> findAll(){
-        return this.PersonRepository.findAll();
+        return this.personRepository.findAll();
 
     }
     public Person create(Person person) {
-        return this.PersonRepository.save(person) ;
+        return this.personRepository.save(person) ;
 
     }
 
     public Person findbyUsername(String username) {
-        return this.PersonRepository.findByUsername(username).get() ;
+        System.out.println("username");
+        System.out.println(username);
+        return this.personRepository.findByUsername(username).get() ;
+
+    }
+    public void deletebyid(Long id) {
+        this.personRepository.deleteById(id) ;
+        //this.personRepository.deleteById(id);
 
     }
 }

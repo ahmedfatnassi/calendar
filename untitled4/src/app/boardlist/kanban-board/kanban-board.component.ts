@@ -30,8 +30,12 @@ export class KanbanBoardComponent implements OnInit {
   fullcolumn: any ;
   fullBoard: any ;
   task : any ;
-
+  columnsIds: any[] ;
+  openedTask: any;
+  openedtaskAssignedUser: any;
+  employees: any[];
   ngOnInit() {
+
     this.fullBoard=[];
     this.route.params.subscribe(params => {
       this.boardid = params['id'];
@@ -40,7 +44,12 @@ export class KanbanBoardComponent implements OnInit {
         console.log(data)
         this.columns = Object.keys(data).map(i => data[i]);
         console.log('columns ' + this.columns);
-        this.kanbanBoard.getTasks(this.boardid).subscribe(taskdata => {
+        this.columnsIds = []
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < this.columns.length; i++) {
+        this.columnsIds.push(this.columns[i].id) ;
+        }
+        this.kanbanBoard.getTasksColumnsIds(this.columnsIds).subscribe(taskdata => {
           console.log('salem')
           console.log(taskdata)
           this.tasks = Object.keys(taskdata).map(i => taskdata[i]);
@@ -77,6 +86,12 @@ export class KanbanBoardComponent implements OnInit {
 
 
     });
+
+
+
+    this.kanbanBoard.getallEmployee().subscribe((data: any) => {
+      this.employees = data ;
+    })
   }
   //https://stackblitz.com/angular/dqglperyxxp?file=src%2Fapp%2Fcdk-drag-drop-disabled-sorting-example.html
   drop(event: CdkDragDrop<string[]>) {
@@ -202,6 +217,34 @@ export class KanbanBoardComponent implements OnInit {
           }
       }
     });
+
+  }
+  openTask(columnindex: any , taskId: any, modal) {
+    /*console.log(columnindex + ' ' + taskId) ;
+    console.log(this.fullBoard[columnindex].tasks[taskId]) ;*/
+    this.openedTask = this.fullBoard[columnindex].tasks[taskId] ;
+    if (this.openedTask.assignedUser) {
+      console.log('not null');
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.employees.length ; i++) {
+        if (this.employees[i].id === this.openedTask.assignedUser) {
+            this.openedtaskAssignedUser = this.employees[i] ;
+            break;
+        }
+      }
+
+    } else {
+      console.log('null');
+      this.openedtaskAssignedUser = null ;
+    }
+    console.log(this.openedtaskAssignedUser)
+
+    this.modal.open(modal);
+  }
+
+
+  assignUser(userId: any ){
+    console.log(userId.value);
 
   }
 }

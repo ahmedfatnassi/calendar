@@ -23,6 +23,8 @@ public class BoardTask {
     private String title ;
     @Column(name ="description")
     private String description ;
+    @Column(name ="type")
+    private String type ;
     @Column(name ="color")
     private String color  ;
     @Column(name ="assignedUser")
@@ -33,6 +35,32 @@ public class BoardTask {
     private Long  boardID ;
     @Column(name ="position")
     private Long  position ;
+    @Column(name ="activitiTaskId")
+    private String  activitiTaskId ;
+
+    public String getActivitiTaskId() {
+        return activitiTaskId;
+    }
+
+    public void setActivitiTaskId(String activitiTaskId) {
+        this.activitiTaskId = activitiTaskId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Long getPosition() {
         return position;

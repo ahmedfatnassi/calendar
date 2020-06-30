@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ActRepository  extends JpaRepository<Act, Long> {
     public List<Act> findAllByRequestIdIn(List<Long> ids);
+    public List<Act> findAllByRequestId(Long requestId);
 }
