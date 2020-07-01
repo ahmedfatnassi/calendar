@@ -183,14 +183,14 @@ export class KanbanBoardComponent implements OnInit {
     this.modal.open(form);
   }
 
-  OpenModalTask(form, id: any) {
-    this.idOpenedTask = id;
-    console.log(id)
+  OpenModalTask(form) {
+    //this.idOpenedTask = id;
+    this.modal.dismissAll();
     this.modal.open(form);
   }
 
-  createTask(form: NgForm) {
-    let position ;
+  updateTask(form: NgForm) {
+     let position ;
     for (let i = 0; i <this.fullBoard.length ; i++) {
     if(this.idOpenedTask === this.fullBoard[i].id){
 
@@ -199,30 +199,35 @@ export class KanbanBoardComponent implements OnInit {
     }
     }
     this.task = {
+      id : this.openedTask.id ,
       title: form.value.title,
-      assignedUser : ''+form.value.assignedUser.id,
+      assignedUser : '' + form.value.assignedUser.id,
       color: this.color,
       description: form.value.description ,
-      columnID: this.idOpenedTask ,
+      columnID: this.openedTask.columnID ,
       boardID  : this.boardid ,
-      position : position
+      position : this.openedTask.position
     }
-    console.log(this.task) ;
+    console.log(this.task);
+
+
     this.kanbanBoard.createtask(this.task).subscribe(data => {
       console.log( data);
       this.modal.dismissAll();
-      for (let i = 0; i < this.fullBoard.length ; i++) {
+     /* for (let i = 0; i < this.fullBoard.length ; i++) {
           if(this.fullBoard[i].id === this.idOpenedTask) {
             this.fullBoard[i].tasks.push(data);
           }
-      }
+      }*/
     });
 
   }
+
   openTask(columnindex: any , taskId: any, modal) {
     /*console.log(columnindex + ' ' + taskId) ;
     console.log(this.fullBoard[columnindex].tasks[taskId]) ;*/
     this.openedTask = this.fullBoard[columnindex].tasks[taskId] ;
+    console.log(this.openedTask)
     if (this.openedTask.assignedUser) {
       console.log('not null');
       // tslint:disable-next-line:prefer-for-of
@@ -245,6 +250,6 @@ export class KanbanBoardComponent implements OnInit {
 
   assignUser(userId: any ){
     console.log(userId.value);
-
   }
+
 }

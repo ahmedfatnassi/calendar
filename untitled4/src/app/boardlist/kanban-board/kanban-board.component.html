@@ -22,7 +22,7 @@
       </div>
 
     </div>
-    <button type="button" (click)="OpenModalTask(taskform,column.id)" class="btn btn-light">add task</button>
+    <button type="button" class="btn btn-light">add task</button>
 
   </div>
   <button (click)="OpenModalColumn(form)" class="align-self-start btn btn-success ml-2 ">add column</button>
@@ -69,23 +69,30 @@
     </button>
   </div>
   <div class="modal-body" >
-    <form #Eventform="ngForm" (ngSubmit)="createTask(Eventform);">
+    <form #Eventform="ngForm"  (ngSubmit)="updateTask(Eventform);">
 
       <div class="form-group">
         <label for="title2">Title  </label>
-        <input type="text" class="form-control" id="title2" required name = "title" ngModel>
+        <input type="text" [(ngModel)]="openedTask.title" class="form-control" id="title2" required name = "title" >
       </div>
-      <label for="doctorSelect1"> Users</label>
-      <select class="form-control" id="doctorSelect1"  name="assignedUser" ngModel  >
-        <option *ngFor="let pow of doctors" [ngValue]="pow" >{{pow.name}}</option>
-      </select>
+
+
+
+
+        <label for="employeeSelect"> <s></s> employee :</label>
+        <select class="form-control  " id="employeeSelect"  (change)="assignUser($event.target)" name="assignedUser" ngModel  >
+          <option *ngFor="let employee of employees" [ngValue]="employee" >{{employee.username}}</option>
+        </select>
+
+
+
       <div class="form-group">
         <label for="description">description</label>
-        <textarea class="form-control" id="description" name = "description" rows="3" ngModel></textarea>
+        <textarea class="form-control" id="description" name = "description" rows="3"  [(ngModel)]="openedTask.description"></textarea>
       </div>
       <label>
         Color <br>
-        <input [(colorPicker)]="color" name = "color" [style.background]="color" ngModel/>
+        <input [(colorPicker)]="color" name = "color" [style.background]="color" [(ngModel)]="openedTask.color"/>
       </label>
 
       <div class="modal-footer d-flex justify-content-between ">
@@ -119,21 +126,22 @@
     </div>
 
       <div *ngIf="openedtaskAssignedUser" class="d-flex flex-row">
-        <p class="font-weight-normal"> employee :  </p> <p class="font-weight-bold text-capitalize">   {{openedTask.title}}</p>
+        <p class="font-weight-normal"> employee :  </p> <p class="font-weight-bold text-capitalize">   {{openedtaskAssignedUser.username}}</p>
+      </div>
+      <div *ngIf="openedTask.description " class="d-flex flex-row">
+        <p class="font-weight-normal"> description :  </p> <p class=" text-capitalize ">   {{openedTask.description}}</p>
       </div>
 
-    <div class=" d-flex justify-content-around">
-    <label for="employeeSelect"> set employee :</label>
-    <select class="form-control col-7 ml-2" id="employeeSelect" (change)="assignUser($event.target)" name="employee" ngModel  >
-      <option [value]="employee.id" *ngFor="let employee of employees" [ngValue]="employee" >{{employee.username}}</option>
-    </select>
-    <button class="btn bg-success ml-2"    >
-      OK
-    </button>
+
+    <div class="   d-flex justify-content-between mt-2 modal-footer">
+      <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+        close
+      </button>
+      <button type="button" class="btn bg-success"  (click)="OpenModalTask(taskform)" >
+        update
+      </button>
+
     </div>
-    <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
-      close
-    </button>
   </div>
 
 

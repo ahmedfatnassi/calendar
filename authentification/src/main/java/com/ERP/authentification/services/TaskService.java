@@ -31,6 +31,10 @@ public class TaskService {
         return this.taskRepository.save(boardTask) ;
 
     }
+    public BoardTask update(BoardTask boardTask) {
+        return this.taskRepository.save(boardTask) ;
+
+    }
     public List<BoardTask> findAllByBoardID(Long id){
         return this.taskRepository.getAllByBoardID(id);
 

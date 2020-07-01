@@ -126,7 +126,7 @@ public class ActivitiService {
             if (!accuredIntab[i]){
                 BoardTask task = new BoardTask() ;
                 task.setColumnID(columnId) ;
-                task.setColor("white");
+                task.setColor("#ffffff");
                 task.setTitle(activitiTasks.get(i).getName());
                 task.setActivitiTaskId(activitiTasks.get(i).getId());
                 boardTasks1.add(task);

@@ -22,6 +22,10 @@ public class TaskController {
     public ResponseEntity<BoardTask> create(@RequestBody BoardTask boardTask) {
         return ResponseEntity.status(201).body(taskService.create(boardTask));
     }
+    @PostMapping
+    public ResponseEntity<BoardTask> update(@RequestBody BoardTask boardTask) {
+        return ResponseEntity.status(201).body(taskService.create(boardTask));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<BoardTask>> getAll(@PathVariable Long id)

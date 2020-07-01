@@ -97,6 +97,7 @@ public class ActivityTestController {
         activitiService.startProcess(requestId) ;
         request.setArchived(true);
         requestService.create(request);
+
         return ResponseEntity.ok().body(request) ;
     }
 }

@@ -23,8 +23,7 @@ public class BoardTask {
     private String title ;
     @Column(name ="description")
     private String description ;
-    @Column(name ="type")
-    private String type ;
+
     @Column(name ="color")
     private String color  ;
     @Column(name ="assignedUser")
@@ -54,13 +53,7 @@ public class BoardTask {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Long getPosition() {
         return position;
