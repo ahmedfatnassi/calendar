@@ -36,6 +36,26 @@ public class BoardTask {
     private Long  position ;
     @Column(name ="activitiTaskId")
     private String  activitiTaskId ;
+    @Column(name ="requestId")
+    private String  requestId ;
+    @Column(name ="type")
+    private RequestFieldType  type ;
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public RequestFieldType getType() {
+        return type;
+    }
+
+    public void setType(RequestFieldType type) {
+        this.type = type;
+    }
 
     public String getActivitiTaskId() {
         return activitiTaskId;

@@ -32,11 +32,18 @@ export class KanbanBoardComponent implements OnInit {
   task : any ;
   columnsIds: any[] ;
   openedTask: any;
+  openedNgModal: any;
   openedtaskAssignedUser: any;
+  openedTaskIndex: any ;
+  openedTaskResult: any ;
+  openedTaskColumnIndex: any ;
+  cannotExecuteWithoutAssignedUser: boolean ;
+
   employees: any[];
   ngOnInit() {
 
     this.fullBoard=[];
+    this.cannotExecuteWithoutAssignedUser = false ;
     this.route.params.subscribe(params => {
       this.boardid = params['id'];
       this.kanbanBoard.getColumns(this.boardid).subscribe(data => {
@@ -206,27 +213,27 @@ export class KanbanBoardComponent implements OnInit {
       description: form.value.description ,
       columnID: this.openedTask.columnID ,
       boardID  : this.boardid ,
-      position : this.openedTask.position
+      position : this.openedTask.position,
+      activitiTaskId: this.openedTask.activitiTaskId
     }
     console.log(this.task);
 
 
     this.kanbanBoard.createtask(this.task).subscribe(data => {
-      console.log( data);
+      this.fullBoard[this.openedTaskColumnIndex].tasks[this.openedTaskIndex] = JSON.parse(JSON.stringify(this.task))
       this.modal.dismissAll();
-     /* for (let i = 0; i < this.fullBoard.length ; i++) {
-          if(this.fullBoard[i].id === this.idOpenedTask) {
-            this.fullBoard[i].tasks.push(data);
-          }
-      }*/
     });
 
   }
 
-  openTask(columnindex: any , taskId: any, modal) {
+  openTask(columnindex: any , taskIndex: any, modal) {
+    this.cannotExecuteWithoutAssignedUser = false ;
     /*console.log(columnindex + ' ' + taskId) ;
     console.log(this.fullBoard[columnindex].tasks[taskId]) ;*/
-    this.openedTask = this.fullBoard[columnindex].tasks[taskId] ;
+    this.openedNgModal= modal ;
+    this.openedTaskIndex= taskIndex ;
+    this.openedTaskColumnIndex = columnindex ;
+    this.openedTask = this.fullBoard[columnindex].tasks[taskIndex] ;
     console.log(this.openedTask)
     if (this.openedTask.assignedUser) {
       console.log('not null');
@@ -251,5 +258,17 @@ export class KanbanBoardComponent implements OnInit {
   assignUser(userId: any ){
     console.log(userId.value);
   }
-
+  assignResult(result: any ){
+    console.log(result.value);
+    this.openedTaskResult = result.value ;
+  }
+execute(){
+  /*  if (!this.openedTask.assignedUser){
+      this.cannotExecuteWithoutAssignedUser = true ;
+    } else {*/
+    this.kanbanBoard.executeTask(this.openedTask,this.openedTaskResult).subscribe((data : any)=>{
+      console.log(data);
+    })
+    //}
+}
 }

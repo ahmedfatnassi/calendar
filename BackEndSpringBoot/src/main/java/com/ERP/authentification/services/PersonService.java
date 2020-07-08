@@ -32,6 +32,11 @@ public class PersonService {
         return this.personRepository.findByUsername(username).get() ;
 
     }
+    public Person findbyId(Long id ) {
+
+        return this.personRepository.findById(id).get() ;
+
+    }
     public void deletebyid(Long id) {
         this.personRepository.deleteById(id) ;
         //this.personRepository.deleteById(id);

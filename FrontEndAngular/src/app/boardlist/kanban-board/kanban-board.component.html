@@ -81,7 +81,7 @@
 
         <label for="employeeSelect"> <s></s> employee :</label>
         <select class="form-control  " id="employeeSelect"  (change)="assignUser($event.target)" name="assignedUser" ngModel  >
-          <option *ngFor="let employee of employees" [ngValue]="employee" >{{employee.username}}</option>
+          <option *ngFor="let employee of employees" [ngValue]="employee    " >{{employee.username}}</option>
         </select>
 
 
@@ -90,10 +90,14 @@
         <label for="description">description</label>
         <textarea class="form-control" id="description" name = "description" rows="3"  [(ngModel)]="openedTask.description"></textarea>
       </div>
+
+
       <label>
         Color <br>
         <input [(colorPicker)]="color" name = "color" [style.background]="color" [(ngModel)]="openedTask.color"/>
       </label>
+
+
 
       <div class="modal-footer d-flex justify-content-between ">
         <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
@@ -101,7 +105,7 @@
         </button>
 
         <button class="btn bg-success"    >
-          OK
+          save
         </button>
       </div>
     </form>
@@ -131,16 +135,33 @@
       <div *ngIf="openedTask.description " class="d-flex flex-row">
         <p class="font-weight-normal"> description :  </p> <p class=" text-capitalize ">   {{openedTask.description}}</p>
       </div>
+    <div *ngIf="openedTask.result " class="d-flex flex-row">
+      <p class="font-weight-normal"> description :  </p> <p class=" text-capitalize ">   {{openedTask.result}}</p>
+    </div>
+    <div *ngIf=" cannotExecuteWithoutAssignedUser " class="d-flex flex-row">
+      <p class="text-danger"> cannot execute without assign it to user   </p>
+    </div>
+    <div class="mb-2">
+      <label for="taskResult"> <s></s> Result :</label>
+      <select class="form-control  " id="taskResult"  (change)="assignResult($event.target)" name="result" ngModel  >
+        <option  value="APPROVED" > approved </option>
+        <option  value="DISAPPROVED" > disapproved </option>
+        <option  value="TODOCTOR" > to doctor </option>
+      </select>
 
-
+    </div>
     <div class="   d-flex justify-content-between mt-2 modal-footer">
       <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
         close
       </button>
-      <button type="button" class="btn bg-success"  (click)="OpenModalTask(taskform)" >
-        update
-      </button>
-
+      <div>
+        <button type="button" class="btn btn-outline-info mr-2"  (click)="OpenModalTask(taskform)" >
+          update
+        </button>
+        <button type="button" class="btn bg-success"  (click)="execute()" >
+          execute
+        </button>
+      </div>
     </div>
   </div>
 

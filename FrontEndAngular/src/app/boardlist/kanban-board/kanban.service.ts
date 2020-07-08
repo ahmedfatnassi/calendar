@@ -44,4 +44,10 @@ export class KanbanService {
   getEmployeeById(id: any) {
     return this.http.get<any[]>('http://localhost:8080/employees/getById/' + id, this.httpOptions);
   }
+  executeTask(task: any , result : any ){
+    return this.http.post<any[]>('http://localhost:8080/tasks/execute' ,task, { params :
+        {'result': result }
+    });
+
+  }
 }

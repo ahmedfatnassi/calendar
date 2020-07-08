@@ -97,6 +97,7 @@ public class ActivitiService {
 
     }
     public void claimTask(String taskid, String user) {
+
         taskService.claim(taskid,user);
     }
     public void setVariableTask(String taskid, String variablename ,Object variablevalue ) {
@@ -126,6 +127,7 @@ public class ActivitiService {
             if (!accuredIntab[i]){
                 BoardTask task = new BoardTask() ;
                 task.setColumnID(columnId) ;
+               // task.setRequestId(re); ;
                 task.setColor("#ffffff");
                 task.setTitle(activitiTasks.get(i).getName());
                 task.setActivitiTaskId(activitiTasks.get(i).getId());
@@ -160,5 +162,9 @@ public class ActivitiService {
 
         
 
+    }
+    public Task getTaskById(String taskId) {
+
+        return  taskService.createTaskQuery().taskId(taskId).singleResult() ;
     }
 }

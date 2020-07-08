@@ -83,14 +83,13 @@ public class ActivityTestController {
     }
     @GetMapping("/complete/{id}/{name}")
     public void  completeProcess(@PathVariable String id,@PathVariable String name) {
-        taskService.claim(id, "ahmed");
+
         taskService.setVariable(id ,name,true);
-        //taskService.setVariable(id ,"ahmed",true);
-        taskService.complete(id);
+         taskService.complete(id);
 
     }
 
-    @GetMapping("/execute/{requestId}/{columnId}")
+    @GetMapping("/start_process/{requestId}/{columnId}")
     public ResponseEntity<Request>  execute(@PathVariable Long requestId,@PathVariable Long columnId) {
         Request request  = requestService.getById(requestId);
         request.setDefaultColumn(columnId);
