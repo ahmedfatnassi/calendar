@@ -33,7 +33,7 @@ public class Request {
     @Column(name ="patientLastname")
     private String  patientLastname ;
     @Column(name ="boardId")
-    private String  boardId ;
+    private Long  boardid ;
     @Column(name ="dateOfBirth")
     private Date dateOfBirth  ;
 
@@ -50,6 +50,13 @@ public class Request {
         this.activitiProcessId = activitiProcessId;
     }
 
+    public Long getBoardid() {
+        return boardid;
+    }
+
+    public void setBoardid(Long boardid) {
+        this.boardid = boardid;
+    }
 
     public Long getDefaultColumn() {
         return defaultColumn;
@@ -67,9 +74,7 @@ public class Request {
         isArchived = archived;
     }
 
-    public String getBoardId() {
-        return boardId;
-    }
+
 
     public Long getId() {
         return id;
@@ -77,10 +82,6 @@ public class Request {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setBoardId(String boardId) {
-        this.boardId = boardId;
     }
 
     public String getPatientLastname() {

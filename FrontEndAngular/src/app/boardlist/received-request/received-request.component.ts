@@ -5,6 +5,7 @@ import {NgForm} from '@angular/forms';
 import {EventsService} from '../../events.service';
 import {BoardlistService} from '../boardlist.service';
 import {KanbanService} from '../kanban-board/kanban.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-received-request',
@@ -24,7 +25,7 @@ export class ReceivedRequestComponent implements OnInit {
   constructor(private receivedRequestService: ReceivedRequestService,
               private modal: NgbModal,
               private boardService: BoardlistService,
-              private kanbanBoard: KanbanService,) { }
+              private kanbanBoard: KanbanService,private router: Router) { }
 
   ngOnInit() {
     this.listRequestIds = [];
@@ -43,6 +44,8 @@ export class ReceivedRequestComponent implements OnInit {
         this.requests[i]['acts']=[];
 
       }
+      console.log('list Request ids  ')
+      console.log(requests)
       this.receivedRequestService.getAllActsByRequestsId(this.listRequestIds).subscribe((acts: any ) => {
         console.log('salem');
         console.log(acts);
@@ -89,7 +92,7 @@ export class ReceivedRequestComponent implements OnInit {
     console.log(form.value);
     this.modal.dismissAll() ;
     this.receivedRequestService.execute(this.selectedRequest, form.value.column).subscribe((data: any[]) => {
-      console.log(data) ;
+      this.router.navigate(['/received_request']);
     }) ;
   }
   checkedBoard(boardid: any){

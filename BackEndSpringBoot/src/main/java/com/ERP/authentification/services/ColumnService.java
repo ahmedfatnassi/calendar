@@ -27,6 +27,10 @@ public class ColumnService {
         return this.columnRepository.findAllByBoardId(id);
 
     }
+    public BoardColumn findColumnById(long id){
+        return this.columnRepository.findById(id).get();
+
+    }
     public BoardColumn create(BoardColumn boardColumn) {
         return this.columnRepository.save(boardColumn) ;
 

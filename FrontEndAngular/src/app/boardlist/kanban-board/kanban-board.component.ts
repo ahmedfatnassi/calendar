@@ -125,7 +125,7 @@ export class KanbanBoardComponent implements OnInit {
         }) ;
 
 
-    } else { // problem because we have same data array
+    } else { // problem because we have same data array or column
 
       var indexcolumn = +  event.container.element.nativeElement.attributes.getNamedItem("id").value ;
       console.log(event);
@@ -208,12 +208,13 @@ export class KanbanBoardComponent implements OnInit {
     this.task = {
       id : this.openedTask.id ,
       title: form.value.title,
-      assignedUser : '' + form.value.assignedUser.id,
+      assignedUser : form.value.assignedUser.id,
       color: this.color,
       description: form.value.description ,
       columnID: this.openedTask.columnID ,
       boardID  : this.boardid ,
       position : this.openedTask.position,
+      actId : this.openedTask.actId,
       activitiTaskId: this.openedTask.activitiTaskId
     }
     console.log(this.task);

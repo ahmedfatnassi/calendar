@@ -35,6 +35,7 @@ public class ActivitiService {
     private RequestService requestService ;
     @Autowired
     private ActService actService ;
+
     @Autowired
     public com.ERP.authentification.services.TaskService taskBoardService ;
     public void startProcess( Long requestId) {
@@ -44,22 +45,30 @@ public class ActivitiService {
 //DENTAL ,DENTAL_PROSTHESIS,CONSULTATION,PARAMEDICAL_MEDICAL , BIOLOGY, CHILDBIRTH , PHARMACY
         Request request = requestService.getById(requestId) ;
         List<Act> actList = actService.findAllByRequestId(requestId);
+        System.out.println(actList);
         Map<String, Object> variables = new HashMap<>(7) ;
         int[] numberacts = new int[7];
+        variables.put("toDoctorDental", false);
+        variables.put("toDoctorProthesis",false);
+        variables.put("toDoctorVisit", false);
+        variables.put("toDoctorParamedical",false );
+        variables.put("toDoctorBiology",false );
+        variables.put("toDoctorPharmacy",false );
+        variables.put("toDoctorChild", false);
         for (int i = 0; i < actList.size(); i++) {
-            if(actList.get(i).getType().equals("DENTAL")){
+            if(actList.get(i).getType().toString().equals("DENTAL")){
                 numberacts[0]++;
-            }else if(actList.get(i).getType().equals("DENTAL_PROSTHESIS")){
+            }else if(actList.get(i).getType().toString().equals("DENTAL_PROSTHESIS")){
                 numberacts[1]++;
-            }else if(actList.get(i).getType().equals("CONSULTATION")){
+            }else if(actList.get(i).getType().toString().equals("CONSULTATION")){
                 numberacts[2]++;
-            }else if(actList.get(i).getType().equals("PARAMEDICAL_MEDICAL")){
+            }else if(actList.get(i).getType().toString().equals("PARAMEDICAL_MEDICAL")){
                 numberacts[3]++;
-            }else if(actList.get(i).getType().equals("BIOLOGY")){
+            }else if(actList.get(i).getType().toString().equals("BIOLOGY")){
                 numberacts[4]++;
-            }else if(actList.get(i).getType().equals("CHILDBIRTH")){
+            }else if(actList.get(i).getType().toString().equals("CHILDBIRTH")){
                 numberacts[5]++;
-            }else if(actList.get(i).getType().equals("PHARMACY")){
+            }else if(actList.get(i).getType().toString().equals("PHARMACY")){
                 numberacts[6]++;
             }
         }
@@ -72,18 +81,14 @@ public class ActivitiService {
         variables.put("pharmacyLength", numberacts[6]+"");
 
 // need to set the exclusive in case you have 0 act
-        variables.put("toDoctorDental", false);
-        variables.put("toDoctorProthesis",false);
-        variables.put("toDoctorVisit", false);
-        variables.put("toDoctorParamedical ",false );
-        variables.put("toDoctorBiology",false );
-        variables.put("toDoctorPharmacy ",false );
-        variables.put("toDoctorChild ", false);
+
+        variables.put("eligibility", true);
 
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess", variables);
         request.setActivitiProcessId(processInstance.getProcessInstanceId());
         requestService.create(request) ;
-        this.createBoardTasksFromActivitiTasks(processInstance.getProcessInstanceId(),request.getDefaultColumn());
+        this.createAllTaskFromActs(requestId,request.getDefaultColumn(),processInstance.getProcessInstanceId(),actList) ;
+        //this.orchestration(processInstance.getProcessInstanceId(),request.getDefaultColumn());
     }
 
     public List<Task> getAllTasksByAssignedUser(String assignee) {
@@ -103,7 +108,7 @@ public class ActivitiService {
     public void setVariableTask(String taskid, String variablename ,Object variablevalue ) {
         taskService.setVariable(taskid,variablename ,variablevalue);
     }
-    public void createBoardTasksFromActivitiTasks(String processInstanceId ,  Long columnId){
+    public void orchestration(String processInstanceId ,  Long columnId){
         List<Task> activitiTasks = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list() ;
         ArrayList<String> activitiTaskIds = new ArrayList<>() ;
         for (int i = 0; i <  activitiTasks.size(); i++) {
@@ -167,4 +172,95 @@ public class ActivitiService {
 
         return  taskService.createTaskQuery().taskId(taskId).singleResult() ;
     }
+    public void createAllTaskFromActs( Long requestId ,Long columnId ,String processInstanceId , List<Act> acts ) {
+        List<Task> activitiTasks = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list() ;
+        List<BoardTask> boardTasks = new ArrayList<>() ;
+        boolean[] added = new boolean[acts.size()] ;
+        for (int i = 0; i < activitiTasks.size(); i++) {
+
+            BoardTask taskBoard = new BoardTask() ;
+            taskBoard.setColumnID(columnId) ;
+            taskBoard.setColor("#ffffff");
+            taskBoard.setTitle(activitiTasks.get(i).getName());
+            taskBoard.setActivitiTaskId(activitiTasks.get(i).getId());
+
+// it only
+                if(activitiTasks.get(i).getName().equals("dental act")){
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("DENTAL") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }else if(activitiTasks.get(i).getName().equals("dental prosthesis")){
+                    System.out.println("dental prosthesis");
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("DENTAL_PROSTHESIS") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }else if(activitiTasks.get(i).getName().equals("consultation & visits")){
+                    System.out.println("consultation & visits");
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("CONSULTATION") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }else if(activitiTasks.get(i).getName().equals("paramedical&medical acts")){
+                    System.out.println("paramedical&medical acts");
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("PARAMEDICAL_MEDICAL") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }else if(activitiTasks.get(i).getName().equals("biology")){
+                    System.out.println("biology");
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("BIOLOGY") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }else if(activitiTasks.get(i).getName().equals("pharmacy")){
+                    System.out.println("pharmacy");
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("PHARMACY") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }else if(activitiTasks.get(i).getName().equals("child birth")){
+                    System.out.println("child birth");
+                    for (int j = 0; j <acts.size(); j++) {
+                        if(acts.get(j).getType().toString().equals("CHILDBIRTH") && !added[j]){
+                            taskBoard.setActId(acts.get(j).getId());
+                            added[j]= true;
+                            break;
+                        }
+                    }
+                }
+            System.out.println("taskBoard");
+            System.out.println(taskBoard);
+            boardTasks.add(taskBoard);
+
+        }
+        List<BoardTask> list = this.taskBoardService.createAll(boardTasks);
+        System.out.println(list);
+    }
+    public void completeApprovedTask(Long taskid) {
+
+    }
+    public void ToDoctorComplete (Long taskid) {
+
+    }
+
 }

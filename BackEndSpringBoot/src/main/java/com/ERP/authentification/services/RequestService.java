@@ -25,8 +25,12 @@ public class RequestService {
         return this.requestRepository.findAll();
 
     }
+    public List<Request> saveAll(List<Request> l){
+        return this.requestRepository.saveAll(l);
+
+    }
     public List<Request> findAllNonExecuted(){
-        return this.requestRepository.findAllByIsArchivedIsTrue();
+        return this.requestRepository.findAllByIsArchivedIsFalse();
 
     }
 

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface RequestRepository  extends JpaRepository<Request, Long> {
-    public List<Request> findAllByIsArchivedIsTrue();
+    public List<Request> findAllByIsArchivedIsFalse();
 }

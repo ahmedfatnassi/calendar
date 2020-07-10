@@ -30,12 +30,7 @@ public class TaskController {
     public ResponseEntity<BoardTask> update(@RequestBody BoardTask boardTask) {
 
         System.out.println(boardTask);
-         if(!boardTask.getAssignedUser().equals(null) && !boardTask.getActivitiTaskId().equals(null)){
-            Person person = personService.findbyId(boardTask.getAssignedUser());
-
-             System.out.println("claimed task");
-        }
-        return ResponseEntity.status(201).body(boardTask);
+        return ResponseEntity.status(201).body(taskService.create(boardTask));
     }
 
     @GetMapping("/{id}")

@@ -2,13 +2,12 @@ package com.ERP.authentification.contollers;
 
 import com.ERP.authentification.Models.Act;
 import com.ERP.authentification.Models.Agent;
+import com.ERP.authentification.Models.BoardColumn;
 import com.ERP.authentification.Models.Request;
-import com.ERP.authentification.services.ActService;
-import com.ERP.authentification.services.ActivitiService;
-import com.ERP.authentification.services.AgentService;
-import com.ERP.authentification.services.RequestService;
+import com.ERP.authentification.services.*;
 import lombok.RequiredArgsConstructor;
 import org.activiti.engine.*;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,8 @@ public class ActivityTestController {
     private RuntimeService runtimeService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private ColumnService columnService;
 
     @Autowired
     private ManagementService managementService ;
@@ -89,10 +90,15 @@ public class ActivityTestController {
 
     }
 
-    @GetMapping("/start_process/{requestId}/{columnId}")
+    @GetMapping("/execute/{requestId}/{columnId}")
     public ResponseEntity<Request>  execute(@PathVariable Long requestId,@PathVariable Long columnId) {
+
         Request request  = requestService.getById(requestId);
         request.setDefaultColumn(columnId);
+
+        BoardColumn column = columnService.findColumnById(columnId) ;
+        request.setBoardid(column.getBoardId());
+
         activitiService.startProcess(requestId) ;
         request.setArchived(true);
         requestService.create(request);
