@@ -38,12 +38,13 @@ export class KanbanBoardComponent implements OnInit {
   openedTaskResult: any ;
   openedTaskColumnIndex: any ;
   cannotExecuteWithoutAssignedUser: boolean ;
-
+  openedTaskResultIsTrue : boolean ;
   employees: any[];
   ngOnInit() {
 
     this.fullBoard=[];
     this.cannotExecuteWithoutAssignedUser = false ;
+    this.openedTaskResultIsTrue = false ;
     this.route.params.subscribe(params => {
       this.boardid = params['id'];
       this.kanbanBoard.getColumns(this.boardid).subscribe(data => {
@@ -229,6 +230,7 @@ export class KanbanBoardComponent implements OnInit {
 
   openTask(columnindex: any , taskIndex: any, modal) {
     this.cannotExecuteWithoutAssignedUser = false ;
+    this.openedTaskResultIsTrue = false;
     /*console.log(columnindex + ' ' + taskId) ;
     console.log(this.fullBoard[columnindex].tasks[taskId]) ;*/
     this.openedNgModal= modal ;
@@ -261,15 +263,22 @@ export class KanbanBoardComponent implements OnInit {
   }
   assignResult(result: any ){
     console.log(result.value);
+    this.openedTaskResultIsTrue = true ;
     this.openedTaskResult = result.value ;
+
   }
 execute(){
   /*  if (!this.openedTask.assignedUser){
       this.cannotExecuteWithoutAssignedUser = true ;
     } else {*/
     this.kanbanBoard.executeTask(this.openedTask,this.openedTaskResult).subscribe((data : any)=>{
-      console.log(data);
-    })
+
+      const index = this.fullBoard[this.openedTaskColumnIndex].tasks.indexOf(data);
+      if (index > -1) {
+        this.fullBoard[this.openedTaskColumnIndex].splice(index, 1);
+      }
+      this.modal.dismissAll();
+    }) ;
     //}
 }
 }

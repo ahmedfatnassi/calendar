@@ -39,6 +39,10 @@ public class TaskService {
         return this.taskRepository.getAllByBoardID(id);
 
     }
+    public List<BoardTask> findAllByActIdIn(List<Long> ids){
+        return this.taskRepository.findAllByActIdIn(ids);
+
+    }
     public List<BoardTask> findAllByActivitiTaskIdIn (List<String> activiTaskIds){
         return this.taskRepository.findAllByActivitiTaskIdIn(activiTaskIds);
 
@@ -80,6 +84,11 @@ public class TaskService {
     public void deleteAll( List<BoardTask> list){
 
          this.taskRepository.deleteAll(list);
+
+    }
+    public void delete( Long id ){
+
+        this.taskRepository.deleteById(id);
 
     }
 }

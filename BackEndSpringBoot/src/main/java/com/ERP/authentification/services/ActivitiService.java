@@ -35,6 +35,8 @@ public class ActivitiService {
     private RequestService requestService ;
     @Autowired
     private ActService actService ;
+    @Autowired
+    private  TaskRepository taskRepository;
 
     @Autowired
     public com.ERP.authentification.services.TaskService taskBoardService ;
@@ -54,6 +56,7 @@ public class ActivitiService {
         variables.put("toDoctorParamedical",false );
         variables.put("toDoctorBiology",false );
         variables.put("toDoctorPharmacy",false );
+        variables.put("senderEmailAddress","ahmedfatnassi23@gmail.com" );
         variables.put("toDoctorChild", false);
         for (int i = 0; i < actList.size(); i++) {
             if(actList.get(i).getType().toString().equals("DENTAL")){
@@ -87,7 +90,7 @@ public class ActivitiService {
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess", variables);
         request.setActivitiProcessId(processInstance.getProcessInstanceId());
         requestService.create(request) ;
-        this.createAllTaskFromActs(requestId,request.getDefaultColumn(),processInstance.getProcessInstanceId(),actList) ;
+        this.createAllTaskFromActs(request.getDefaultColumn(),processInstance.getProcessInstanceId(),actList) ;
         //this.orchestration(processInstance.getProcessInstanceId(),request.getDefaultColumn());
     }
 
@@ -172,7 +175,7 @@ public class ActivitiService {
 
         return  taskService.createTaskQuery().taskId(taskId).singleResult() ;
     }
-    public void createAllTaskFromActs( Long requestId ,Long columnId ,String processInstanceId , List<Act> acts ) {
+    public void createAllTaskFromActs(Long columnId ,String processInstanceId , List<Act> acts ) {
         List<Task> activitiTasks = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list() ;
         List<BoardTask> boardTasks = new ArrayList<>() ;
         boolean[] added = new boolean[acts.size()] ;
@@ -256,7 +259,55 @@ public class ActivitiService {
         List<BoardTask> list = this.taskBoardService.createAll(boardTasks);
         System.out.println(list);
     }
-    public void completeApprovedTask(Long taskid) {
+    public BoardTask completeApprovedTask(BoardTask task) {
+
+        taskService.complete(task.getActivitiTaskId());
+
+        Request request = requestService.getById(actService.getById(task.getActId()).getRequestId());
+
+        List<Act> acts  = actService.findAllByRequestId(actService.getById(task.getActId()).getRequestId()) ;
+        task.setColor("#ffffff");
+        task.setAssignedUser(null);
+        task.setColumnID(request.getDefaultColumn());
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(request.getActivitiProcessId()).active().list();
+        List<Long> actIds = new ArrayList<>();
+        for (int i = 0; i < acts.size(); i++) {
+            actIds.add(acts.get(i).getId());
+        }
+        List<BoardTask> boardTasks = taskBoardService.findAllByActIdIn(actIds) ;
+        boolean in ;
+        int activitiNewTaskindex =-1 ;
+
+        System.out.println(boardTasks.toString());
+        System.out.println(tasks.toString());
+        if(boardTasks.size() == tasks.size()) {
+            for (int i = 0; i < tasks.size(); i++) {
+                in = false;
+                for (int j = 0; j < boardTasks.size(); j++) {
+                    if (tasks.get(i).getId() == boardTasks.get(j).getActivitiTaskId()) {
+                        in = true;
+                        break;
+                    }
+                }
+                if (!in) {
+                    activitiNewTaskindex = i;
+                    System.out.println("activitiNewTaskindex ");
+                    break;
+                }
+            }
+
+                task.setActivitiTaskId(tasks.get(activitiNewTaskindex).getId());
+                task.setTitle("Doctor Task" );
+                taskBoardService.create(task) ;
+                System.out.println("task completed and create new task");
+                 return task ;
+
+        } else {
+            System.out.println("task completed and deleted ");
+            taskBoardService.delete(task.getId());
+            return null ;
+        }
+
 
     }
     public void ToDoctorComplete (Long taskid) {

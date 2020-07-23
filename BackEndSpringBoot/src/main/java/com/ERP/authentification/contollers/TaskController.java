@@ -59,8 +59,9 @@ public class TaskController {
             Person person = personService.findbyId(boardTask.getAssignedUser());
             activitiService.claimTask(boardTask.getActivitiTaskId(),person.getUsername());*/
            Task task = activitiService.getTaskById(boardTask.getActivitiTaskId()) ;
-           //
-            if(task.getName().equals("validate")){
+
+
+           /* if(task.getName().equals("validate")){
                 System.out.println("validate");
                 if(result.equals("APPROVED")) {
                     activitiService.setVariableTask(boardTask.getActivitiTaskId(), "eligibility", true);
@@ -68,24 +69,79 @@ public class TaskController {
                     activitiService.setVariableTask(boardTask.getActivitiTaskId(), "eligibility", false);
                 }
                 activitiService.completeTask(boardTask.getActivitiTaskId());
-            }else if(task.getName().equals("dental act")){
+            }else */if(task.getName().equals("dental act")){
                 System.out.println("dental act");
+                if(result.toString().equals("APPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorDental",false );
+                }else if(result.toString().equals("DISAPPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorDental",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorDental",true );
+                }
             }else if(task.getName().equals("dental prosthesis")){
                 System.out.println("dental prosthesis");
+            if(result.toString().equals("APPROVED")){
+                activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorProthesis",false );
+
+                }else if(result.toString().equals("DISAPPROVED")){
+                activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorProthesis",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorProthesis",true );
+                }
             }else if(task.getName().equals("consultation & visits")){
                 System.out.println("consultation & visits");
+
+                if(result.toString().equals("APPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorVisit",false );
+                }else if(result.toString().equals("DISAPPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorVisit",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorVisit",true );
+                }
             }else if(task.getName().equals("paramedical&medical acts")){
                 System.out.println("paramedical&medical acts");
+                if(result.toString().equals("APPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorParamedical",false );
+                }else if(result.toString().equals("DISAPPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorParamedical",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorParamedical",true );
+                }
             }else if(task.getName().equals("biology")){
                 System.out.println("biology");
+                if(result.toString().equals("APPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorBiology",false );
+                }else if(result.toString().equals("DISAPPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorBiology",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorBiology",true );
+                }
             }else if(task.getName().equals("pharmacy")){
                 System.out.println("pharmacy");
+                if(result.toString().equals("APPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorPharmacy",false );
+                }else if(result.toString().equals("DISAPPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorPharmacy",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorPharmacy",true );
+                }
             }else if(task.getName().equals("child birth")){
                 System.out.println("child birth");
+                if(result.toString().equals("APPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorChild",false );
+                }else if(result.toString().equals("DISAPPROVED")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorChild",false );
+                } else if(result.toString().equals("TODOCTOR")){
+                    activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorChild",true );
+                }
             }
+
+
             System.out.println("claimed task");
             //activitiService.createBoardTasksFromActivitiTasks();
-
+        activitiService.claimTask(boardTask.getActivitiTaskId(), boardTask.getAssignedUser().toString());
+        //activitiService.completeTask(boardTask.getActivitiTaskId());
+        activitiService.completeApprovedTask(boardTask);
         //}
         return ResponseEntity.status(201).body(boardTask);
     }

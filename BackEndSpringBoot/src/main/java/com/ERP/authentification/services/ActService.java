@@ -2,6 +2,7 @@ package com.ERP.authentification.services;
 
 import com.ERP.authentification.Models.Act;
 import com.ERP.authentification.Models.Board;
+import com.ERP.authentification.Models.Request;
 import com.ERP.authentification.repositories.ActRepository;
 import com.ERP.authentification.repositories.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,13 @@ public class ActService {
     }
     public List<Act>  findAllByRequestId(Long id ) {
         return this.actRepository.findAllByRequestId(id) ;
-
     }
     public List<Act>  createAll(List<Act> acts ) {
         return this.actRepository.saveAll(acts) ;
+
+    }
+    public Act getById(Long id ) {
+        return this.actRepository.findById(id).get() ;
 
     }
 }

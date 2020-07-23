@@ -17,4 +17,5 @@ public interface TaskRepository  extends JpaRepository<BoardTask, Long> {
     public List<BoardTask> findAllByColumnIDAndPositionBetween(Long idColumn , Long Postioninit , Long positionfinal);
     public List<BoardTask> findAllByActivitiTaskIdIn(List<String> taskActivitiIds);
     public List<BoardTask> findAllByColumnIDIn(List<Long> columnsIds);
+    public  List<BoardTask> findAllByActIdIn(List<Long> actIds) ;
 }

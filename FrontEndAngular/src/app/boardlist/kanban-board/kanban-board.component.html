@@ -141,6 +141,9 @@
     <div *ngIf=" cannotExecuteWithoutAssignedUser " class="d-flex flex-row">
       <p class="text-danger"> cannot execute without assign it to user   </p>
     </div>
+    <div *ngIf="! openedtaskAssignedUser " class="d-flex flex-row">
+      <p class="text-danger"> ! can't execute without assigning  employee  </p>
+    </div>
     <div class="mb-2">
       <label for="taskResult"> <s></s> Result :</label>
       <select class="form-control  " id="taskResult"  (change)="assignResult($event.target)" name="result" ngModel  >
@@ -158,7 +161,7 @@
         <button type="button" class="btn btn-outline-info mr-2"  (click)="OpenModalTask(taskform)" >
           update
         </button>
-        <button type="button" class="btn bg-success"  (click)="execute()" >
+        <button type="button" class="btn bg-success" [disabled]=" !openedtaskAssignedUser || !openedTaskResultIsTrue" (click)="execute()" >
           execute
         </button>
       </div>
