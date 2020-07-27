@@ -37,7 +37,11 @@ export class LoginComponent implements OnInit {
       data => {
        // this.notification.connect();
         console.log(data) ;
-        this.router.navigate(['/home']);
+       // this.router.navigate(['/home']);
+        this.router.navigate(['/home'])
+          .then(() => {
+            window.location.reload();
+          });
         // tslint:disable-next-line:prefer-const
       /*  const headers = {
           login: data.username,

@@ -81,10 +81,10 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       header: {
         left: 'prev,next today ',
         center: 'title ',
-        right: 'dayGridMonth , timeGridWeek , timeGridDay ,listWeek ,resourceTimeline ,resourceTimeGridDay   '
+        right: 'dayGridMonth , timeGridWeek , timeGridDay ,listWeek  ,resourceTimeGridDay   '
       },
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source' ,
-      plugins: [dayGridPlugin, interactionPlugin, timeGrigPlugin, listPlugin , resourceTimelinePlugin , resourceTimeGridPlugin ] ,
+      plugins: [dayGridPlugin, interactionPlugin, timeGrigPlugin, listPlugin  , resourceTimeGridPlugin ] ,
     };
     this.eventservice.getDoctors().subscribe(data => {
       this.doctors = Object.keys(data).map(i => data[i]);
@@ -347,11 +347,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
 
     }];
   }
-  logout() {
-    console.log('logout') ;
-    this.eventservice.logout() ;
-    this.router.navigate(['/home']);
-  }
+
   ngOnDestroy(): void {
 
   }

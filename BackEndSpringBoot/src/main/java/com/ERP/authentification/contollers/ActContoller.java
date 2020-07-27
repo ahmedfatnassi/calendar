@@ -2,6 +2,7 @@ package com.ERP.authentification.contollers;
 
 import com.ERP.authentification.Models.Act;
 import com.ERP.authentification.Models.Agent;
+import com.ERP.authentification.Models.Employee;
 import com.ERP.authentification.services.ActService;
 import com.ERP.authentification.services.AgentService;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,11 @@ public class ActContoller {
         System.out.println(requestIds);
         return ResponseEntity.ok().body(actService.findAllByRequestList(requestIds)) ;
     }
+    @GetMapping("/{id}")
+    ResponseEntity<Act> get(@PathVariable Long id) {
 
+
+        return ResponseEntity.ok().body(actService.getById(id));
+
+    }
 }

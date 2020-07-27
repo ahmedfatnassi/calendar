@@ -39,5 +39,9 @@ public void deleteAllAll(){
 	 this.medecinRepository.deleteAll();
 			
 }
+	public void deletebyid(Long id) {
+		this.medecinRepository.deleteById(id); ;
+		//this.personRepository.deleteById(id);
 
+	}
 }

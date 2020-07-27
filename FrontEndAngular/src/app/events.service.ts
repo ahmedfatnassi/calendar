@@ -30,6 +30,7 @@ export class EventsService {
     console.log( this.currentUserSubject.value )
     return this.currentUserSubject.value;
   }
+
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',

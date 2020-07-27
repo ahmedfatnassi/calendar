@@ -35,6 +35,7 @@ export class KanbanBoardComponent implements OnInit {
   openedNgModal: any;
   openedtaskAssignedUser: any;
   openedTaskIndex: any ;
+  openedAct :any
   openedTaskResult: any ;
   openedTaskColumnIndex: any ;
   cannotExecuteWithoutAssignedUser: boolean ;
@@ -236,6 +237,7 @@ export class KanbanBoardComponent implements OnInit {
     this.openedNgModal= modal ;
     this.openedTaskIndex= taskIndex ;
     this.openedTaskColumnIndex = columnindex ;
+
     this.openedTask = this.fullBoard[columnindex].tasks[taskIndex] ;
     console.log(this.openedTask)
     if (this.openedTask.assignedUser) {
@@ -248,13 +250,18 @@ export class KanbanBoardComponent implements OnInit {
         }
       }
 
+
     } else {
       console.log('null');
       this.openedtaskAssignedUser = null ;
     }
     console.log(this.openedtaskAssignedUser)
+    this.kanbanBoard.getActById(this.openedTask.actId).subscribe((data: any)=>{
+      this.openedAct=data ;
+      console.log(data)
+      this.modal.open(modal);
+    }) ;
 
-    this.modal.open(modal);
   }
 
 

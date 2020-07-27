@@ -61,5 +61,13 @@ export class SettingsService {
   updateColumn(value: any ) {
     return this.http.post('http://localhost:8080/columns' , value , this.httpOptions) ;
   }
-
+  getallDoctor() {
+    return   this.http.get<any[]>('http://localhost:8080/doctors', this.httpOptions) ;
+  }
+  createDoctor(value: any ) {
+    return this.http.post('http://localhost:8080/doctors' , value , this.httpOptions) ;
+  }
+  deleteDoctorbyid(id: any ) {
+    return this.http.delete('http://localhost:8080/doctors/delete/' + id  , this.httpOptions) ;
+  }
 }

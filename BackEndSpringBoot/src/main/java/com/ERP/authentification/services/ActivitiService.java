@@ -304,6 +304,7 @@ public class ActivitiService {
 
         } else {
             System.out.println("task completed and deleted ");
+           // taskService.setVariable(task.getActivitiTaskId(),"senderEmailAddress","ahmedfatnassi23@gmail.com");
             taskBoardService.delete(task.getId());
             return null ;
         }

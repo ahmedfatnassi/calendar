@@ -30,7 +30,7 @@
     <serviceTask id="mailtask1" name="response" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${senderEmailAddress}]]></activiti:string>
+          <activiti:string><![CDATA[ahmedfatnassi23@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[test@activiti.org]]></activiti:string>

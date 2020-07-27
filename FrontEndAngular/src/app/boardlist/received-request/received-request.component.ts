@@ -65,6 +65,7 @@ export class ReceivedRequestComponent implements OnInit {
             }
         }
         this.receivedRequestService.getAllInsuredsByRequestsId(this.listInsuredId).subscribe((insureds: any ) =>{
+          console.log(insureds)
           for (let i = 0; i < requests.length; i++) {
 
             for (let j = 0; j < insureds.length; j++) {

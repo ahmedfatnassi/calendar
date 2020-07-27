@@ -11,8 +11,10 @@ import {BoardlistService} from '../boardlist/boardlist.service';
 })
 export class SettingsComponent implements OnInit {
   visibileAddEmployee : boolean ;
+  visibileAdddoctors : boolean ;
   updatedEmplyee : any;
   employees: any  ;
+  doctors: any  ;
   teams : any ;
   subscription : any ;
   openteamlist : any ;
@@ -30,9 +32,15 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
     this.updateOrClose = 'update';
     this.visibileAddEmployee = false ;
+    this.visibileAdddoctors = false ;
     this.employees = [] ;
+    this.doctors = [] ;
     this.settingsService.getallEmployee().subscribe(data => {
       this.employees = Object.keys(data).map(i => data[i]);
+      console.log(data) ;
+    });
+     this.settingsService.getallDoctor().subscribe(data => {
+      this.doctors = Object.keys(data).map(i => data[i]);
       console.log(data) ;
     });
     this.boardlistService.getBoards().subscribe((data:any) => {
@@ -63,6 +71,13 @@ export class SettingsComponent implements OnInit {
       this.visibileAddEmployee = true;
     }
   }
+  doctorformVisible(){
+    if (this.visibileAdddoctors === true) {
+      this.visibileAdddoctors = false ;
+    } else {
+      this.visibileAdddoctors = true;
+    }
+  }
   submitEmployee(form: NgForm ) {
   console.log(form.value);
   this.settingsService.createemplyee(
@@ -79,6 +94,22 @@ export class SettingsComponent implements OnInit {
       this.employees.push(data);
   }) ;
   }
+  submitDoctor(form: NgForm ) {
+    console.log(form.value);
+    this.settingsService.createDoctor(
+      {
+        matricule: form.value.matricule,
+        name : form.value.name,
+        familyname: form.value.familyname ,
+        username : form.value.username,
+        cin : form.value.cin,
+        address : form.value.address,
+        password : form.value.password
+      }).subscribe(data => {
+      console.log(data) ;
+      this.employees.push(data);
+    }) ;
+  }
   deleteEmployee(item: any ) {
     console.log('id= ' + item)
     this.settingsService.deletebyid(item.id).subscribe(() => {
@@ -86,6 +117,16 @@ export class SettingsComponent implements OnInit {
       const index = this.employees.indexOf(item, 0);
       if (index > -1) {
         this.employees.splice(index, 1);
+      }
+    });
+  }
+  deleteDoctor(item: any ) {
+    console.log('id= ' + item)
+    this.settingsService.deleteDoctorbyid(item.id).subscribe(() => {
+      console.log('nothing') ;
+      const index = this.doctors.indexOf(item, 0);
+      if (index > -1) {
+        this.doctors.splice(index, 1);
       }
     });
   }

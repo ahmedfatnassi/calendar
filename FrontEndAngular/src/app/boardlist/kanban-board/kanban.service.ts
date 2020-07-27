@@ -50,4 +50,7 @@ export class KanbanService {
     });
 
   }
+  getActById(id : any ) {
+    return   this.http.get<any[]>('http://localhost:8080/acts/' + id, this.httpOptions) ;
+  }
 }
