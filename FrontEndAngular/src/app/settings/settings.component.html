@@ -7,22 +7,10 @@
 
 
 <div  class="m-2" >
-  <button class="ml-2" type = "submit" (click)="employerformVisible()" class="btn btn-info mb-2">add employee</button>
+  <button class="ml-2" type = "submit" (click)="openCreateEmployeeModal(content);" class="btn btn-info mb-2">add employee</button>
 <div [style.visibility]="visibileAddEmployee ? 'visible' : 'hidden'">
 
-  <form  class="d-flex justify-content-between" #employeeform="ngForm" (ngSubmit)="submitEmployee(employeeform);">
 
-
-    <input  class= "form-control ml-1"  name="matricule" placeholder="matricule" type="text" ngModel>
-    <input class= "form-control ml-1"  name="name" placeholder="name" type="text" ngModel>
-    <input class= "form-control ml-1"  name="familyname" placeholder="firstname" type="text" ngModel>
-    <input class= "form-control ml-1"  name="username" placeholder="username" type="text" ngModel>
-    <input class= "form-control ml-1"  name="cin" placeholder="cin" type="text" ngModel>
-    <input class= "form-control ml-1"  name="address" placeholder="address" type="text" ngModel>
-    <input class= "form-control ml-1"  name="password" placeholder="password" type="text" ngModel>
-      <button  type = "submit" class="btn btn-info">+</button>
-
-  </form>
 </div>
   <table class="table w-100 " >
 
@@ -34,7 +22,6 @@
       <th>username</th>
       <th>cin</th>
       <th>address</th>
-      <th>passwrod</th>
     </tr>
     </thead>
     <tbody>
@@ -46,7 +33,7 @@
       <td>{{item.username}}</td>
       <td>{{item.cin}}</td>
       <td>{{item.address}}</td>
-      <td>{{item.password}}</td>
+
       <td><button class="btn btn-info mr-1" (click)=" update(item)">update</button><button class="btn btn-warning" (click)="deleteEmployee(item)">delete</button></td>
     </tr>
     </tbody>
@@ -65,21 +52,10 @@
 
 
       <div  class="m-2" >
-        <button class="ml-2" type = "submit" (click)="doctorformVisible()" class="btn btn-info mb-2">add Doctor</button>
+        <button class="ml-2" type = "submit" (click)="openCreateEmployeeModal(contentdoctor);" class="btn btn-info mb-2">add Doctor</button>
         <div [style.visibility]="visibileAdddoctors ? 'visible' : 'hidden'">
 
-          <form  class="d-flex justify-content-between" #doctorform="ngForm" (ngSubmit)="submitDoctor(doctorform);">
 
-
-            <input  class= "form-control ml-1"  name="matricule" placeholder="matricule" type="text" ngModel>
-            <input class= "form-control ml-1"  name="name" placeholder="name" type="text" ngModel>
-            <input class= "form-control ml-1"  name="familyname" placeholder="firstname" type="text" ngModel>
-            <input class= "form-control ml-1"  name="username" placeholder="username" type="text" ngModel>
-            <input class= "form-control ml-1"  name="address" placeholder="address" type="text" ngModel>
-            <input class= "form-control ml-1"  name="password" placeholder="password" type="text" ngModel>
-            <button  type = "submit" class="btn btn-info">+</button>
-
-          </form>
         </div>
         <table class="table w-100 " >
 
@@ -89,7 +65,7 @@
             <th>name</th>
             <th>firstname</th>
             <th>username</th>
-            <th>passwrod</th>
+
           </tr>
           </thead>
           <tbody>
@@ -99,7 +75,7 @@
             <td>{{item.name}}</td>
             <td>{{item.familyname}}</td>
             <td>{{item.username}}</td>
-            <td>{{item.password}}</td>
+
             <td><button class="btn btn-info mr-1" (click)=" update(item)">update</button><button class="btn btn-warning" (click)="deleteDoctor(item)">delete</button></td>
           </tr>
           </tbody>
@@ -119,7 +95,7 @@
   <div class="card mr-2 mt-2" style="width: 50%;">
     <div class="card-header"> Teams</div>
   <form #teamform="ngForm" class="d-flex justify-content-between m-2" (ngSubmit)="submitTeam(teamform);">
-    <input class= "form-control col-6"  name="title" placeholder="title" type="text" ngModel  >
+    <input class= "form-control col-6"  name="title" placeholder="name" type="text" [(ngModel)]="title"  >
 
       <button  type = "submit" class="btn btn-info mt-2"  >submit Team</button>
   </form>
@@ -158,6 +134,11 @@
 
     <div class="card mt-2" style="width: 50%;" [(ngModel)]="ListColumns">
       <div class="card-header"> Boards</div>
+      <form #boardForm="ngForm" class="d-flex justify-content-between m-2" (ngSubmit)="createNewBoard(boardForm);">
+        <input class= "form-control col-6"  name = "name" placeholder="name" type="text" ngModel  >
+
+        <button  type = "submit" class="btn btn-info mt-2"  >submit Board</button>
+      </form>
       <div class="card-body"*ngFor="let board of Listboard" >
 
 
@@ -165,6 +146,7 @@
           <h6 class="card-title" >{{board.name}} </h6>
           <div>
             <button type="button" (click)="showBoard(board)"  class="btn btn-outline-info mr-1">update board </button>
+            <button type="button" (click)="openCreateColumnModal(formcolumn,board.id)"  class="btn btn-outline-info mr-1">add Column </button>
             <button type="button"  class="btn btn-outline-warning">delete</button>
           </div>
         </div>
@@ -188,5 +170,149 @@
 
 
 
+<ng-template  #content let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Add Employee </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form  class="" #employeeform="ngForm" (ngSubmit)="submitEmployee(employeeform);">
+
+      <div class="form-group">
+        <label for="matricule">matricule</label>
+        <input  class= "form-control ml-1"  name="matricule" id ="matricule" placeholder="matricule" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="name">firstname</label>
+        <input class= "form-control ml-1"  name="name"id ="name" placeholder="firstname" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="familyname">lastname</label>
+        <input class= "form-control ml-1"  name="familyname"id ="familyname" placeholder="lastname" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="username">username</label>
+        <input class= "form-control ml-1"  name="username" id ="username"placeholder="username" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="cin">cin</label>
+        <input class= "form-control ml-1"  name="cin" id ="cin"placeholder="cin" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="address">address</label>
+        <input class= "form-control ml-1"  name="address"id ="address" placeholder="address" type="text" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="password">password</label>
+        <input class= "form-control ml-1"  name="password" id ="password"placeholder="password" type="text" ngModel>
+      </div>
+      <div class="modal-footer d-flex justify-content-between ">
+        <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+          close
+        </button>
+
+        <button class="btn btn-success" >
+          OK
+        </button>
+      </div>
 
 
+    </form>
+  </div>
+
+
+</ng-template>
+
+
+
+
+
+
+
+<ng-template  #contentdoctor let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Add Doctor  </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form  class="" #doctorform="ngForm" (ngSubmit)="submitDoctor(doctorform);">
+
+      <div class="form-group">
+        <label for="matricule">matricule</label>
+        <input  class= "form-control ml-1"  name="matricule" id ="matricule" placeholder="matricule" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="name">firstname</label>
+        <input class= "form-control ml-1"  name="name"id ="name" placeholder="firstname" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="familyname">lastname</label>
+        <input class= "form-control ml-1"  name="familyname"id ="familyname" placeholder="lastname" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="username">username</label>
+        <input class= "form-control ml-1"  name="username" id ="username"placeholder="username" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="cin">cin</label>
+        <input class= "form-control ml-1"  name="cin" id ="cin"placeholder="cin" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="address">address</label>
+        <input class= "form-control ml-1"  name="address"id ="address" placeholder="address" type="text" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="password">password</label>
+        <input class= "form-control ml-1"  name="password" id ="password"placeholder="password" type="text" ngModel>
+      </div>
+      <div class="modal-footer d-flex justify-content-between ">
+        <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+          close
+        </button>
+
+        <button class="btn btn-success" >
+          OK
+        </button>
+      </div>
+
+
+    </form>
+  </div>
+
+
+</ng-template>
+<ng-template  #formcolumn let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Add Column </h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form #Eventform="ngForm" (ngSubmit)="createColumn(Eventform);">
+
+      <div class="form-group">
+        <label for="title1">Column Name </label>
+        <input type="text" class="form-control" id="title1" required name = "name" ngModel>
+      </div>
+      <div class="modal-footer d-flex justify-content-between ">
+        <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+          close
+        </button>
+
+        <button class="btn bg-success"    >
+          OK
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+
+</ng-template>

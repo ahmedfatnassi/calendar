@@ -3,6 +3,8 @@ import {SettingsService} from './settings.service';
 import {NgForm} from '@angular/forms';
 import {log} from 'util';
 import {BoardlistService} from '../boardlist/boardlist.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {KanbanService} from '../boardlist/kanban-board/kanban.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,7 +29,12 @@ export class SettingsComponent implements OnInit {
   openworkspaceList :any ;
   openColumnList: any ;
   ListColumns :any ;
-  constructor(private settingsService: SettingsService , private  boardlistService: BoardlistService ) { }
+  openColumnBoardID: any ;
+  constructor(private settingsService: SettingsService ,
+              private  boardlistService: BoardlistService,
+              private modal: NgbModal ,
+              private kanbanBoard: KanbanService,
+  ) { }
 
   ngOnInit() {
     this.updateOrClose = 'update';
@@ -299,4 +306,32 @@ updateColumn(column :any ){
       console.log(column);
     })
 }
+openCreateEmployeeModal(content){
+  const modalRef = this.modal.open(content);
+
+}
+  createNewBoard(form: NgForm){
+    this.boardlistService.create({name : form.value.name}).subscribe(data => {
+
+      this.Listboard.push(data);
+
+    }) ;
+  }
+  createColumn(form: NgForm) {
+    const name = form.value.name ;
+    this.kanbanBoard.createColumn({
+      name: form.value.name,
+      boardId: this.openColumnBoardID
+    }).subscribe((data:any) => {
+      console.log(data)
+
+    });
+
+    this.modal.dismissAll();
+  }
+  openCreateColumnModal(form : any ,boardid : any){
+    this.openColumnBoardID = boardid;
+      this.modal.open(form);
+
+  }
 }
