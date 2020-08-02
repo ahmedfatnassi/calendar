@@ -27,6 +27,18 @@ export class ChatService {
   createMessage(value: any ) {
     return this.http.post('http://localhost:8080/messages' , value , this.httpOptions) ;
   }
+  getAllMessagesContainer() {
+    return   this.http.get<any[]>('http://localhost:8080/message_container', this.httpOptions) ;
+
+  }
+  getAllByIdsenderOrAndIdreceiver(id : any ) {
+    return   this.http.get<any[]>('http://localhost:8080/message_container/'+id, this.httpOptions) ;
+
+  }
+
+  createMessageContainer(value: any ) {
+    return this.http.post('http://localhost:8080/message_container' , value , this.httpOptions) ;
+  }
   getIndivHistoric() {
     return   this.http.get<any[]>('http://localhost:8080/individualChatHistory', this.httpOptions) ;
 

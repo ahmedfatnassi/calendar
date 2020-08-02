@@ -1,9 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ChatService} from '../chatlist/chat.service';
 import {EventsService} from '../events.service';
-import {NgForm} from '@angular/forms';
+import {FormControl, NgForm} from '@angular/forms';
 import {Stomp} from '@stomp/stompjs';
 import {DOCUMENT} from '@angular/common';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {SettingsService} from '../settings/settings.service';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +19,9 @@ messages: any ;
   private message: any;
   constructor(private chatService: ChatService,
               private  eventservice: EventsService ,
-              @Inject(DOCUMENT) private document: Document) { }
+              @Inject(DOCUMENT) private document: Document ,
+              private modal: NgbModal ,
+              private settingsService: SettingsService ) { }
   receivers : any ;
   search :any ;
   indivChats: any ;
@@ -25,49 +31,151 @@ messages: any ;
   receivedmsg : any ;
   stompClient: any ;
   url : any ;
+  teamlist: any ;
   socket: any ;
   messagescontainer : any ;
+  //https://stackblitz.com/angular/lrkvvylgqal?file=src%2Fapp%2Fautocomplete-auto-active-first-option-example.ts (1)
+  myControl = new FormControl();
+  options: any[] ;
+  options1 :any[];
+  messageContainers:any ;
+  filteredOptions: Observable<string[]>;
+  userchecked : boolean
+  teamchecked : boolean
+  listtype: string ;
   ngOnInit() {
     //console.log(this.currentuser) ;
+    //(1)
+    this.teamchecked =true ;
+    this.userchecked =false  ;
     this.messagescontainer =  document.getElementById("messagescontainer");
     this.stomp = this.connect1();
     this.chatService.getuserbyusername(    this.eventservice.currentUserValue.username).subscribe(data =>{
       console.log(data);
       this.currentuser =  data;
-    }) ;
-      this.chatService.getIndivHistoric().subscribe(data => {
-        console.log('indiv ')
+
+
+      this.chatService.getAllByIdsenderOrAndIdreceiver(this.currentuser.id).subscribe(data => {
+        console.log('messageContainers ')
         console.log(data)
-        this.indivChats = Object.keys(data).map(i => data[i]);
+        this.messageContainers = Object.keys(data).map(i => data[i]);
+
       }) ;
+    }) ;
       this.eventservice.getAllusers().subscribe(data => {
         console.log('doctors ') ;
         console.log(data);
         this.receivers = Object.keys(data).map(i => data[i]);
       });
-    this.scrolldown()
+    this.settingsService.getAllTeams().subscribe((data:any[] )=>{
+      this.teamlist = data ;
+      this.options1 = [] ;
+      for (let i = 0; i < this.teamlist.length; i++) {
+        this.options1.push(this.teamlist[i].title)
+      }
+      this.options = this.teamlist;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
+    }) ;
+    this.scrolldown();
 
   }
+  //(1)
+  // for teams
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
+    return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
+  }
+  /// for users
+  private _filter1(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.username.toLowerCase().indexOf(filterValue) === 0);
+  }
   sentMsg(form: NgForm ) {
     ///console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-    console.log(form.value.message);
-    this.message= {
+    console.log(form.value);
+    console.log(this.myControl.value) ;
+    let findtheContainer= false ;
+
+    for (let i = 0; i < this.messageContainers.length; i++) {
+      if(this.messageContainers[i].idsender === this.myControl.value.id
+        ||this.messageContainers[i].idreceiver === this.myControl.value.id ) {
+        findtheContainer = true;
+      }
+    }
+    if(!findtheContainer){
+// add  other case with date
+
+      this.chatService.createMessageContainer({
+        'idsender':this.currentuser.id ,
+        'idreceiver'  :this.myControl.value.id ,
+        'last_message' : false }
+      ).subscribe((data: any) =>{
+        console.log(data);
+      })
+      /*this.message= {
+            'idsender':this.currentuser.id ,
+            'idreceiver'  :this.receiver.id ,
+            'body' :form.value.message ,
+            'vu' : false} ;*/
+    } else {
+      /*this.message= {
       'idsender':this.currentuser.id ,
       'idreceiver'  :this.receiver.id ,
       'body' :form.value.message ,
-      'vu' : false} ;
+      'vu' : false} ;*/
+    }
 
-    this.send(this.receiver.username , this.message) ;
-    this.chatService.createMessage(this.message).subscribe(data =>{
+
+
+   //websocket this.send(this.receiver.username , this.message) ;
+    /*this.chatService.createMessage(this.message).subscribe(data =>{
         console.log(data)
       this.messages.push(this.message) ;
-    })
+    })*/
 
 
   }
+  handleChangeuserofTeam(event){
+    console.log(event.srcElement.value)
+    if(event.srcElement.value == 'users'){
+      console.log('uuuuuuusers')
+      this.options1 = [];
+      this.options = [];
+
+      this.options =this.receivers ;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter1(value))
+      );
+      this.teamchecked =false  ;
+      this.userchecked =true  ;
+
+    } else {
+
+      this.options =this.teamlist ;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+      this.teamchecked =true ;
+      this.userchecked =false  ;
+    }
 
 
+  }
+  openmodal(content){
+    this.modal.open(content);
+  }
+
+  submitnewMessageContainer(form : any){
+
+}
   send(username:any , message : any ){
     console.log('username '+ username)
     this.stompClient.send('/user/' + username + '/queue/message', {}, JSON.stringify(message));
@@ -91,6 +199,7 @@ messages: any ;
         console.log('message has been received ' + message);
 
         that.addMessage(message.body);
+        this.messages.push(this.message) ;
 
       });
     }) ;

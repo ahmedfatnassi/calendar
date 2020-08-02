@@ -76,7 +76,7 @@ public class Message {
         this.idreceiver = idreceiver;
     }
 
-  
+
 
     public Long getId_indiv_chat() {
         return id_indiv_chat;

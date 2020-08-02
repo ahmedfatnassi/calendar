@@ -32,6 +32,9 @@ import { RequestFormComponent } from './request-form/request-form.component';
 import {QRCodeModule} from 'angularx-qrcode';
 import {BrowserQRCodeReader} from '@zxing/library';
 import {ZXingScannerModule} from '@zxing/ngx-scanner';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+// @ts-ignore
+import {MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatRippleModule} from '@angular/material';
 
 
 const appRoutes: Routes = [
@@ -67,9 +70,15 @@ const appRoutes: Routes = [
     BrowserModule,
     QRCodeModule,
     BrowserModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule,
     ZXingScannerModule ,
     FullCalendarModule,
     HttpClientModule,
+    MatAutocompleteModule,
+    ScrollingModule,
     FormsModule,
     NgDragDropModule.forRoot(),
     Ng2SearchPipeModule,
