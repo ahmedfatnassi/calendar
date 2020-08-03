@@ -43,10 +43,13 @@ messages: any ;
   filteredOptions: Observable<string[]>;
   userchecked : boolean
   teamchecked : boolean
+  seletedContainer:any ;
   listtype: string ;
+  findtheContainer:boolean ;
   ngOnInit() {
     //console.log(this.currentuser) ;
     //(1)
+    this.seletedContainer = null;
     this.teamchecked =true ;
     this.userchecked =false  ;
     this.messagescontainer =  document.getElementById("messagescontainer");
@@ -94,7 +97,14 @@ messages: any ;
     this.scrolldown();
 
   }
-
+seletContainer(container:any){
+    this.seletedContainer = container ;
+    console.log(this.seletedContainer) ;
+    this.chatService.getAllMessagesbycontainer(this.seletedContainer.id).subscribe((data: any) => {
+      this.messages = data;
+      this.scrolldown() ;
+    });
+}
 
   updatemessageContainer(){
     this.chatService.getAllByIdsenderOrAndIdreceiver(this.currentuser.id).subscribe((data :any[]) => {
@@ -166,19 +176,19 @@ messages: any ;
     ///console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     console.log(form.value);
     console.log(this.myControl.value) ;
-    let findtheContainer= false ;
+     this.findtheContainer= false ;
     let indexmessageGourp ;
 
     for (let i = 0; i < this.messageContainers.length; i++) {
       if(this.messageContainers[i].idsender === this.myControl.value.id
         ||this.messageContainers[i].idreceiver === this.myControl.value.id ) {
-        findtheContainer = true;
+        this.findtheContainer = true;
         indexmessageGourp = i ;
         break;
       }
     }
     let myDate = new Date();
-    if(!findtheContainer){
+    if(!this.findtheContainer){
 // add  other case with date
 
 
@@ -191,6 +201,20 @@ messages: any ;
         ).subscribe((data: any) =>{
 
           console.log(data)
+        this.message= {
+          'message_container_id': data.id,
+          'idsender':this.currentuser.id ,
+          'idreceiver'  :this.myControl.value.id ,
+          'body' :form.value.messageBody  ,
+          'vu' : false} ;
+
+
+        console.log(this.message) ;
+        this.chatService.createMessage(this.message).subscribe((data1: any)=>{
+          console.log('this.message');
+          console.log(data1);
+
+        });
         this.updatemessageContainer() ;
 
       })
@@ -229,6 +253,24 @@ messages: any ;
 
 
   }
+  sendMessageinthisContainer(messageform){
+
+    this.message= {
+      'message_container_id':this.seletedContainer.id,
+      'idsender':this.currentuser.id ,
+      'idreceiver' : this.seletedContainer.idreceiver ,
+      'body': messageform.value.message  ,
+      'vu' : false} ;
+
+
+    console.log(this.message) ;
+    this.chatService.createMessage(this.message).subscribe((data1: any)=>{
+      console.log(data1);
+      this.messages.push(data1) ;
+    });
+    this.updatemessageContainer() ;
+  }
+
   handleChangeuserofTeam(event){
     console.log(event.srcElement.value)
     if(event.srcElement.value == 'users'){
@@ -298,7 +340,7 @@ messages: any ;
     this.messages.push( JSON.parse(this.message)) ;
     this.scrolldown() ;
   }
-  openByPersonChat(person: any) {
+ /* openByPersonChat(person: any) {
     this.receiver = person ;
     console.log(this.receiver) ;
     this.chatService.getAllMessages().subscribe(data => {
@@ -307,10 +349,9 @@ messages: any ;
 
     this.messages = Object.keys(data).map(i => data[i]);
 
-    this.scrolldown() ;
     }) ;
 
-  }
+  }*/
   scrolldown(){
     this.messagescontainer.scrollTop =  this.messagescontainer.scrollHeight;
   }

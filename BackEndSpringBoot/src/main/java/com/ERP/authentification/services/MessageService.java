@@ -25,10 +25,11 @@ public class MessageService {
 
     }
     public List<Message> findAllbysenderId(Long id){
-       //List<Message> list =  this.messageRepository.findAllByIdsender(id) ;
-       this.messageRepository.save(new Message());
-
         return this.messageRepository.findAllByIdsender(id);
+
+    }
+    public List<Message> findallbyContainerMessageId(Long id){
+        return this.messageRepository.findAllByMessagecontainerid(id);
 
     }
     public  Message  createPatient( Message  message ) {
@@ -36,8 +37,6 @@ public class MessageService {
 
     }
     public List<Object> findTopMessagebysenderId(Long id){
-
         return  this.messageRepository.ouui();
-
     }
 }

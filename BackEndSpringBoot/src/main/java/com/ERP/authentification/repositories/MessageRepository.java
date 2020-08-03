@@ -12,6 +12,9 @@ import java.util.Optional;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long > {
 public List<Message> findAllByIdsender(Long id) ;
+@Query(value ="SELECT e  FROM Message  e where (e.message_container_id= ?1)" )
+public List<Message> findAllByMessagecontainerid(Long id) ;
+
 //@Query(value ="SELECT e  FROM Message  e  where  e.send_date = (SELECT MAX(ee.send_date) FROM Message ee WHERE ee.idsender = 114)" )
 @Query(value ="SELECT max (e.send_date) ,e.idsender  FROM Message  e GROUP BY (e.idsender) " )
 public List<Object> ouui() ;

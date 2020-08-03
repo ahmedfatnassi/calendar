@@ -24,6 +24,10 @@ export class ChatService {
     return   this.http.get<any[]>('http://localhost:8080/messages', this.httpOptions) ;
 
   }
+  getAllMessagesbycontainer(id) {
+    return   this.http.get<any[]>('http://localhost:8080/messages/container/'+id, this.httpOptions) ;
+
+  }
   createMessage(value: any ) {
     return this.http.post('http://localhost:8080/messages' , value , this.httpOptions) ;
   }
