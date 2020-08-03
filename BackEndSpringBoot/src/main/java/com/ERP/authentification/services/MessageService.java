@@ -25,6 +25,9 @@ public class MessageService {
 
     }
     public List<Message> findAllbysenderId(Long id){
+       //List<Message> list =  this.messageRepository.findAllByIdsender(id) ;
+       this.messageRepository.save(new Message());
+
         return this.messageRepository.findAllByIdsender(id);
 
     }

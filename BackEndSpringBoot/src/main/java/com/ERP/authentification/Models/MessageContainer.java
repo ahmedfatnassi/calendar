@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +22,7 @@ public class MessageContainer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
 
-    @Column(name ="name")
-    private String name ;
+
     @Column(name ="sender_Type")
     private String  sender_Type ;
     @Column(name ="idsender")
@@ -30,17 +30,10 @@ public class MessageContainer {
     @Column(name ="idreceiver")
     private Long idreceiver;
     @Column(name ="last_message_Date")
-    private Instant last_message_Date ;
+    private LocalDateTime last_message_Date ;
     @Column(name ="last_message")
     private String last_message ;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getSender_Type() {
         return sender_Type;
@@ -66,11 +59,11 @@ public class MessageContainer {
         this.idreceiver = idreceiver;
     }
 
-    public Instant getLast_message_Date() {
+    public LocalDateTime getLast_message_Date() {
         return last_message_Date;
     }
 
-    public void setLast_message_Date(Instant last_message_Date) {
+    public void setLast_message_Date(LocalDateTime last_message_Date) {
         this.last_message_Date = last_message_Date;
     }
 

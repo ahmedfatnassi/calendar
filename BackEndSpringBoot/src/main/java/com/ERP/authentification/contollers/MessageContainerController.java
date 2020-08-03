@@ -28,7 +28,7 @@ public class MessageContainerController {
         return ResponseEntity.ok().body(messageContainerService.findAll() ) ;
     }
     @GetMapping("{id}")
-    public ResponseEntity<List<MessageContainer>> getAllByIdsenderOrAndIdreceiver(@PathVariable Long id){
+        public ResponseEntity<List<MessageContainer>> getAllByIdsenderOrAndIdreceiver(@PathVariable Long id){
         //  this.messageService.findTopMessagebysenderId(id);
 
         return ResponseEntity.ok().body(messageContainerService.findAllByIdsenderOrAndIdreceiver(id)) ;

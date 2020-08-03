@@ -3,10 +3,10 @@ import {ChatService} from '../chatlist/chat.service';
 import {EventsService} from '../events.service';
 import {FormControl, NgForm} from '@angular/forms';
 import {Stomp} from '@stomp/stompjs';
-import {DOCUMENT} from '@angular/common';
+import {DatePipe, DOCUMENT} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SettingsService} from '../settings/settings.service';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 @Component({
@@ -21,7 +21,8 @@ messages: any ;
               private  eventservice: EventsService ,
               @Inject(DOCUMENT) private document: Document ,
               private modal: NgbModal ,
-              private settingsService: SettingsService ) { }
+              private settingsService: SettingsService ,
+              public datepipe: DatePipe ,) { }
   receivers : any ;
   search :any ;
   indivChats: any ;
@@ -38,7 +39,7 @@ messages: any ;
   myControl = new FormControl();
   options: any[] ;
   options1 :any[];
-  messageContainers:any ;
+  messageContainers1:any ;messageContainers:any ;
   filteredOptions: Observable<string[]>;
   userchecked : boolean
   teamchecked : boolean
@@ -55,34 +56,99 @@ messages: any ;
       this.currentuser =  data;
 
 
-      this.chatService.getAllByIdsenderOrAndIdreceiver(this.currentuser.id).subscribe(data => {
-        console.log('messageContainers ')
-        console.log(data)
-        this.messageContainers = Object.keys(data).map(i => data[i]);
 
-      }) ;
     }) ;
       this.eventservice.getAllusers().subscribe(data => {
         console.log('doctors ') ;
         console.log(data);
         this.receivers = Object.keys(data).map(i => data[i]);
-      });
-    this.settingsService.getAllTeams().subscribe((data:any[] )=>{
-      this.teamlist = data ;
-      this.options1 = [] ;
-      for (let i = 0; i < this.teamlist.length; i++) {
-        this.options1.push(this.teamlist[i].title)
-      }
-      this.options = this.teamlist;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
 
-    }) ;
+
+
+        this.settingsService.getAllTeams().subscribe((data:any[] )=>{
+          this.teamlist = data ;
+          this.options1 = [] ;
+          for (let i = 0; i < this.teamlist.length; i++) {
+            this.options1.push(this.teamlist[i].title)
+          }
+          this.options = this.teamlist;
+          this.filteredOptions = this.myControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(value))
+          );
+
+
+        this.chatService.getAllByIdsenderOrAndIdreceiver(this.currentuser.id).subscribe((data :any[]) => {
+          console.log('messageContainers1 ')
+          console.log(data)
+          this.messageContainers1 = data;
+
+          // trying to set the name of the messagecontainer based on the current user
+          this.updatemessageContainer();
+        }) ;
+        }) ;
+
+      });
+
+
     this.scrolldown();
 
   }
+
+
+  updatemessageContainer(){
+    this.chatService.getAllByIdsenderOrAndIdreceiver(this.currentuser.id).subscribe((data :any[]) => {
+      console.log('messageContainers1 ')
+      console.log(data)
+      this.messageContainers1 = data;
+
+      // trying to set the name of the messagecontainer based on the current user
+
+    for (let i = 0; i <this.messageContainers1.length; i++) {
+      if(this.messageContainers1[i].idreceiver === this.currentuser.id){
+        for (let j = 0; j < this.receivers.length; j++) {
+          if(this.receivers[j].id=== this.messageContainers1[i].idsender){
+            this.messageContainers1[i]['name'] = this.receivers[j].username ;
+          }
+
+        }
+        for (let j = 0; j < this.teamlist.length; j++) {
+
+          if(this.teamlist[j].id=== this.messageContainers1[i].idsender){
+            this.messageContainers1[i]['name'] = this.teamlist[j].title ;
+          }
+
+        }
+
+      } else if(this.messageContainers1[i].idsender === this.currentuser.id){
+
+
+        for (let j = 0; j < this.receivers.length; j++) {
+
+
+          if(this.receivers[j].id === this.messageContainers1[i].idreceiver)  {
+            this.messageContainers1[i]['name'] = this.receivers[j].username ;
+          }
+
+        }
+
+        for (let j = 0; j < this.teamlist.length; j++) {
+          if(this.teamlist[j].id=== this.messageContainers1[i].idreceiver){
+
+            this.messageContainers1[i]['name'] = this.teamlist[j].title ;
+          }
+
+        }
+
+      }
+
+    }
+      this.messageContainers1.reverse();
+
+    this.messageContainers = this.messageContainers1 ;
+    }) ;
+  }
+
   //(1)
   // for teams
   private _filter(value: string): string[] {
@@ -101,34 +167,56 @@ messages: any ;
     console.log(form.value);
     console.log(this.myControl.value) ;
     let findtheContainer= false ;
+    let indexmessageGourp ;
 
     for (let i = 0; i < this.messageContainers.length; i++) {
       if(this.messageContainers[i].idsender === this.myControl.value.id
         ||this.messageContainers[i].idreceiver === this.myControl.value.id ) {
         findtheContainer = true;
+        indexmessageGourp = i ;
+        break;
       }
     }
+    let myDate = new Date();
     if(!findtheContainer){
 // add  other case with date
 
+
       this.chatService.createMessageContainer({
-        'idsender':this.currentuser.id ,
-        'idreceiver'  :this.myControl.value.id ,
-        'last_message' : false }
-      ).subscribe((data: any) =>{
-        console.log(data);
+          'idsender':this.currentuser.id ,
+          'idreceiver'  :this.myControl.value.id ,
+          'last_message' : form.value.messageBody  ,
+          'last_message_Date':  this.datepipe.transform(myDate, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss') ,
+        }
+        ).subscribe((data: any) =>{
+
+          console.log(data)
+        this.updatemessageContainer() ;
+
       })
-      /*this.message= {
-            'idsender':this.currentuser.id ,
-            'idreceiver'  :this.receiver.id ,
-            'body' :form.value.message ,
-            'vu' : false} ;*/
+
     } else {
-      /*this.message= {
-      'idsender':this.currentuser.id ,
-      'idreceiver'  :this.receiver.id ,
-      'body' :form.value.message ,
-      'vu' : false} ;*/
+      this.messageContainers[indexmessageGourp].last_message = form.value.messageBody ;
+      this.messageContainers[indexmessageGourp].last_message_Date = this.datepipe.transform(myDate, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss')  ;
+      this.chatService.createMessageContainer(this.messageContainers[indexmessageGourp]).subscribe((data:any)=>  {
+        this.message= {
+          'message_container_id': this.messageContainers[indexmessageGourp].id,
+          'idsender':this.currentuser.id ,
+          'idreceiver'  :this.myControl.value.id ,
+          'body' :form.value.messageBody  ,
+          'vu' : false} ;
+
+
+        console.log(this.message) ;
+        this.chatService.createMessage(this.message).subscribe((data1: any)=>{
+          console.log('this.message');
+          console.log(data1);
+        });
+        this.updatemessageContainer() ;
+
+      }) ;
+
+
     }
 
 

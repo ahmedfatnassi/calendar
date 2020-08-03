@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -20,21 +21,28 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
-
+    @Column(name ="message_container_id")
+    private Long message_container_id ;
     @Column(name ="idsender")
     private Long idsender ;
     @Column(name ="idreceiver")
     private Long idreceiver;
-    @Column(name ="id_indiv_chat")
-    private Long id_indiv_chat ;
+    @Column(name ="vu_date")
+    private LocalDateTime vu_date ;
     @Column(name ="body")
     private String body ;
     @Column(name ="vu")
     private boolean vu ;
     @Column(name ="send_date")
     private Instant send_date =Instant.now()  ;
-    @Column(name ="vu_date")
-    private Instant vu_date ;
+
+    public LocalDateTime getVu_date() {
+        return vu_date;
+    }
+
+    public void setVu_date(LocalDateTime vu_date) {
+        this.vu_date = vu_date;
+    }
 
     public Long getId() {
         return id;
@@ -56,35 +64,25 @@ public class Message {
         return idreceiver;
     }
 
+    public Long getMessage_container_id() {
+        return message_container_id;
+    }
+
+    public void setMessage_container_id(Long message_container_id) {
+        this.message_container_id = message_container_id;
+    }
+
+
+
     public void setIdreceiver(Long idreceiver) {
         this.idreceiver = idreceiver;
     }
 
-    public Long getidsender() {
-        return idsender;
-    }
-
-    public void setidsender(Long idsender) {
-        this.idsender = idsender;
-    }
-
-    public Long getidreceiver() {
-        return idreceiver;
-    }
-
-    public void setidreceiver(Long idreceiver) {
-        this.idreceiver = idreceiver;
-    }
 
 
 
-    public Long getId_indiv_chat() {
-        return id_indiv_chat;
-    }
 
-    public void setId_indiv_chat(Long id_indiv_chat) {
-        this.id_indiv_chat = id_indiv_chat;
-    }
+
 
     public String getBody() {
         return body;
@@ -110,11 +108,5 @@ public class Message {
         this.send_date = send_date;
     }
 
-    public Instant getVu_date() {
-        return vu_date;
-    }
 
-    public void setVu_date(Instant vu_date) {
-        this.vu_date = vu_date;
-    }
 }

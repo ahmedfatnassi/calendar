@@ -30,8 +30,10 @@ public class MessageContainerService {
         return this.messageContainerRepository.save(messageContainer) ;
 
     }
+
     public List<MessageContainer> findAllByIdsenderOrAndIdreceiver(Long id){
         return this.messageContainerRepository.findAllByIdsenderOrIdreceiver(id,id);
 
     }
+
 }
