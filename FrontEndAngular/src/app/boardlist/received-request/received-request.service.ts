@@ -38,4 +38,8 @@ export class ReceivedRequestService {
   execute(requestId: any, columnId){
     return   this.http.get<any[]>('http://localhost:8080/activiti/execute/' + requestId + '/' + columnId, this.httpOptions);
   }
+  getAllfinishedTasks(){
+    return   this.http.get<any[]>('http://localhost:8080/requests/finished', this.httpOptions);
+
+  }
 }

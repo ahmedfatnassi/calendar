@@ -39,6 +39,9 @@ public class Request {
 
     @Column(name ="isArchived")
     private Boolean isArchived  ;
+    @Column(name ="isExecuted")
+    private Boolean isExecuted  ;
+
     @Column(name ="activitiProcessId")
     private String activitiProcessId  ;
 
@@ -52,6 +55,14 @@ public class Request {
 
     public Long getBoardid() {
         return boardid;
+    }
+
+    public Boolean getIsExecuted() {
+        return isExecuted;
+    }
+
+    public void setIsExecuted(Boolean executed) {
+        isExecuted = executed;
     }
 
     public void setBoardid(Long boardid) {

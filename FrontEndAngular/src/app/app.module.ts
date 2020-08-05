@@ -41,6 +41,7 @@ const appRoutes: Routes = [
   { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
   { path: 'chats',      component: ChatComponent , canActivate: [AuthguardService] },
   { path: 'received_request',      component: ReceivedRequestComponent , canActivate: [AuthguardService] },
+  { path: 'processed_request',      component: CompletedRequestComponent , canActivate: [AuthguardService] },
   { path: 'request_form',      component : RequestFormComponent , canActivate: [AuthguardService] },
   { path: 'boards',      component: BoardlistComponent , canActivate: [AuthguardService] },
   { path: 'settings',      component: SettingsComponent , canActivate: [AuthguardService] },

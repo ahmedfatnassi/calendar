@@ -25,7 +25,8 @@ export class ReceivedRequestComponent implements OnInit {
   constructor(private receivedRequestService: ReceivedRequestService,
               private modal: NgbModal,
               private boardService: BoardlistService,
-              private kanbanBoard: KanbanService,private router: Router) { }
+              private kanbanBoard: KanbanService,
+              private router: Router) { }
 
   ngOnInit() {
     this.listRequestIds = [];

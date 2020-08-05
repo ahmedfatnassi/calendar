@@ -42,4 +42,7 @@ boards: any[] ;
   goToRequestList(){
       this.router.navigate(['/received_request']);
   }
+  goToProcessedRequest(){
+      this.router.navigate(['/processed_request']);
+  }
 }

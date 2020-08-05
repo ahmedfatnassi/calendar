@@ -36,6 +36,7 @@ public class ActivityTestController {
 
     @Autowired
     private HistoryService historyService;
+
     @Autowired
     private RequestService requestService ;
     @GetMapping("/new")
@@ -76,10 +77,11 @@ public class ActivityTestController {
         List<ProcessInstance> instanceList = runtimeService
                 .createProcessInstanceQuery()
                 .processDefinitionKey("myProcess")
+
                 .list();
         //taskService.createTaskQuery().processDefinitionId("225023").list();
 
-        return taskService.createTaskQuery().processInstanceId(number).active().list().toString();
+        return runtimeService.createProcessInstanceQuery().processDefinitionKey("myProcess").list().toString();
 
     }
     @GetMapping("/complete/{id}/{name}")

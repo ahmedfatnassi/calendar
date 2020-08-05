@@ -21,15 +21,21 @@ public class RequestController {
 
     @PostMapping
     public ResponseEntity<Request> create(@RequestBody Request request  ) {
-        request.setArchived(false);
+        request.setArchived(false); // meant not i process
+        request.setIsExecuted(false);
         return ResponseEntity.status(201).body(this.requestService.create(request));
     }
     @GetMapping
     public ResponseEntity<List<Request>> getNonExecutedRequestAll(){
-        System.out.println("salem get all request ");
-        System.out.println(requestService.findAllNonExecuted() );
+
 
         return ResponseEntity.ok().body(requestService.findAllNonExecuted() ) ;
+    }
+
+    @GetMapping("/finished")
+    public ResponseEntity<List<Request>> findAllFinished(){
+
+        return ResponseEntity.ok().body(requestService.findAllFinished() ) ;
     }
 
 }

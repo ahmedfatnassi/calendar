@@ -33,6 +33,10 @@ public class RequestService {
         return this.requestRepository.findAllByIsArchivedIsFalse();
 
     }
+    public List<Request> findAllFinished(){
+        return this.requestRepository.findAllByIsExecutedIsTrue();
+
+    }
 
     public Request create(Request request ) {
         return this.requestRepository.save(request) ;

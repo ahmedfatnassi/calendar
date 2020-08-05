@@ -1,12 +1,12 @@
 
-<div class="d-flex justify-content-around mt-3  " (click)="goToRequestList()">
+<div class="d-flex justify-content-around mt-3  " >
   <a class="nav-link" >
-  <div class="card border-dark mb-1 ml-2" style="max-width: 18rem;">
+  <div class="card border-dark mb-1 ml-2"(click)="goToRequestList()" style="max-width: 18rem;">
     <div class="card-header">Received Request</div>
   </div>
   </a>
   <a class="nav-link" >
-  <div class="card border-dark mb-1  ml-2" style="max-width: 18rem;">
+  <div class="card border-dark mb-1  ml-2"(click)="goToProcessedRequest()"  style="max-width: 18rem;">
     <div class="card-header">treated Request</div>
   </div>
   </a>

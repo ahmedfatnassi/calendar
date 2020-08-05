@@ -306,6 +306,12 @@ public class ActivitiService {
             System.out.println("task completed and deleted ");
            // taskService.setVariable(task.getActivitiTaskId(),"senderEmailAddress","ahmedfatnassi23@gmail.com");
             taskBoardService.delete(task.getId());
+            List<Task> taskList =  taskService.createTaskQuery().processDefinitionId(request.getActivitiProcessId()).list() ;
+            if(taskList.size()==0){
+                request.setIsExecuted(true);
+                requestService.create(request);
+                System.out.println(request.toString());
+            }
             return null ;
         }
 
