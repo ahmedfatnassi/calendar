@@ -13,7 +13,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import {NgForm} from '@angular/forms';
 import {Router} from '@angular/router';
 import {NotificationhandlerService} from './notificationhandler.service';
-import {Subject, Subscription} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
@@ -44,7 +44,9 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   newevent: any ;
   eventsModel = [] ;
   resources1 = [] ;
-
+  options1 :any[];
+  messageContainers1:any ;messageContainers:any ;
+  filteredOptions: Observable<string[]>;
   eventsModel1 = [{
     title: 'Updaten nooooo',
     start: '2020-02-20',
@@ -68,6 +70,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   color: any;
   connectmsg: any ;
   private stompClient: any;
+
 
   ngOnInit() {
     this.resources =  [
@@ -236,8 +239,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     console.log(this.eventCreationEndDate) ;
     // tslint:disable-next-line:max-line-length
     this.newevent = {
-      idSender : form.value.patient.id ,
-      idReceiver : form.value.doctor.id,
+
       title : form.value.title ,
       startEvent  : this.eventcreationStartDate ,
       endEvent :  this.eventCreationEndDate ,

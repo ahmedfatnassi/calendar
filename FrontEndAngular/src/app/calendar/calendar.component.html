@@ -57,17 +57,38 @@
       <form #Eventform="ngForm" (ngSubmit)="submitCompany(Eventform);">
 
 
-        <label for="doctorSelect1"> Doctors</label>
-        <select class="form-control" id="doctorSelect1"  name="doctor" ngModel  >
-          <option *ngFor="let pow of doctors" [ngValue]="pow" >{{pow.name}}</option>
-        </select>
+        <div class="custom-control custom-radio">
+          <input type="radio"  id="customRadio1" name="customRadio" value="teams" class="custom-control-input"checked ngModel>
+          <label class="custom-control-label" for="customRadio1"> to team</label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input type="radio"  id="customRadio2" name="customRadio" value="users" class="custom-control-input" ngModel>
+          <label class="custom-control-label" for="customRadio2">  to user</label>
+        </div>
 
 
-        <label for="patientSelect1">patients</label>
-        <select class="form-control" id="patientSelect1"name="patient" ngModel  >
-          <option *ngFor="let pow of patients"  [ngValue]="pow"  >{{pow.name}}</option>
-        </select>
 
+        <!-- here is list of user -->
+        <div class="form-group w-100 ml-1">
+          <mat-form-field class="w-100">
+            <input type="text"
+                   placeholder="Choose one "
+                   aria-label="Number"
+                   name="receiver"
+                   id="receiver"
+                   matInput
+
+                   [matAutocomplete]="auto" >
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <div >
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+
+                </mat-option>
+              </div>
+
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
 
 
         <div class="form-group">
