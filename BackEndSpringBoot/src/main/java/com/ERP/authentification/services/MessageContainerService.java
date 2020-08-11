@@ -35,5 +35,13 @@ public class MessageContainerService {
         return this.messageContainerRepository.findAllByIdsenderOrIdreceiver(id,id);
 
     }
+    public List<MessageContainer> findAllTeamMessageContainer(List<Long> ids){
+        return this.messageContainerRepository.findAllByIdreceiverIn(ids);
+
+    }
+    public void deleteAll(){
+         this.messageContainerRepository.deleteAll();
+
+    }
 
 }

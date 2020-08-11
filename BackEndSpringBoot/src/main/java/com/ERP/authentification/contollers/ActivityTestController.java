@@ -8,6 +8,7 @@ import com.ERP.authentification.services.*;
 import lombok.RequiredArgsConstructor;
 import org.activiti.engine.*;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +62,8 @@ public class ActivityTestController {
         // need to set the exclusive in case you have 0 act
         //ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess", variables);
 
-        return runtimeService
-                .createProcessInstanceQuery()
+        return historyService
+                .createHistoricProcessInstanceQuery()
                 .processDefinitionKey("myProcess")
                 .list().toString() ;
 
@@ -80,8 +81,11 @@ public class ActivityTestController {
                 .list();
         //taskService.createTaskQuery().processDefinitionId("225023").list();
 
-        return runtimeService.createProcessInstanceQuery().processDefinitionKey("myProcess").active().list().toString();
-
+        return historyService
+                .createHistoricTaskInstanceQuery()
+                .taskAssignee("143")
+                .finished()
+                .list().toString();
     }
     @GetMapping("/complete/{id}/{name}")
     public void  completeProcess(@PathVariable String id,@PathVariable String name) {

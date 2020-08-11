@@ -39,4 +39,8 @@ public class MessageService {
     public List<Object> findTopMessagebysenderId(Long id){
         return  this.messageRepository.ouui();
     }
+    public void deleteAll(){
+        this.messageRepository.deleteAll();
+
+    }
 }

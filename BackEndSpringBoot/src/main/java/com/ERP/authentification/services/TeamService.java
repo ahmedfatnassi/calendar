@@ -25,6 +25,10 @@ public class TeamService {
         return this.teamRepository.findAll();
 
     }
+    public List<Team> findTeamsAllofEmployeeById(Long id ){
+        return this.teamRepository.getAllemployeeFromTeamId(id);
+
+    }
 
     public Team  create(Team team ) {
         return this.teamRepository.save(team) ;

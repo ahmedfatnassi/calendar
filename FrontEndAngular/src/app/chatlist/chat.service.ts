@@ -58,8 +58,18 @@ export class ChatService {
     return   this.http.get<any[]>('http://localhost:8080/individualChatHistory/byreceiverid/' + id, this.httpOptions) ;
 
   }
+  getAlTeamsbyEmployeeID(id: any ) {
+    return   this.http.get<any[]>('http://localhost:8080/teams/' + id, this.httpOptions) ;
+
+  }
   getuserbyusername(username: any) {
     return   this.http.get<any[]>('http://localhost:8080/persons/' + username, this.httpOptions) ;
+
+  }
+  getMessageContainerbyteamsIDs(teamsIDs: any[]){
+    return this.http.get<any[]>('http://localhost:8080/message_container/ContainerTeams' , { params :
+        {'teamsIDs': teamsIDs }
+    });
 
   }
 }

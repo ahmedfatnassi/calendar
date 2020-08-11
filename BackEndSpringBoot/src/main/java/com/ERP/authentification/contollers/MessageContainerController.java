@@ -18,6 +18,8 @@ import java.util.List;
 public class MessageContainerController {
     @Autowired
     private MessageContainerService messageContainerService ;
+    @Autowired
+    private MessageService messageService ;
     @PostMapping
     public ResponseEntity<MessageContainer> create(@RequestBody MessageContainer messageContainer  ) {
         return ResponseEntity.status(201).body(this.messageContainerService.create(messageContainer));
@@ -27,10 +29,22 @@ public class MessageContainerController {
 
         return ResponseEntity.ok().body(messageContainerService.findAll() ) ;
     }
+    @GetMapping("/ContainerTeams")
+    public ResponseEntity<List<MessageContainer>> getAllContainerByTeamIdList(@RequestParam("teamsIDs") List<Long>  ids){
+
+        return ResponseEntity.ok().body(messageContainerService.findAllTeamMessageContainer(ids) ) ;
+    }
     @GetMapping("{id}")
         public ResponseEntity<List<MessageContainer>> getAllByIdsenderOrAndIdreceiver(@PathVariable Long id){
         //  this.messageService.findTopMessagebysenderId(id);
 
         return ResponseEntity.ok().body(messageContainerService.findAllByIdsenderOrAndIdreceiver(id)) ;
     }
+    @GetMapping("deleteAll")
+    public void deleteAll(){
+        this.messageContainerService.deleteAll();
+        this.messageService.deleteAll();
+
+    }
+
 }

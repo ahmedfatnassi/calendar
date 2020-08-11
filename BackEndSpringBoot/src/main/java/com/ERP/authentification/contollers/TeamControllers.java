@@ -34,6 +34,10 @@ public class TeamControllers {
 
         return ResponseEntity.ok().body(teamService.findAll());
     }
+    @GetMapping("{id}")
+    public ResponseEntity<List<Team>> getAllTeamOfEmployee(@PathVariable Long id)
+    {        return ResponseEntity.ok().body(teamService.findTeamsAllofEmployeeById(id));
+    }
     @DeleteMapping("/delete/{id}")
     public void deleteTeam(@PathVariable Long id)
     {

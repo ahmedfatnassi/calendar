@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface MessageContainerRepository   extends JpaRepository<MessageContainer, Long > {
     public List<MessageContainer> findAllByIdsenderOrIdreceiver(Long id , Long id1 ) ;
+    public List<MessageContainer> findAllByIdreceiverIn(List<Long> ids ) ;
 
 }
