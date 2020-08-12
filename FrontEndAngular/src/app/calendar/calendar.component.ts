@@ -248,6 +248,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       for (let i = 0; i < this.receivers.length; i++) {
         if(this.receivers[i].id === this.selectedEvent.receiverId){
           this.selectedEventReceiver = this.receivers[i] ;
+          break ;
         }
       }
     }
@@ -338,28 +339,44 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       this.addEvent(data.id, data.title, data.startEvent, data.endEvent, data.receiverId, data.color, data.receiver_type);
      // this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
       this.eventsModel = this.eventsModel1 ;
+      if (data.receiver_type === 'teams'){
+        for (let i = 0; i < this.teamlist.length; i++) {
+          if(this.teamlist[i].id === data.receiverId){
+           this.sendToteam(this.teamlist[i].title, data )
+            break ;
+          }
+        }
+      }else {
+        for (let i = 0; i < this.receivers.length; i++) {
+          if(this.receivers[i].id === data.receiverId){
+            this.sendtouser(this.receivers[i].username, data);
+            break ;
+          }
+        }
+      }
     }) ;
 
    // this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
 
 
   }
+
+
+
   connect1():any{
     this.url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
       'localhost:8080/greeting/websocket' ;
     this.socket = new WebSocket(this.url);
     this.stompClient = Stomp.over(this.socket);
     const that = this ;
-   /* this.stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
+    this.stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
       console.log('Connected: ' + frame);
 
-        that.toast.info('new event has been created ', 'creation of new event ', {
-          timeOut: 5000,
-        });
+
 
 
           for (let i = 0; i < that.teamlist.length; i++) {
-            that.stompClient.subscribe('/queue/notification/' +that.teamlist[i].title, function(newevent) {
+            that.stompClient.subscribe('/queue/notificationboard/' +that.teamlist[i].title, function(newevent) {
               that.addEvent(
                 newevent.id ,
                 newevent.title ,
@@ -369,10 +386,13 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
                 newevent.color,
                 newevent.receiver_type) ;
               that.eventsModel1 =that.eventsModel;
+              that.toast.info('new event has been created for  your team ', 'creation of new event ', {
+                timeOut: 5000,
+              });
             });
           }
 
-        that.stompClient.subscribe('/user/queue/message', function(newevent) {
+        that.stompClient.subscribe('/user/queue/notification', function(newevent) {
 
           that.addEvent(
             newevent.id ,
@@ -384,7 +404,9 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
             newevent.receiver_type) ;
 
           that.eventsModel1 =that.eventsModel;
-
+          that.toast.info('new event has been created for you ', 'creation of new event ', {
+            timeOut: 5000,
+          });
           //that.seletedContainer.last_message = message.body ;
           //that.seletedContainer.last_message_Date = that.datepipe.transform(myDate, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss')  ;
           // this.messages.push(this.message) ;
@@ -396,7 +418,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         that.eventsModel1 =that.eventsModel;
 
     }) ;
-    });*/
+    });
     console.log("heeeeeeeeere you are ")
   }
   onChange(newValue) {
@@ -447,14 +469,14 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
 
     }];
   }
-  sendtouser(username:any , message : any ){
+  sendtouser(username:any , event : any ){
     console.log('username '+ username)
-    this.stompClient.send('/user/' + username + '/queue/message', {}, JSON.stringify(message));
+    this.stompClient.send('/user/' + username + '/queue/notification', {}, JSON.stringify(event));
 
     console.log('sent looks like ');
   }
-  sendToteam(teamtitle:any , message : any ){
-    this.stompClient.send( '/queue/broadcast/'+teamtitle, {}, JSON.stringify(message));
+  sendToteam(teamtitle:any , event : any ){
+    this.stompClient.send( '/queue/notificationboard/'+teamtitle, {}, JSON.stringify(event));
 
   }
   ngOnDestroy(): void {

@@ -35,13 +35,19 @@ public class WebSocketController {
     private SecurityServiceImp securityService;
   
     @MessageMapping("/notification")
-    @SendToUser("/queue/reply")
-    public Map<String,String> processMessageFromClient(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
+    @SendToUser("/queue/notification")
+    public Map<String,String> sendNotificationToteam(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
     	
      System.out.println("map1 "+map1);
     	return  map1;
     }
-    
+    @MessageMapping("/notificationboard")
+    @SendTo("/queue/notificationboard")
+    public Map<String,String> sendNotificationtoUser(@Payload Map<String,String> map1, Principal principal, @Header("simpSessionId") String sessionId  , @Headers Map<String,String> map ) throws Exception {
+
+        System.out.println("map1 "+map1);
+        return  map1;
+    }
     
     @MessageMapping("/broadcast")
     @SendTo("/queue/broadcast")
