@@ -65,10 +65,8 @@ export class EventsService {
 
   }
   PostEvents(newEvent: any) {
-    return   this.http.post<any[]>('http://localhost:8080/events', newEvent, this.httpOptions)
-      .subscribe(data => {
-        console.log(data) ;
-      }) ;
+    return   this.http.post<any[]>('http://localhost:8080/events', newEvent, this.httpOptions) ;
+
 
   }
   getEventsByreceiver(id) {

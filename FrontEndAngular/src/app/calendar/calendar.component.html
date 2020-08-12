@@ -1,4 +1,4 @@
-<div class="d-flex mt-3  flex-row">
+<div class="d-flex mt-3  flex-row" name = "eventmodel" ngDefaultControl>
   <!--
 
 
@@ -41,7 +41,7 @@
     (dateClick)="dateClick($event)"
     (eventDragStop)="eventDragStop($event)"
     [plugins]="options.plugins"
-    (eventClick)="eventClick($event)"
+    (eventClick)="eventClick($event,contentbody)"
   ></full-calendar>
 
 
@@ -58,11 +58,11 @@
 
 
         <div class="custom-control custom-radio">
-          <input type="radio"  id="customRadio1" name="customRadio" value="teams" class="custom-control-input"checked ngModel>
+          <input type="radio"  (change)="handleChangeuserofTeam($event)" id="customRadio1" name="customRadio" value="teams" class="custom-control-input"checked ngModel>
           <label class="custom-control-label" for="customRadio1"> to team</label>
         </div>
         <div class="custom-control custom-radio">
-          <input type="radio"  id="customRadio2" name="customRadio" value="users" class="custom-control-input" ngModel>
+          <input type="radio"  (change)="handleChangeuserofTeam($event)" id="customRadio2" name="customRadio" value="users" class="custom-control-input" ngModel>
           <label class="custom-control-label" for="customRadio2">  to user</label>
         </div>
 
@@ -77,13 +77,20 @@
                    name="receiver"
                    id="receiver"
                    matInput
-
+                   [formControl]="myControl"
                    [matAutocomplete]="auto" >
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
               <div >
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-
-                </mat-option>
+                <div *ngIf="teamchecked">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option.title}}
+                  </mat-option>
+                </div>
+                <div *ngIf="userchecked">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option.username}}
+                  </mat-option>
+                </div>
               </div>
 
             </mat-autocomplete>
@@ -137,6 +144,64 @@
 
   </ng-template>
 
+  <ng-template  #contentbody let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Event </h5>
 
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" >
+
+
+
+
+
+      <div class="d-flex flex-row">
+        <p class="font-weight-bold text-capitalize"> title :  </p> <p class="font-weight-normal ">  {{selectedEvent.title}}</p>
+      </div>
+      <div class="d-flex flex-row">
+        <p class="font-weight-bold text-capitalize"> receiver type :  </p> <p class="font-weight-normal ">  {{selectedEvent.receiver_type}}</p>
+      </div>
+      <div class="d-flex flex-row" *ngIf="selectedEvent.receiver_type == 'teams'">
+        <p class="font-weight-bold text-capitalize"> receiver name  :  </p> <p class="font-weight-normal ">  {{selectedEventReceiver.title}}</p>
+      </div>
+      <div class="d-flex flex-row" *ngIf="selectedEvent.receiver_type == 'users'">
+        <p class="font-weight-bold text-capitalize"> receiver name  :  </p> <p class="font-weight-normal ">  {{selectedEventReceiver.username}}</p>
+      </div>
+      <div class="d-flex flex-row">
+        <p class="font-weight-bold text-capitalize"> start date  :  </p> <p class="font-weight-normal ">  {{selectedEvent.start}}</p>
+      </div>
+      <div class="d-flex flex-row">
+        <p class="font-weight-bold text-capitalize"> type :  </p> <p class="font-weight-normal ">  {{selectedEvent.end}}</p>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+        <div class="modal-footer d-flex justify-content-between ">
+          <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
+            close
+          </button>
+
+          <button class="btn btn-success" >
+            OK
+          </button>
+        </div>
+
+
+
+    </div>
+
+
+  </ng-template>
 </div>
 

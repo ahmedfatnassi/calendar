@@ -58,7 +58,7 @@ export class ChatService {
     return   this.http.get<any[]>('http://localhost:8080/individualChatHistory/byreceiverid/' + id, this.httpOptions) ;
 
   }
-  getAlTeamsbyEmployeeID(id: any ) {
+  getAllTeamsbyEmployeeID(id: any ) {
     return   this.http.get<any[]>('http://localhost:8080/teams/' + id, this.httpOptions) ;
 
   }

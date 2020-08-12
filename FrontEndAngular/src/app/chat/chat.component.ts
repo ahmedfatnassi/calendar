@@ -60,7 +60,7 @@ messages: any ;
       console.log(data);
       this.currentuser =  data;
       this.stomp = this.connect1();
-      this.chatService.getAlTeamsbyEmployeeID(this.currentuser.id).subscribe((teams: any[] ) => {
+      this.chatService.getAllTeamsbyEmployeeID(this.currentuser.id).subscribe((teams: any[] ) => {
         console.log('data');
         console.log(teams);
         this.teamlist = teams;
@@ -409,7 +409,7 @@ seletContainer(container:any){
   }
   openmodal(content){
     this.modal.open(content);
-    this.chatService.getAlTeamsbyEmployeeID(this.currentuser.id).subscribe((data: any[] ) => {
+    this.chatService.getAllTeamsbyEmployeeID(this.currentuser.id).subscribe((data: any[] ) => {
       console.log('data');
       console.log(data);
       this.teamlist = data;
@@ -442,7 +442,7 @@ seletContainer(container:any){
     const that = this ;
     this.stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
       console.log('Connected: ' + frame);
-      that.chatService.getAlTeamsbyEmployeeID(that.currentuser.id).subscribe((data: any[] ) => {
+      that.chatService.getAllTeamsbyEmployeeID(that.currentuser.id).subscribe((data: any[] ) => {
         console.log('data');
         console.log(data);
         for (let i = 0; i < data.length; i++) {
@@ -469,8 +469,11 @@ seletContainer(container:any){
   addMessage(message :any){
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     this.message = JSON.parse(message.body)
-    console.log(message)
-    this.messages.push(this.message) ;
+    //console.log(message)
+    if(!(this.messages === undefined)){
+      this.messages.push(this.message) ;
+    }
+
     const myDate = new Date();
     for (let i = 0; i < this.messageContainers.length; i++) {
       console.log('message.message_container_id');

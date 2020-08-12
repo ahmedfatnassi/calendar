@@ -62,7 +62,12 @@ private LocalDateTime  startEvent ;
 private LocalDateTime  endEvent ; 
 
 @Column(name ="color")
-private String color ; 
+private String color ;
+
+@Column(name ="receiverId")
+private Long receiverId ;
+@Column(name ="receiver_type")
+private String receiver_type ;
 
 @Column(name ="resourceId")
 private String resourceId ; 
@@ -77,9 +82,23 @@ public void setTitle(String title) {
 	this.title = title;
 }
 
+	public Long getreceiverId() {
+		return receiverId;
+	}
 
+	public void setreceiverId(Long receiverId) {
+		this.receiverId = receiverId;
+	}
 
-public LocalDateTime getStartEvent() {
+	public String getreceiver_type() {
+		return receiver_type;
+	}
+
+	public void setreceiver_type(String receiver_type) {
+		this.receiver_type = receiver_type;
+	}
+
+	public LocalDateTime getStartEvent() {
 	return startEvent;
 }
 

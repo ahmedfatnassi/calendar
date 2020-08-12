@@ -10,13 +10,15 @@ import timeGrigPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import {NgForm} from '@angular/forms';
+import {FormControl, NgForm} from '@angular/forms';
 import {Router} from '@angular/router';
 import {NotificationhandlerService} from './notificationhandler.service';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
+import {ChatService} from '../chatlist/chat.service';
+import {map, startWith} from 'rxjs/operators';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -34,28 +36,26 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
                public datepipe: DatePipe ,
                private router: Router ,
                private  notification: NotificationhandlerService ,
-               private toast: ToastrService
-  ) {}
+               private toast: ToastrService ,
+               private chatService: ChatService ) {}
   get yearMonth(): string {
     const dateObj = new Date();
     return dateObj.getUTCFullYear() + '-' + (dateObj.getUTCMonth() + 1);
   }
   options: OptionsInput;
+  myControl = new FormControl();
+  options1 :any[];
+  messageContainers1:any ;
+  filteredOptions: Observable<string[]>;
   newevent: any ;
+  socket: any ;
   eventsModel = [] ;
   resources1 = [] ;
-  options1 :any[];
-  messageContainers1:any ;messageContainers:any ;
-  filteredOptions: Observable<string[]>;
-  eventsModel1 = [{
-    title: 'Updaten nooooo',
-    start: '2020-02-20',
-    end: '2020-02-20' ,
-    resourceId: 'a',
-    editable: false ,
-    color: 'rouge'
-
-  }] ;
+  stomp :any ;
+  receivedmsg : any ;
+  stompClient: any ;
+  url : any ;
+  eventsModel1 = [] ;
   doctors: any = [] ;
   patients: any = [] ;
   agents: any = [] ;
@@ -64,20 +64,22 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   myDate = new Date;
   resources  = [] ;
   eventcreationStartDate: string  ;
+  currentUser:  any ;
   client: any ;
   eventCreationEndDate: string ;
   // tslint:disable-next-line:variable-name
   color: any;
   connectmsg: any ;
-  private stompClient: any;
-
-
+  teamchecked: boolean ;
+  userchecked: boolean ;
+  teamlist : any[]
+  receivers: any[];
+  selectedEvent: any ;
+  selectedEventReceiver: any ;
   ngOnInit() {
-    this.resources =  [
-      {id : '1' ,
-        title : ' roomA '} ,
-      {id : '2' ,
-        title : ' roomB ' }] ;
+    this.teamchecked =true ;
+    this.userchecked =false  ;
+
 
     this.options = {
       editable: false,
@@ -99,9 +101,9 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       this.resources = this.resources1 ;
     }) ;
 
-    this.eventservice.getPatients().subscribe(data => {
-      this.patients = Object.keys(data).map(i => data[i]);
-      console.log(this.patients) ;
+    this.eventservice.getAllusers().subscribe(data => {
+      this.receivers = Object.keys(data).map(i => data[i]);
+     // console.log(this.patients) ;
     }) ;
     this.eventservice.getAgents().subscribe(data => {
       this.agents = Object.keys(data).map(i => data[i]);
@@ -114,13 +116,32 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         // tslint:disable-next-line:forin prefer-for-of
         for (let i = 0; i < data.length; i++) {
           console.log(i) ;
-          this.addEvent(data[i].title, data[i].startEvent, data[i].endEvent, data[i].idReceiver, data[i].color);
+          this.addEvent(data[i].id, data[i].title, data[i].startEvent, data[i].endEvent, data[i].receiverId, data[i].color, data[i].receiver_type);
         }
         this.eventsModel = this.eventsModel1 ;
         console.log('iam heeere ') ;
         console.log(this.eventsModel) ;
 
       });
+    console.log('this.eventservice.currentUserValue')
+    console.log(this.eventservice.currentUserValue)
+    this.chatService.getuserbyusername(    this.eventservice.currentUserValue.username).subscribe((currentUser: any) => {
+      console.log(currentUser);
+      this.currentUser = currentUser ;
+
+      this.chatService.getAllTeamsbyEmployeeID(this.currentUser.id).subscribe((teamlist: any)=>{
+        console.log('data')
+        console.log(teamlist) ;
+        this.teamlist =  teamlist
+        this.options1 = this.teamlist;
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+        this.connect1();
+      });
+
+
     //this.notification.connect1()
     // notification
     // 1
@@ -162,25 +183,87 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
 
     }) ;*/
 
-    this.stompClient = this.connect1();
 
+    });
       }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
+    return this.options1.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
+  }
+  /// for users
+  private _filter1(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options1.filter(option => option.username.toLowerCase().indexOf(filterValue) === 0);
+  }
+  handleChangeuserofTeam(event){
+    console.log(event.srcElement.value)
+    if(event.srcElement.value == 'users') {
+      console.log('uuuuuuusers')
+      this.options1 = [];
+
+      this.options1 =this.receivers ;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter1(value))
+      );
+      this.teamchecked =false  ;
+      this.userchecked =true  ;
+
+    } else {
+
+      this.options1 =this.teamlist ;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+      this.teamchecked =true ;
+      this.userchecked =false  ;
+    }
+
+
+  }
   ngAfterContentInit(): void {
     console.log('Method not implemented.');
   }
-  eventClick(model) {
-    console.log(model);
+  eventClick(model,content) {
+    console.log(model.event._def.publicId);
+    for (let i = 0; i < this.eventsModel.length; i++) {
+
+      if (JSON.stringify(this.eventsModel[i].id) === model.event._def.publicId){
+        console.log('it  works ')
+          this.selectedEvent = this.eventsModel[i] ;
+          break;
+      }
+    }
+    if(this.selectedEvent.receiver_type === 'teams') {
+      for (let i = 0; i < this.teamlist.length; i++) {
+        if(this.teamlist[i].id === this.selectedEvent.receiverId){
+          this.selectedEventReceiver = this.teamlist[i] ;
+          break ;
+        }
+      }
+    }else {
+      for (let i = 0; i < this.receivers.length; i++) {
+        if(this.receivers[i].id === this.selectedEvent.receiverId){
+          this.selectedEventReceiver = this.receivers[i] ;
+        }
+      }
+    }
+    console.log('this.selectedEvent')
+    console.log(this.selectedEvent)
+    console.log('this.selectedEventReceiver')
+    console.log(this.selectedEventReceiver)
+    this.modal.open(content );
   //  this.chat.messages.next(this.message);
     //this.sendMsg() ;
+
+
   }
-   message = {
-    author: 'tutorialedge',
-    message: 'this is a test message'
-  };
+
 //https://stackoverflow.com/questions/54763261/how-to-send-custom-message-to-custom-user-with-spring-websocket
   sendMsg() {
-    console.log('new message from client to websocket: ', this.message);
   }
   newEvent(content) {
     const modalRef = this.modal.open(content, );
@@ -205,12 +288,14 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       end: this.yearMonth + '-10'
     }];
   }
-  addEvent(title1: string, start: Date , end: Date, idReceiver: string , color: string ): void {
+  addEvent(id: any , title1: string, start: Date , end: Date, idreceiver: string , color: string , receivertype: string ): void {
     console.log(this.datepipe.transform(this.myDate, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss') ) ;
     // @ts-ignore
     this.eventsModel1 = this.eventsModel1.concat({
+      id: id,
       title: title1,
-      resourceId: idReceiver,
+      receiver_type : receivertype ,
+      receiverId  : idreceiver,
       start: this.datepipe.transform(start, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss') ,
       end: this.datepipe.transform(end, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss')  ,
       editable: false   , // :stop drag and drop
@@ -239,67 +324,80 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     console.log(this.eventCreationEndDate) ;
     // tslint:disable-next-line:max-line-length
     this.newevent = {
-
+      receiver_type : form.value.customRadio,
+      receiverId  :this.myControl.value.id ,
       title : form.value.title ,
       startEvent  : this.eventcreationStartDate ,
       endEvent :  this.eventCreationEndDate ,
       color : this.color
     };
-    this.eventservice.PostEvents(this.newevent);
-    console.log('recieved person '+ form.value.doctor.username)
-    this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
+    console.log(this.newevent)
+    this.eventservice.PostEvents(this.newevent) .subscribe((data:any) => {
+      console.log('show event ') ;
+      console.log(data) ;
+      this.addEvent(data.id, data.title, data.startEvent, data.endEvent, data.receiverId, data.color, data.receiver_type);
+     // this.stompClient.send('/user/'+form.value.doctor.username+'/queue/reply', {}, JSON.stringify(this.newevent));
+      this.eventsModel = this.eventsModel1 ;
+    }) ;
+
    // this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
 
 
   }
   connect1():any{
-    const url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
+    this.url = 'ws://' + this.eventservice.currentUserValue.username+':'+this.eventservice.currentUserValue.password+ '@' +
       'localhost:8080/greeting/websocket' ;
-    const socket = new WebSocket(url);
-    const stompClient = Stomp.over(socket);
-    const toast = this.toast;
-    let eventsModel =  this.eventsModel ;
-    let eventsModel1 =  this.eventsModel ;
-    let that = this;
-    stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
+    this.socket = new WebSocket(this.url);
+    this.stompClient = Stomp.over(this.socket);
+    const that = this ;
+   /* this.stompClient.connect(this.eventservice.currentUserValue.username,this.eventservice.currentUserValue.password , function(frame) {
       console.log('Connected: ' + frame);
-      stompClient.subscribe('/user/queue/reply', function(message) {
-        console.log('working  websocket  message = ' + JSON.parse(message.body).title);
-        toast.info('new event has been created ', 'creation of new event ', {
+
+        that.toast.info('new event has been created ', 'creation of new event ', {
           timeOut: 5000,
         });
+
+
+          for (let i = 0; i < that.teamlist.length; i++) {
+            that.stompClient.subscribe('/queue/notification/' +that.teamlist[i].title, function(newevent) {
+              that.addEvent(
+                newevent.id ,
+                newevent.title ,
+                newevent.startEvent ,
+                newevent.endEvent ,
+                newevent.receiverId ,
+                newevent.color,
+                newevent.receiver_type) ;
+              that.eventsModel1 =that.eventsModel;
+            });
+          }
+
+        that.stompClient.subscribe('/user/queue/message', function(newevent) {
+
+          that.addEvent(
+            newevent.id ,
+            newevent.title ,
+            newevent.startEvent ,
+            newevent.endEvent ,
+            newevent.receiverId ,
+            newevent.color,
+            newevent.receiver_type) ;
+
+          that.eventsModel1 =that.eventsModel;
+
+          //that.seletedContainer.last_message = message.body ;
+          //that.seletedContainer.last_message_Date = that.datepipe.transform(myDate, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss')  ;
+          // this.messages.push(this.message) ;
+
+
 
 
        //  that.messages.push(JSON.parse(.body).content);
         that.eventsModel1 =that.eventsModel;
 
-        that.eventsModel1 = that.eventsModel1.concat({
-          title: JSON.parse(message.body).title,
-          resourceId: JSON.parse(message.body).resourceId,
-          start:  JSON.parse(message.body).start,
-          end:  JSON.parse(message.body).end ,
-          editable: false   , // :stop drag and drop
-          color : JSON.parse(message.body).color
-        }) ;
-        that.eventsModel = that.eventsModel1;
-        console.log(eventsModel);
-        return stompClient ;
-      });
-      stompClient.subscribe('/queue/broadcast', function(message) {
-        console.log("broadcast "+message) ;
-        const newevent = JSON.parse(message.body)
-        that.eventsModel1 = that.eventsModel  ;
-        that.addEvent(newevent.title ,
-          newevent.startEvent ,
-          newevent.endEvent ,
-          newevent.idReceiver ,
-          newevent.color) ;
-        that.eventsModel = that.eventsModel1 ;
-      });
-      return stompClient ;
     }) ;
+    });*/
     console.log("heeeeeeeeere you are ")
-    return stompClient;
   }
   onChange(newValue) {
     console.log(newValue);
@@ -312,7 +410,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         for (let i = 0; i < data.length; i++) {
           console.log('salem ');
           console.log(data[i]);
-          this.addEvent(data[i].title, data[i].startEvent, data[i].endEvent, newValue.value, data[i].color );
+          this.addEvent(data[i].id,data[i].title, data[i].startEvent, data[i].endEvent, newValue.value, data[i].color ,data[i].receivertype );
 
         }
         this.eventsModel = this.eventsModel1 ;
@@ -349,7 +447,16 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
 
     }];
   }
+  sendtouser(username:any , message : any ){
+    console.log('username '+ username)
+    this.stompClient.send('/user/' + username + '/queue/message', {}, JSON.stringify(message));
 
+    console.log('sent looks like ');
+  }
+  sendToteam(teamtitle:any , message : any ){
+    this.stompClient.send( '/queue/broadcast/'+teamtitle, {}, JSON.stringify(message));
+
+  }
   ngOnDestroy(): void {
 
   }
