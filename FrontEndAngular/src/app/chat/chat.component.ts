@@ -107,7 +107,7 @@ messages: any ;
         this.chatService.getAllByIdsenderOrAndIdreceiver(this.currentuser.id).subscribe((messageContainers3 :any[]) => {
           console.log('messageContainers3 ')
           console.log(messageContainers3)
-         // this.messageContainers1 = data;
+          this.messageContainers1 = messageContainers3;
           for (let i = 0; i < messageContainers3.length; i++) {
             let find = false ;
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 @Data
@@ -34,8 +35,8 @@ public class Request {
     private String  patientLastname ;
     @Column(name ="boardId")
     private Long  boardid ;
-    @Column(name ="dateOfBirth")
-    private Date dateOfBirth  ;
+    @Column(name ="send_date")
+    private Instant send_date =Instant.now()  ;
 
     @Column(name ="isArchived")
     private Boolean isArchived  ;
@@ -127,11 +128,19 @@ public class Request {
         this.patientFirstname = patientFirstname;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public Instant getSend_date() {
+        return send_date;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setSend_date(Instant send_date) {
+        this.send_date = send_date;
+    }
+
+    public Boolean getExecuted() {
+        return isExecuted;
+    }
+
+    public void setExecuted(Boolean executed) {
+        isExecuted = executed;
     }
 }

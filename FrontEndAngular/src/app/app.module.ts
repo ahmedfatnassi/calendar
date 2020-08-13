@@ -32,14 +32,19 @@ import { RequestFormComponent } from './request-form/request-form.component';
 import {QRCodeModule} from 'angularx-qrcode';
 import {BrowserQRCodeReader} from '@zxing/library';
 import {ZXingScannerModule} from '@zxing/ngx-scanner';
-import {ScrollingModule} from '@angular/cdk/scrolling';
-// @ts-ignore
+ // @ts-ignore
 import {MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatRippleModule} from '@angular/material';
-
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartModule } from 'angular2-chartjs';
+import {CORPORATE_THEME, COSMIC_THEME, DARK_THEME, DEFAULT_THEME, NbCardModule, NbThemeModule} from '@nebular/theme';
 
 const appRoutes: Routes = [
   { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
   { path: 'chats',      component: ChatComponent , canActivate: [AuthguardService] },
+  { path: 'dashboard',      component: DashboardComponent , canActivate: [AuthguardService] },
   { path: 'received_request',      component: ReceivedRequestComponent , canActivate: [AuthguardService] },
   { path: 'processed_request',      component: CompletedRequestComponent , canActivate: [AuthguardService] },
   { path: 'request_form',      component : RequestFormComponent , canActivate: [AuthguardService] },
@@ -56,6 +61,7 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     CalendarComponent,
+    DashboardComponent,
     KanbanBoardComponent,
     BoardlistComponent,
     ChatComponent,
@@ -68,6 +74,10 @@ const appRoutes: Routes = [
   ],
   imports: [
 
+    NgxEchartsModule,
+    NgxChartsModule,
+    ChartModule,
+    NbCardModule,
     BrowserModule,
     QRCodeModule,
     BrowserModule,
@@ -86,6 +96,7 @@ const appRoutes: Routes = [
     NgbModule,
     ReactiveFormsModule,
     NgbModalModule,
+
     RouterModule.forRoot(
       appRoutes),
     BrowserAnimationsModule,
@@ -101,7 +112,14 @@ const appRoutes: Routes = [
     DragDropModule,
     // for date imput
   ],
-  providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } , ],
+  providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } ,
+    NbThemeModule.forRoot(
+    {
+      name: 'default',
+    },
+    [ DEFAULT_THEME, COSMIC_THEME, CORPORATE_THEME, DARK_THEME ],
+  ).providers,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
