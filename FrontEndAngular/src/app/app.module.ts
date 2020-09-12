@@ -39,7 +39,17 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular2-chartjs';
-import {CORPORATE_THEME, COSMIC_THEME, DARK_THEME, DEFAULT_THEME, NbCardModule, NbThemeModule} from '@nebular/theme';
+import {
+  CORPORATE_THEME,
+  COSMIC_THEME,
+  DARK_THEME,
+  DEFAULT_THEME,
+  NbCardModule,
+  NbLayoutModule,
+  NbSelectModule,
+  NbThemeModule
+} from '@nebular/theme';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 const appRoutes: Routes = [
   { path: 'board/:id',      component: KanbanBoardComponent , canActivate: [AuthguardService] },
@@ -71,9 +81,11 @@ const appRoutes: Routes = [
     ReceivedRequestComponent,
     CompletedRequestComponent,
     RequestFormComponent
-  ],
+  ],//https://github.com/akveo/ngx-admin/issues/1933 solve the issue of the appendchild undefined
   imports: [
-
+    NbSelectModule,
+    AutocompleteLibModule,
+    MatAutocompleteModule,
     NgxEchartsModule,
     NgxChartsModule,
     ChartModule,
@@ -85,10 +97,9 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatRippleModule,
-    ZXingScannerModule ,
+    ZXingScannerModule,
     FullCalendarModule,
     HttpClientModule,
-    MatAutocompleteModule,
     ScrollingModule,
     FormsModule,
     NgDragDropModule.forRoot(),
@@ -96,6 +107,7 @@ const appRoutes: Routes = [
     NgbModule,
     ReactiveFormsModule,
     NgbModalModule,
+
 
     RouterModule.forRoot(
       appRoutes),
@@ -110,6 +122,8 @@ const appRoutes: Routes = [
     OwlDateTimeModule, // for time imput
     OwlNativeDateTimeModule,
     DragDropModule,
+    NbSelectModule,
+    NbLayoutModule,
     // for date imput
   ],
   providers: [DatePipe , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } ,

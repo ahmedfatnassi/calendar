@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {NbColorHelper, NbThemeService} from '@nebular/theme';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,7 +33,7 @@ export class DashboardComponent implements OnInit {
       const chartjs: any = config.variables.chartjs;
 
       this.data = {
-        labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+        labels:[ 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
         datasets: [{
           data: [65, 59, 80, 81, 56, 55, 40],
           label: 'Received Requests ',
@@ -124,13 +125,13 @@ export class DashboardComponent implements OnInit {
       const chartjs: any = config.variables.chartjs;
 
       this.data2 = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: [ 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
         datasets: [{
           data: [65, 59, 80, 81, 56, 55, 40],
           label: 'Average of Treated Act per Employee ',
           backgroundColor: NbColorHelper.hexToRgbA(colors.primary, 0.3),
           borderColor: colors.primary,
-        },/* {
+        }, /* {
           data: [28, 48, 40, 19, 86, 27, 90],
           label: 'Series B',
           backgroundColor: NbColorHelper.hexToRgbA(colors.danger, 0.3),
@@ -178,14 +179,20 @@ export class DashboardComponent implements OnInit {
 
     this.themeSubscription3 = this.theme.getJsTheme().subscribe(config => {
       const dte = new Date();
-      dte.setDate(dte.getDate() - 2);
-      console.log(dte.toString());
+      dte.setDate(dte.getDate() - 1);
+      console.log(dte.getDay());
+      let daysdate = []
+      for (let i = 6; i >= 0; i--) {
+        daysdate[i] = dte.toDateString() ;
+        dte.setDate(dte.getDate() - 1);
+      }
+      console.log(daysdate)
 
       const colors: any = config.variables;
       const chartjs: any = config.variables.chartjs;
 
       this.data3 = {
-        labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+        labels: daysdate,
         datasets: [{
           data: [1, 2, 4, 3, 7, 5, 6],
           label: 'Treated Acts ',
@@ -234,7 +241,7 @@ export class DashboardComponent implements OnInit {
       const chartjs: any = config.variables.chartjs;
 
       this.data4 = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: [ 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
         datasets: [ {
           data: [28, 48, 40, 19, 86, 27, 90],
           label: 'Average of Requests Treated time',
@@ -285,4 +292,13 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {}
+  getListofLastMonths(index1:any , index2:any){
+    const pipe = new DatePipe('en-US');
+    // use moment
+
+    const now = Date.now();
+    const myFormattedDate = pipe.transform(now , 'M');
+    const  y: number = +myFormattedDate
+    console.log(y +1)
+  }
 }

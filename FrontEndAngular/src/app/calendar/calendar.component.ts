@@ -42,6 +42,8 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     const dateObj = new Date();
     return dateObj.getUTCFullYear() + '-' + (dateObj.getUTCMonth() + 1);
   }
+  receiverId: any ;
+  keyword = 'title';
   options: OptionsInput;
   myControl = new FormControl();
   options1 :any[];
@@ -76,6 +78,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   receivers: any[];
   selectedEvent: any ;
   selectedEventReceiver: any ;
+
   ngOnInit() {
     this.teamchecked =true ;
     this.userchecked =false  ;
@@ -133,11 +136,8 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
         console.log('data')
         console.log(teamlist) ;
         this.teamlist =  teamlist
-        this.options1 = this.teamlist;
-        this.filteredOptions = this.myControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value))
-        );
+
+
         this.connect1();
       });
 
@@ -186,40 +186,31 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
 
     });
       }
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options1.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
+  displayFn(user: any): string {
+    return user && user.title ? user.title : '';
   }
-  /// for users
-  private _filter1(value: string): string[] {
-    const filterValue = value.toLowerCase();
 
-    return this.options1.filter(option => option.username.toLowerCase().indexOf(filterValue) === 0);
-  }
-  handleChangeuserofTeam(event){
-    console.log(event.srcElement.value)
-    if(event.srcElement.value == 'users') {
-      console.log('uuuuuuusers')
-      this.options1 = [];
+  handleChangeuserofTeam(event) {
 
-      this.options1 =this.receivers ;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter1(value))
-      );
+    console.log(event.form.value.customRadio)
+    if(event.form.value.customRadio == 'users') {
       this.teamchecked =false  ;
       this.userchecked =true  ;
+      this.keyword = 'username'
+
+      this.options1 = [];
+      this.options1 = this.receivers ;
+
 
     } else {
-
-      this.options1 =this.teamlist ;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
       this.teamchecked =true ;
       this.userchecked =false  ;
+      this.options1 = [];
+      this.keyword = 'title'
+
+      this.options1 = this.teamlist ;
+
+
     }
 
 
@@ -268,7 +259,12 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   }
   newEvent(content) {
     const modalRef = this.modal.open(content, );
-    console.log('this.connectmsg ' +this.connectmsg)
+    this.teamchecked = true
+    this.options1 = this.teamlist;
+
+
+    console.log(this.filteredOptions)
+    console.log('this.connectmsg ' +this.connectmsg) ;
     // tslint:disable-next-line:only-arrow-functions
 
     }
@@ -326,7 +322,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     // tslint:disable-next-line:max-line-length
     this.newevent = {
       receiver_type : form.value.customRadio,
-      receiverId  :this.myControl.value.id ,
+      receiverId  : this.receiverId ,
       title : form.value.title ,
       startEvent  : this.eventcreationStartDate ,
       endEvent :  this.eventCreationEndDate ,
@@ -357,7 +353,6 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
     }) ;
 
    // this.stompClient.send('/queue/broadcast', {}, JSON.stringify(this.newevent));
-
 
   }
 
@@ -445,30 +440,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   clearEvents() {
     this.eventsModel = [];
   }
-  addEvents() {
-    this.eventsModel = [{
-      title: 'Updaten nooooo1',
-      resourceId: 'a',
-      start: '2020-02-20',
-      end: '2020-02-20' ,
 
-
-    } , {
-      title: 'Updaten nooooo2',
-      resourceId: 'a',
-      start: '2020-02-20',
-      end: '2020-02-20' ,
-
-
-    }, {
-      title: 'Updaten nooooo3',
-      resourceId: 'a',
-      start: '2020-02-20',
-      end: '2020-02-20' ,
-
-
-    }];
-  }
   sendtouser(username:any , event : any ){
     console.log('username '+ username)
     this.stompClient.send('/user/' + username + '/queue/notification', {}, JSON.stringify(event));
@@ -481,5 +453,21 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   }
   ngOnDestroy(): void {
 
+  }
+  selectEvent(item) {
+    // do something with selected item
+    console.log('item')
+    console.log(item)
+    this.receiverId = item.id ;
+  }
+
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+
+  }
+
+  onFocused(e){
+    // do something when input is focused
   }
 }

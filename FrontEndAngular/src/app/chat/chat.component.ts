@@ -16,7 +16,10 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class ChatComponent implements OnInit {
 messages: any ;
+  keyword :any ;
   private message: any;
+  private receiverId: any;
+  private receiverMessage: any;
   constructor(private chatService: ChatService,
               private  eventservice: EventsService ,
               @Inject(DOCUMENT) private document: Document ,
@@ -83,11 +86,11 @@ messages: any ;
           for (let i = 0; i < this.teamlist.length; i++) {
             this.options1.push(this.teamlist[i].title) ;
           }
-          this.options = this.teamlist;
-          this.filteredOptions = this.myControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(value))
-          );
+          this.teamchecked =true ;
+          this.userchecked =false  ;
+          this.keyword = 'title' ;
+          this.options =this.teamlist ;
+
         })
 
 
@@ -233,18 +236,18 @@ seletContainer(container:any){
 
     ///console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     console.log(form.value);
-    console.log(this.myControl.value) ;
+    console.log(this.receiverMessage) ;
      this.findtheContainer= false ;
     let indexmessageGourp ;
 
     for (let i = 0; i < this.messageContainers.length; i++) {
-      if((this.messageContainers[i].idsender === this.myControl.value.id && this.messageContainers[i].idreceiver === this.currentuser.id)
-        || (this.messageContainers[i].idreceiver === this.myControl.value.id && this.messageContainers[i].idsender === this.myControl.value.id) ) {
+      if((this.messageContainers[i].idsender === this.receiverMessage.id && this.messageContainers[i].idreceiver === this.currentuser.id)
+        || (this.messageContainers[i].idreceiver === this.receiverMessage.id && this.messageContainers[i].idsender === this.receiverMessage.id) ) {
         this.findtheContainer = true;
         indexmessageGourp = i ;
         break;
       }else {
-        if(this.messageContainers[i].idreceiver === this.myControl.value.id) {
+        if(this.messageContainers[i].idreceiver === this.receiverMessage.id) {
           this.findtheContainer = true;
           indexmessageGourp = i ;
           break;
@@ -260,7 +263,7 @@ seletContainer(container:any){
       this.chatService.createMessageContainer({
           'sender_Type': form.value.customRadio ,
           'idsender':this.currentuser.id ,
-          'idreceiver'  :this.myControl.value.id ,
+          'idreceiver'  :this.receiverMessage.id ,
           'last_message' : form.value.messageBody  ,
           'last_message_Date':  this.datepipe.transform(myDate, 'yyyy-MM-dd' + 'T' + 'HH:mm:ss') ,
         }
@@ -269,7 +272,7 @@ seletContainer(container:any){
         this.message= {
           'message_container_id': data.id,
           'idsender':this.currentuser.id ,
-          'idreceiver'  :this.myControl.value.id ,
+          'idreceiver'  :this.receiverMessage.id ,
           'body' :form.value.messageBody  ,
           'vu' : false} ;
 
@@ -294,7 +297,7 @@ seletContainer(container:any){
           'message_container_id': this.messageContainers[indexmessageGourp].id,
           'sender_Type': this.messageContainers[indexmessageGourp].sender_Type ,
           'idsender':this.currentuser.id ,
-          'idreceiver'  :this.myControl.value.id ,
+          'idreceiver'  :this.receiverMessage.id ,
           'body' :form.value.messageBody  ,
           'vu' : false} ;
 
@@ -380,29 +383,27 @@ seletContainer(container:any){
   }
 
   handleChangeuserofTeam(event){
-    console.log(event.srcElement.value)
-    if(event.srcElement.value == 'users') {
+    //console.log(event.srcElement.value)
+    if(event.form.value.customRadio  == 'users') {
       console.log('uuuuuuusers')
       this.options1 = [];
       this.options = [];
 
-      this.options =this.receivers ;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter1(value))
-      );
+
+
       this.teamchecked =false  ;
       this.userchecked =true  ;
-
+      this.keyword = 'username'
+      this.options =this.receivers ;
     } else {
 
-      this.options =this.teamlist ;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+
+
       this.teamchecked =true ;
       this.userchecked =false  ;
+      this.keyword = 'title' ;
+      this.options =this.teamlist ;
+
     }
 
 
@@ -504,5 +505,20 @@ seletContainer(container:any){
   scrolldown(){
     this.messagescontainer.scrollTop =  this.messagescontainer.scrollHeight;
   }
+  selectEvent(item) {
+    // do something with selected item
+    console.log('item')
+    console.log(item)
+    this.receiverMessage  = item;
+  }
 
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+
+  }
+
+  onFocused(e){
+    // do something when input is focused
+  }
 }

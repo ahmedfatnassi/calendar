@@ -86,12 +86,12 @@
       <div class="modal-body" >
         <form  class="" #msgform="ngForm" (ngSubmit)="sentMsg(msgform);">
 
-          <div class="custom-control custom-radio">
-            <input type="radio"  (change)="handleChangeuserofTeam($event)" id="customRadio1" name="customRadio" value="teams" class="custom-control-input"checked ngModel>
+          <div class="custom-control custom-radio active">
+            <input type="radio"   (change)="handleChangeuserofTeam(msgform)" id="customRadio1" name="customRadio" value="teams" class="custom-control-input"checked ngModel>
             <label class="custom-control-label" for="customRadio1"> to team</label>
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio"  (change)="handleChangeuserofTeam($event)" id="customRadio2" name="customRadio" value="users" class="custom-control-input" ngModel>
+            <input type="radio"   (change)="handleChangeuserofTeam(msgform)" id="customRadio2" name="customRadio" value="users" class="custom-control-input" ngModel>
             <label class="custom-control-label" for="customRadio2">  to user</label>
           </div>
 
@@ -102,28 +102,26 @@
           </div>
           <!-- here is list of user -->
           <div class="form-group w-100 ml-1">
-          <mat-form-field class="w-100">
-            <input type="text"
-                   placeholder="Choose one "
-                   aria-label="Number"
-                   name="receiver"
-                   id="receiver"
-                   matInput
-                   [formControl]="myControl"
-                   [matAutocomplete]="auto" >
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-             <div *ngIf="teamchecked">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option.title}}
-              </mat-option>
-             </div>
-          <div *ngIf="userchecked">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option.username}}
-              </mat-option>
-          </div>
-            </mat-autocomplete>
-          </mat-form-field>
+            <ng-autocomplete
+              [data]="options"
+              [searchKeyword]="keyword"
+              (selected)='selectEvent($event)'
+              (inputChanged)='onChangeSearch($event)'
+              (inputFocused)='onFocused($event)'
+              [itemTemplate]="itemTemplate"
+              [notFoundTemplate]="notFoundTemplate">
+            </ng-autocomplete>
+
+            <ng-template  #itemTemplate let-item>
+              <a  *ngIf="!teamchecked"  [innerHTML]="item.username"></a>
+              <a  *ngIf="teamchecked"  [innerHTML]="item.title"></a>
+            </ng-template>
+
+
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
           </div>
          <!-- <div class="srch_bar">
                    <div class="stylish-input-group">

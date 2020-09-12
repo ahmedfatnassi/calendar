@@ -1,9 +1,17 @@
-<div class="d-flex justify-content-around mt-2">
+<div class=" d-flex justify-content-center mt-3">
+<div class="card bg-light " >
+  <div class="card-header">Total revenue of 2020 </div>
+  <div class="card-body">
+    <h5 class="card-title">3078 </h5>
+  </div>
+</div>
+</div>
+<div class=" d-flex justify-content-center mt-3">
 
-  <div class="col-lg-6">
+  <div class="col-lg-5 mr-3">
       <div class="card">
         <div class="card-header">
-          Bar
+          number of income and outcome requests per day
         </div>
         <div class="card-body">
           <chart type="bar" [data]="data" [options]="options"></chart>
@@ -11,10 +19,10 @@
       </div>
   </div>
 
-  <div class="col-lg-6">
+  <div class="col-lg-5">
     <div class="card">
       <div class="card-header">
-         pie
+        percentage of result of act evaluation
 
       </div>
       <div class="card-body">
@@ -24,12 +32,12 @@
     </div>
   </div>
 </div>
-<div class="d-flex justify-content-around mt-2">
+<div class="d-flex justify-content-center mt-3">
 
-  <div class="col-lg-6">
+  <div class="col-lg-5 mr-3">
     <div class="card">
       <div class="card-header">
-        line
+        Average of evaluated act per employee
       </div>
       <div class="card-body">
         <chart type="line" [data]="data2" [options]="options2"></chart>
@@ -37,10 +45,10 @@
     </div>
   </div>
 
-  <div class="col-lg-6">
+  <div class="col-lg-5">
     <div class="card">
       <div class="card-header">
-        Bar
+        number of evaluated act per day
       </div>
       <div class="card-body">
         <chart type="bar" [data]="data3" [options]="options3"></chart>
@@ -50,9 +58,14 @@
   </div>
 
 </div>
-<div class="d-flex justify-content-around mt-2">
+<div>
 
-  <div class="col-lg-6">
+
+
+
+
+</div>-
+<!--- <div class="col-lg-6">
     <div class="card">
       <div class="card-header">
         line
@@ -61,8 +74,4 @@
         <chart type="line" [data]="data4" [options]="options4"></chart>
       </div>
     </div>
-  </div>
-
-
-
-</div>
+  </div>-->

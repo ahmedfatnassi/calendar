@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class ActivityTestController {
 
 
     @GetMapping("/gettasks/{number}")
-    public String  getAlltasksbyprocessID(@PathVariable String number) {
+    public List<HistoricTaskInstance>  getAlltasksbyprocessID(@PathVariable String number) {
         System.out.println(number);
 
         List<ProcessInstance> instanceList = runtimeService
@@ -80,12 +81,15 @@ public class ActivityTestController {
 
                 .list();
         //taskService.createTaskQuery().processDefinitionId("225023").list();
-
+        Date date = new Date() ;
+        System.out.println("date "+date);
         return historyService
                 .createHistoricTaskInstanceQuery()
-                .taskAssignee("143")
-                .finished()
-                .list().toString();
+                .processDefinitionKey("myProcess")
+                .processUnfinished()
+                .taskVariableValueEquals("toDoctorDental",true)
+
+                .list();
     }
     @GetMapping("/complete/{id}/{name}")
     public void  completeProcess(@PathVariable String id,@PathVariable String name) {
