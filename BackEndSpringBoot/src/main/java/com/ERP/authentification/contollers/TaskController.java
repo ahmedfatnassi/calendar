@@ -68,7 +68,6 @@ public class TaskController {
         act.setResult(result.toString());
         act.setResult_description(report);
         actService.create(act);
-        System.out.println(act);
            /* if(task.getName().equals("validate")){
                 System.out.println("validate");
                 if(result.equals("APPROVED")) {
