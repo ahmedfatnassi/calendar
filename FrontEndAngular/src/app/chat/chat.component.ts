@@ -297,7 +297,7 @@ seletContainer(container:any){
           'message_container_id': this.messageContainers[indexmessageGourp].id,
           'sender_Type': this.messageContainers[indexmessageGourp].sender_Type ,
           'idsender':this.currentuser.id ,
-          'idreceiver'  :this.receiverMessage.id ,
+            'idreceiver'  :this.receiverMessage.id ,
           'body' :form.value.messageBody  ,
           'vu' : false} ;
 

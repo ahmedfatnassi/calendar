@@ -37,6 +37,7 @@ export class KanbanBoardComponent implements OnInit {
   openedTaskIndex: any ;
   openedAct :any
   openedTaskResult: any ;
+  openedTaskResultDescription: any ;
   openedTaskColumnIndex: any ;
   cannotExecuteWithoutAssignedUser: boolean ;
   openedTaskResultIsTrue : boolean ;
@@ -278,7 +279,7 @@ execute(){
   /*  if (!this.openedTask.assignedUser){
       this.cannotExecuteWithoutAssignedUser = true ;
     } else {*/
-    this.kanbanBoard.executeTask(this.openedTask,this.openedTaskResult).subscribe((data : any)=>{
+    this.kanbanBoard.executeTask(this.openedTask, this.openedTaskResult, this.openedTaskResultDescription).subscribe((data : any)=>{
 
       const index = this.fullBoard[this.openedTaskColumnIndex].tasks.indexOf(data);
       if (index > -1) {

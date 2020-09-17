@@ -99,6 +99,8 @@ export class SettingsComponent implements OnInit {
     }).subscribe(data => {
       console.log(data) ;
       this.employees.push(data);
+      this.modal.dismissAll();
+
   }) ;
   }
   submitDoctor(form: NgForm ) {
@@ -114,7 +116,8 @@ export class SettingsComponent implements OnInit {
         password : form.value.password
       }).subscribe(data => {
       console.log(data) ;
-      this.employees.push(data);
+      this.doctors.push(data);
+      this.modal.dismissAll();
     }) ;
   }
   deleteEmployee(item: any ) {
@@ -323,7 +326,7 @@ openCreateEmployeeModal(content){
       name: form.value.name,
       boardId: this.openColumnBoardID
     }).subscribe((data:any) => {
-      console.log(data)
+      console.log(data) ;
 
     });
 

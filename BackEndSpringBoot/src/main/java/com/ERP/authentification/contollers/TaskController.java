@@ -1,8 +1,10 @@
 package com.ERP.authentification.contollers;
 
+import com.ERP.authentification.Models.Act;
 import com.ERP.authentification.Models.BoardTask;
 import com.ERP.authentification.Models.Person;
 import com.ERP.authentification.Models.TaskResult;
+import com.ERP.authentification.services.ActService;
 import com.ERP.authentification.services.ActivitiService;
 import com.ERP.authentification.services.PersonService;
 import com.ERP.authentification.services.TaskService;
@@ -20,7 +22,8 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService taskService;
-
+    @Autowired
+    private ActService actService ;
     @Autowired
     private ActivitiService activitiService;
     @Autowired
@@ -52,15 +55,20 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.findAllByColumnIdIn(columnIds));
     }
     @PostMapping("execute")
-    public ResponseEntity<BoardTask> executeTask(@RequestBody BoardTask boardTask,@RequestParam("result") TaskResult result) {
+    public ResponseEntity<BoardTask> executeTask(@RequestBody BoardTask boardTask,@RequestParam("result") TaskResult result,@RequestParam("report") String report) {
         System.out.println(boardTask);
       /*  if(!boardTask.getAssignedUser().equals(null) && !boardTask.getActivitiTaskId().equals(null) && result != null){
 
             Person person = personService.findbyId(boardTask.getAssignedUser());
             activitiService.claimTask(boardTask.getActivitiTaskId(),person.getUsername());*/
            Task task = activitiService.getTaskById(boardTask.getActivitiTaskId()) ;
-
-
+        System.out.println("report");
+        System.out.println(report);
+        Act act = actService.getById(boardTask.getActId()) ;
+        act.setResult(result.toString());
+        act.setResult_description(report);
+        actService.create(act);
+        System.out.println(act);
            /* if(task.getName().equals("validate")){
                 System.out.println("validate");
                 if(result.equals("APPROVED")) {
@@ -69,7 +77,10 @@ public class TaskController {
                     activitiService.setVariableTask(boardTask.getActivitiTaskId(), "eligibility", false);
                 }
                 activitiService.completeTask(boardTask.getActivitiTaskId());
-            }else */if(task.getName().equals("dental act")){
+
+            }else */
+
+           if(task.getName().equals("dental act")){
                 System.out.println("dental act");
                 if(result.toString().equals("APPROVED")){
                     activitiService.setVariableTask(boardTask.getActivitiTaskId(),"toDoctorDental",false );

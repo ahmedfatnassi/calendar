@@ -34,7 +34,8 @@
           </table>
           <blockquote class="blockquote mb-0">
 
-            <footer class="blockquote-footer" *ngFor="let act of request.acts" >{{act.type}}
+            <footer class="blockquote-footer" *ngFor="let act of request.acts" >
+              {{act.type}} {{act.result}} {{act.result_description}}
 
             </footer>
           </blockquote>

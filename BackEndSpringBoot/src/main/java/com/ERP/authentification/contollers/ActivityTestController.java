@@ -64,7 +64,7 @@ public class ActivityTestController {
         //ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess", variables);
 
         return historyService
-                .createHistoricProcessInstanceQuery()
+                .createHistoricTaskInstanceQuery()
                 .processDefinitionKey("myProcess")
                 .list().toString() ;
 

@@ -171,7 +171,7 @@
 
   <ng-template  #contentbody let-close="close">
     <div class="modal-header">
-      <h5 class="modal-title">Add Event </h5>
+      <h5 class="modal-title"> Event Detail </h5>
 
       <button type="button" class="close" (click)="close()">
         <span aria-hidden="true">&times;</span>
@@ -190,10 +190,10 @@
         <p class="font-weight-bold text-capitalize"> receiver type :  </p> <p class="font-weight-normal ">  {{selectedEvent.receiver_type}}</p>
       </div>
       <div class="d-flex flex-row" *ngIf="selectedEvent.receiver_type == 'teams'">
-        <p class="font-weight-bold text-capitalize"> receiver name  :  </p> <p class="font-weight-normal ">  {{selectedEventReceiver.title}}</p>
+        <p class="font-weight-bold text-capitalize"> team name  :  </p> <p class="font-weight-normal ">  {{selectedEventReceiver.title}}</p>
       </div>
       <div class="d-flex flex-row" *ngIf="selectedEvent.receiver_type == 'users'">
-        <p class="font-weight-bold text-capitalize"> receiver name  :  </p> <p class="font-weight-normal ">  {{selectedEventReceiver.username}}</p>
+        <p class="font-weight-bold text-capitalize"> receiver title  :  </p> <p class="font-weight-normal ">  {{selectedEventReceiver.username}}</p>
       </div>
       <div class="d-flex flex-row">
         <p class="font-weight-bold text-capitalize"> start date  :  </p> <p class="font-weight-normal ">  {{selectedEvent.start}}</p>

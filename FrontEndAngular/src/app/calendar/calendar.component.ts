@@ -19,6 +19,7 @@ import * as SockJS from 'sockjs-client';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
 import {ChatService} from '../chatlist/chat.service';
 import {map, startWith} from 'rxjs/operators';
+import {SettingsService} from '../settings/settings.service';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -32,6 +33,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   private connected: Subscription;
 
   constructor( private eventservice: EventsService ,
+               private settingsService: SettingsService ,
                private modal: NgbModal,
                public datepipe: DatePipe ,
                private router: Router ,
@@ -75,6 +77,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
   teamchecked: boolean ;
   userchecked: boolean ;
   teamlist : any[]
+  fullteamlist : any[]
   receivers: any[];
   selectedEvent: any ;
   selectedEventReceiver: any ;
@@ -94,6 +97,10 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source' ,
       plugins: [dayGridPlugin, interactionPlugin, timeGrigPlugin, listPlugin  , resourceTimeGridPlugin ] ,
     };
+
+    this.settingsService.getAllTeams().subscribe((data : any) =>{
+      this.fullteamlist = data ;
+    }) ;
     this.eventservice.getDoctors().subscribe(data => {
       this.doctors = Object.keys(data).map(i => data[i]);
       console.log(this.doctors)  ;
@@ -229,9 +236,10 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
       }
     }
     if(this.selectedEvent.receiver_type === 'teams') {
-      for (let i = 0; i < this.teamlist.length; i++) {
-        if(this.teamlist[i].id === this.selectedEvent.receiverId){
-          this.selectedEventReceiver = this.teamlist[i] ;
+      console.log('teams')
+      for (let i = 0; i < this.fullteamlist.length; i++) {
+        if(this.fullteamlist[i].id === this.selectedEvent.receiverId){
+          this.selectedEventReceiver = this.fullteamlist[i] ;
           break ;
         }
       }
@@ -380,7 +388,8 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
                 newevent.receiverId ,
                 newevent.color,
                 newevent.receiver_type) ;
-              that.eventsModel1 =that.eventsModel;
+                that.eventsModel = that.eventsModel1;
+                that.affect()
               that.toast.info('new event has been created for  your team ', 'creation of new event ', {
                 timeOut: 5000,
               });
@@ -398,7 +407,7 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
             newevent.color,
             newevent.receiver_type) ;
 
-          that.eventsModel1 =that.eventsModel;
+            that.eventsModel = that.eventsModel1;
           that.toast.info('new event has been created for you ', 'creation of new event ', {
             timeOut: 5000,
           });
@@ -410,11 +419,14 @@ export class CalendarComponent implements OnInit , OnDestroy , AfterContentInit 
 
 
        //  that.messages.push(JSON.parse(.body).content);
-        that.eventsModel1 =that.eventsModel;
+        that.eventsModel =that.eventsModel1;
 
     }) ;
     });
     console.log("heeeeeeeeere you are ")
+  }
+  affect(){
+    this.eventsModel1 =this.eventsModel;
   }
   onChange(newValue) {
     console.log(newValue);

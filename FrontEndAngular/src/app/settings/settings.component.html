@@ -95,14 +95,14 @@
   <div class="card mr-2 mt-2" style="width: 50%;">
     <div class="card-header"> Teams</div>
   <form #teamform="ngForm" class="d-flex justify-content-between m-2" (ngSubmit)="submitTeam(teamform);">
-    <input class= "form-control col-6"  name="title" placeholder="name" type="text" [(ngModel)]="title"  >
+    <input class= "form-control col-6"  id="title" name="title" placeholder="title" type="text" ngModel >
 
       <button  type = "submit" class="btn btn-info mt-2"  >submit Team</button>
   </form>
 
 
-  <div      [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card"  >
-    <div class="card-body" name = "teams" ngDefaultControl *ngFor="let team of teams" [(ngModel)]="teams" >
+  <div   name = "teams" ngDefaultControl [(ngModel)]="teams" [(ngModel)]="Listboard" [(ngModel)]="listBoardinworkspace" [(ngModel)]="listBoardNotinWorkspace" [(ngModel)]="ListEmplyeeByTeam"   [(ngModel)]="ListEmployeenotInTeam" class="card"  >
+    <div class="card-body"  *ngFor="let team of teams" >
       <div class=" d-flex justify-content-between mb-3 ">
       <h6 class="card-title" >{{team.title}}</h6>
         <div>

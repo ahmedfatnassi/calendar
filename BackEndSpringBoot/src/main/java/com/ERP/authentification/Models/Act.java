@@ -35,7 +35,27 @@ public class Act {
     @Column(name ="archived")
     private Boolean archived  = Boolean.TRUE ;
     ///
+    @Column(name ="result_description")
+    private String result_description ;
 
+    @Column(name ="result")
+    private String result ;
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getResult_description() {
+        return result_description;
+    }
+
+    public void setResult_description(String result_description) {
+        this.result_description = result_description;
+    }
 
     public Long getId() {
         return id;
