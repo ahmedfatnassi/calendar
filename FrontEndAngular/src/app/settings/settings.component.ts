@@ -30,6 +30,7 @@ export class SettingsComponent implements OnInit {
   openColumnList: any ;
   ListColumns :any ;
   openColumnBoardID: any ;
+  administrators: any;
   constructor(private settingsService: SettingsService ,
               private  boardlistService: BoardlistService,
               private modal: NgbModal ,
@@ -42,9 +43,15 @@ export class SettingsComponent implements OnInit {
     this.visibileAdddoctors = false ;
     this.employees = [] ;
     this.doctors = [] ;
+    this.administrators = [] ;
     this.settingsService.getallEmployee().subscribe(data => {
       this.employees = Object.keys(data).map(i => data[i]);
       console.log(data) ;
+    });
+    this.settingsService.getallAdministrator().subscribe((data: any[]) => {
+      this.administrators = data;
+      console.log('this.administrators') ;
+      console.log(this.administrators) ;
     });
      this.settingsService.getallDoctor().subscribe(data => {
       this.doctors = Object.keys(data).map(i => data[i]);
@@ -87,21 +94,42 @@ export class SettingsComponent implements OnInit {
   }
   submitEmployee(form: NgForm ) {
   console.log(form.value);
-  this.settingsService.createemplyee(
-    {
-      matricule: form.value.matricule,
-      name : form.value.name,
-      familyname: form.value.familyname ,
-      username : form.value.username,
-      cin : form.value.cin,
-      address : form.value.address,
-      password : form.value.password
-    }).subscribe(data => {
+  if (form.value.isadmin == false){
+   // console.log('employee')
+
+   this.settingsService.createemplyee(
+      {
+        matricule: form.value.matricule,
+        name : form.value.name,
+        familyname: form.value.familyname ,
+        username : form.value.username,
+        cin : form.value.cin,
+        address : form.value.address,
+        password : form.value.password
+      }).subscribe(data => {
       console.log(data) ;
       this.employees.push(data);
       this.modal.dismissAll();
 
-  }) ;
+    }) ;
+  } else {
+  //  console.log('admin')
+    this.settingsService.createAdministrator(
+      {
+        matricule: form.value.matricule,
+        name : form.value.name,
+        familyname: form.value.familyname ,
+        username : form.value.username,
+        cin : form.value.cin,
+        address : form.value.address,
+        password : form.value.password
+      }).subscribe(data => {
+      console.log(data) ;
+      this.employees.push(data);
+      this.modal.dismissAll();
+
+    }) ;
+  }
   }
   submitDoctor(form: NgForm ) {
     console.log(form.value);

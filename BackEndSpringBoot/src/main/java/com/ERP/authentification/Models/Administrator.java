@@ -14,8 +14,13 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false )
 @Entity
 @Table 
-public class Agent extends Person {
-	@Column(name="jobtitle")
-	public String jobtitle ; 
-	
+public class Administrator extends Person {
+
+	@Column(name="cin")
+	private String cin ;
+	@Column(name="address")
+	private String address ;
+	@Column(name="registration_Number")
+	private String matricule ;
+
 }

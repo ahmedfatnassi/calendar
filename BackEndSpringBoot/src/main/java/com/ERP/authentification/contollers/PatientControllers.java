@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ERP.authentification.Models.Agent;
 import com.ERP.authentification.Models.Patient;
-import com.ERP.authentification.repositories.PatientRepository;
-import com.ERP.authentification.services.AgentService;
 import com.ERP.authentification.services.PatientService;
 
 import lombok.RequiredArgsConstructor;

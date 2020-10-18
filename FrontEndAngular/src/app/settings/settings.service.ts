@@ -24,7 +24,15 @@ export class SettingsService {
   deletebyid(id: any ) {
     return this.http.delete('http://localhost:8080/employees/delete/' + id  , this.httpOptions) ;
   }
-
+  getallAdministrator() {
+    return   this.http.get<any[]>('http://localhost:8080/administrators', this.httpOptions) ;
+  }
+  createAdministrator(value: any ) {
+    return this.http.post('http://localhost:8080/administrators' , value , this.httpOptions) ;
+  }
+  deleteAdministratorbyid(id: any ) {
+    return this.http.delete('http://localhost:8080/administrators/delete/' + id  , this.httpOptions) ;
+  }
   createTeam(value: any ) {
     return this.http.post('http://localhost:8080/teams' , value , this.httpOptions) ;
   }

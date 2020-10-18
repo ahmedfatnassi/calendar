@@ -209,6 +209,10 @@
         <label for="password">password</label>
         <input class= "form-control ml-1"  name="password" id ="password"placeholder="password" type="text" ngModel>
       </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="isadmin" name="isadmin" ngModel>
+        <label class="form-check-label" for="isadmin">set him Administrator</label>
+      </div>
       <div class="modal-footer d-flex justify-content-between ">
         <button type="button" class="btn btn-outline-secondary alert-danger" (click)="close()">
           close
